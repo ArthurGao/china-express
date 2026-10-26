@@ -75,7 +75,7 @@ tr.tot td{font-weight:600; border-bottom:none; background:var(--surface)}
 <div class="wrap">
 <header>
   <h1>ChinaExpress 集运平台：三个阶段，约 464 小时</h1>
-  <p class="lead">先做报价、登录、预报，再做收货入库、合并、发货和人工收款并在奥克兰真实试运行；在线支付和扩展放在最后。每个阶段结束都能演示一条完整、可用的流程。待业主签字的<a href="https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu">计价决策表和实体关系表</a>是单独文档，签字后与原 PDF 冲突时以附件为准。</p>
+  <p class="lead">先做报价、登录、预报，再做收货入库、合并、发货和人工收款并在奥克兰真实试运行；在线支付和扩展放在最后。每个阶段结束都能演示一条完整、可用的流程。待业主签字的计价决策表和实体关系表是单独文档，签字后与原 PDF 冲突时以附件为准。</p>
   <div class="bar" role="img" aria-label="第 1 阶段 145 小时，第 2 阶段 206 小时，第 3 阶段 113 小时"><span class="b1" style="flex:145"><b>145 h</b>第 1 阶段</span><span class="b2" style="flex:206"><b>206 h</b>第 2 阶段</span><span class="b3" style="flex:113"><b>113 h</b>第 3 阶段</span></div>
   <ul class="facts">
     <li>开发 <strong>326 小时</strong></li>
@@ -97,14 +97,14 @@ tr.tot td{font-weight:600; border-bottom:none; background:var(--surface)}
     <thead><tr><th>功能</th><th class="n">开发（小时）</th><th class="n">测试（小时）</th><th class="n">合计</th></tr></thead>
     <tbody>
 <tr><td>项目搭建：代码仓库、Supabase 项目、测试和正式环境、自动部署</td><td class='n'>6</td><td class='n'>1</td><td class='n'><strong>7</strong></td></tr>
-<tr><td>实体关系和状态模型确认（<a href='https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu'>附件二</a>）</td><td class='n'>6</td><td class='n'>1</td><td class='n'><strong>7</strong></td></tr>
+<tr><td>实体关系和状态模型确认（附件二）</td><td class='n'>6</td><td class='n'>1</td><td class='n'><strong>7</strong></td></tr>
 <tr><td>数据表和权限：含税码字段、保留期、列权限或受限视图</td><td class='n'>16</td><td class='n'>3</td><td class='n'><strong>19</strong></td></tr>
 <tr><td>最小管理员登录、双重验证、价格发布审计</td><td class='n'>6</td><td class='n'>2</td><td class='n'><strong>8</strong></td></tr>
 <tr><td>注册登录：邮箱验证码、Google 登录、会员号生成（含校验位）</td><td class='n'>8</td><td class='n'>3</td><td class='n'><strong>11</strong></td></tr>
 <tr><td>WhatsApp 登录方案小型验证：转发诱导登录为必拒用例，登录意图确认（数字匹配）</td><td class='n'>6</td><td class='n'>2</td><td class='n'><strong>8</strong></td></tr>
 <tr><td>WhatsApp 登录正式实现（验证通过后）</td><td class='n'>8</td><td class='n'>4</td><td class='n'><strong>12</strong></td></tr>
 <tr><td>账户恢复和登录方式绑定</td><td class='n'>4</td><td class='n'>1</td><td class='n'><strong>5</strong></td></tr>
-<tr><td>报价计算：海运小包、空运、海运拼箱、邮编区域，报价快照和版本锁定，按<a href='https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu'>附件一</a>写测试</td><td class='n'>14</td><td class='n'>8</td><td class='n'><strong>22</strong></td></tr>
+<tr><td>报价计算：海运小包、空运、海运拼箱、邮编区域，报价快照和版本锁定，按附件一写测试</td><td class='n'>14</td><td class='n'>8</td><td class='n'><strong>22</strong></td></tr>
 <tr><td>费率导入和价格管理页：修改、试算、生效日期、修改记录</td><td class='n'>11</td><td class='n'>3</td><td class='n'><strong>14</strong></td></tr>
 <tr><td>客户报价页面：三种方式并排、四级价格措辞；FCL 预估页服务端计算，静态运价表带版本和有效期，过期转人工</td><td class='n'>11</td><td class='n'>3</td><td class='n'><strong>14</strong></td></tr>
 <tr><td>预报：仓库地址一键复制、禁运品告知确认、快递单号补填</td><td class='n'>7</td><td class='n'>2</td><td class='n'><strong>9</strong></td></tr>
@@ -114,7 +114,7 @@ tr.tot td{font-weight:600; border-bottom:none; background:var(--surface)}
     </tbody>
   </table></div>
   <div class="two">
-    <div class="deps"><h3>需要业主在这一阶段前提供</h3><ul><li><a href='https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu'>计价决策表（附件一）</a>签字：边界、舍入、拆合包计价、版本锁定、税码、访客是否要登录后才能报价，每项含选定规则、算例、确认人和日期</li><li><a href='https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu'>实体关系表（附件二）</a>的三个决定：是否跨预报合并、是否部分发货、同一批货能否分运输方式</li><li>“最终价”的定义和之后仍可加收的项目清单</li><li>费率核对：Oamaru 派送费率、空运费率表、奥克兰邮编边界（0600–2699）</li><li>交接说明附录 A 列出的原始文件：NAL 门到门费率表、Fliway 邮编表（1,305 个邮编）、FCL 港口运价表、原型 v5 压缩包。目前开发方只拿到交接 PDF，费率导入和测试算例要用原件</li><li>新一期 FCL 港口运价表：现有运价是 2026 年 10 月 1–14 日的，已经过期；没有新表，FCL 页上线后只能转人工报价</li><li>广州仓库真实中文地址和联系人；收集字段和保留期</li><li>Meta 商业账号验证（WhatsApp 登录依赖它，未批前先用邮箱登录）</li></ul></div>
+    <div class="deps"><h3>需要业主在这一阶段前提供</h3><ul><li>计价决策表（附件一）签字：边界、舍入、拆合包计价、版本锁定、税码、访客是否要登录后才能报价，每项含选定规则、算例、确认人和日期</li><li>实体关系表（附件二）的三个决定：是否跨预报合并、是否部分发货、同一批货能否分运输方式</li><li>“最终价”的定义和之后仍可加收的项目清单</li><li>费率核对：Oamaru 派送费率、空运费率表、奥克兰邮编边界（0600–2699）</li><li>交接说明附录 A 列出的原始文件：NAL 门到门费率表、Fliway 邮编表（1,305 个邮编）、FCL 港口运价表、原型 v5 压缩包。目前开发方只拿到交接 PDF，费率导入和测试算例要用原件</li><li>新一期 FCL 港口运价表：现有运价是 2026 年 10 月 1–14 日的，已经过期；没有新表，FCL 页上线后只能转人工报价</li><li>广州仓库真实中文地址和联系人；收集字段和保留期</li><li>Meta 商业账号验证（WhatsApp 登录依赖它，未批前先用邮箱登录）</li></ul></div>
     <div class="deps"><h3>估算假设和不包含的内容</h3><ul><li>规则在开工前签字，第 1 阶段中途不改计价口径；附件与原 PDF 冲突时以附件为准</li><li>WhatsApp 正式实现的 12 小时只在小型验证通过后发生，否则改为验证模板验证码（约 4 小时）</li><li>FCL 静态运价表由开发录入并记录版本，过期后不出数</li><li>不含 Facebook 登录、短信登录（第 3 阶段）</li></ul></div>
   </div>
   <div class="deps acc"><h3>第 1 阶段验收场景</h3><ul><li>计价：10 / 20 / 25 / 100 kg、1 CBM、1.5 m 和货值三档的边界各一组，结果与签字后的附件一一致；重量变化的方向性按附件一 C1 选定的规则测。</li><li>服务端独立计算：客户端修改重量、金额或费率参数不改变服务端结果（含 FCL）。</li><li>快照：费率发布新版本后，历史报价的数值和费率版本保持不变。</li><li>权限：价格发布有操作人和前后值记录；管理员登录需双重验证。</li><li>登录：iPhone 和安卓上从 WhatsApp、Messenger、Facebook 打开链接都能完成登录；如果上线 WhatsApp 反向验证，转发诱导登录用例被拒绝。</li><li>账户：已有的登录身份不会被自动合并；换号码、号码被回收时账户恢复流程能走通。</li><li>预报：不勾选禁运品告知不能提交；复制的仓库地址带正确的会员号。</li></ul></div>
