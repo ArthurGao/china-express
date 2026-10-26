@@ -46,6 +46,13 @@ src/app/
 - 本地：`pnpm supabase:start`（Auth + Mailpit），`pnpm dev:mock`（3600，MSW 返回契约示例）；e2e 用独立构建目录
   `.next-e2e` 在 3601 运行，不污染生产构建。
 
+## 演示构建（ADR 0004）
+
+- `pnpm build:demo`：接口用 MSW 返回契约示例，登录在浏览器内完成（任意邮箱和 6 位数字验证码），不需要后端和
+  Supabase。用于后端完成前的单独部署（Vercel，开启访问保护）。
+- 每页顶部有演示横幅，页面设为 `noindex`；路由规则与正式构建相同：报价前必须登录，员工必须完成 aal2。
+- 正式构建由 `pnpm check:bundle` 保证不含 MSW 和演示登录。`pnpm e2e:demo` 在 3602 端口跑演示版的主流程。
+
 ## 数据访问
 
 - 所有业务数据走后端 API：`src/lib/api/` 下由 OpenAPI 生成的客户端 + TanStack Query hooks。

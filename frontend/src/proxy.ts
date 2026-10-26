@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { checkAccess, needsSession } from "@/lib/auth/routes";
+import { DEMO_SESSION_COOKIE, parseDemoSession } from "@/lib/auth/demo-session";
+import { checkAccess, needsSession, type Claims } from "@/lib/auth/routes";
+import { DEMO } from "@/lib/demo";
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from "@/lib/supabase/env";
 import { AREA_HEADER, areaForPath } from "@/i18n/config";
 
@@ -13,6 +15,9 @@ export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request: { headers: requestHeaders } });
   // Public pages (landing, login, OAuth callback) need no session check; the browser client refreshes its own token.
   if (!needsSession(request.nextUrl.pathname)) return response;
+
+  // Demo builds (ADR 0004) have no Supabase: the in-browser demo sign-in keeps its state in a cookie.
+  if (DEMO) return gate(request, response, parseDemoSession(request.cookies.get(DEMO_SESSION_COOKIE)?.value));
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     cookies: {
@@ -30,7 +35,12 @@ export async function proxy(request: NextRequest) {
 
   // Must run before the response is produced so a refreshed token can be written back.
   const { data } = await supabase.auth.getClaims();
-  const access = checkAccess(request.nextUrl.pathname, data?.claims ?? null, request.nextUrl.search);
+  return gate(request, response, data?.claims ?? null);
+}
+
+/** Applies the route rules; a redirect keeps any refreshed session cookies from `response`. */
+function gate(request: NextRequest, response: NextResponse, claims: Claims) {
+  const access = checkAccess(request.nextUrl.pathname, claims, request.nextUrl.search);
   if (!access.allow) {
     const redirect = NextResponse.redirect(new URL(access.redirectTo, request.url));
     response.cookies.getAll().forEach((c) => redirect.cookies.set(c));

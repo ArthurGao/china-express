@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { quoteSampleParcel, signInWithEmailCode } from "./support/flows";
 import { readOtp } from "./support/supabase";
 
 // Stage 1 main flow on phones: sales link → login (email code) → quote → pre-notice → copy address.
@@ -7,28 +8,17 @@ test("a customer from a sales link signs in, quotes and sends a pre-notice", asy
   const email = `e2e-${info.project.name}-${Date.now()}@chinaexpress.test`;
 
   await page.goto("/quote?src=fb-marketplace&ref=sales-amy");
+  await expect(page.getByTestId("demo-banner")).toHaveCount(0); // a real build never shows the demo banner
   await expect(page).toHaveURL(/\/login\?next=%2Fquote%3Fsrc%3Dfb-marketplace%26ref%3Dsales-amy$/);
 
-  await page.getByLabel("Email").fill(email);
-  await page.getByRole("button", { name: "Email me a code" }).click();
-  await expect(page.getByText(`We sent a code to ${email}.`)).toBeVisible();
-  await page.getByLabel("6-digit code").fill(await readOtp(email));
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await signInWithEmailCode(page, email, () => readOtp(email));
 
   await expect(page).toHaveURL(/\/quote\?src=fb-marketplace&ref=sales-amy$/);
   await expect(page.getByTestId("member-no")).toHaveText("CE-123456-7");
 
-  await page.getByLabel("Auckland").check();
-  await page.getByLabel("Nearest city").selectOption("akl");
-  await page.getByLabel("Length cm").fill("30");
-  await page.getByLabel("Width cm").fill("20");
-  await page.getByLabel("Height cm").fill("20");
-  await page.getByLabel("Weight kg").fill("7");
-  await page.getByLabel("Total value of all items together").fill("250");
-  await page.getByRole("button", { name: "Get my quote" }).click();
+  await quoteSampleParcel(page);
 
   const parcel = page.getByTestId("option-SEA_PARCEL");
-  await expect(parcel.getByTestId("total-SEA_PARCEL-NZD")).toHaveText(/NZD\s26\.00\+GST/);
   await expect(page.getByTestId("option-AIR")).toContainText("Needs a manual quote");
   await expect(page.getByRole("button", { name: "What to do next" })).toBeDisabled();
   await parcel.getByRole("button", { name: "Choose this option" }).click();

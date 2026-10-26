@@ -51,7 +51,9 @@ frontend/
 pnpm dev             # next dev on 3600 against NEXT_PUBLIC_API_BASE_URL
 pnpm dev:mock        # same, with MSW serving the contract examples (no backend needed)
 pnpm build
-pnpm check:bundle    # after build: fails if MSW leaked into the production bundle
+pnpm check:bundle    # after build: fails if MSW or the demo sign-in leaked into the production bundle
+pnpm build:demo      # demo build (ADR 0004): contract examples + in-browser sign-in, no backend, no Supabase
+pnpm e2e:demo        # playwright against the demo build in .next-demo on 3602 (no Supabase needed)
 pnpm typecheck       # next typegen + tsc
 pnpm lint
 pnpm lint:api        # redocly lint of openapi/openapi.json

@@ -15,9 +15,12 @@
     "supabase:start": "supabase start --workdir .. -x studio,postgres-meta,imgproxy,vector,logflare,supavisor,realtime,storage-api,edge-runtime",
     "supabase:stop": "supabase stop --workdir ..",
     "lint:api": "redocly lint openapi/openapi.json --format=stylish",
-    "check:bundle": "node scripts/check-no-msw.mjs",
+    "check:bundle": "node scripts/check-bundle.mjs",
     "dev:mock": "msw init public --save=false && NEXT_PUBLIC_API_MOCKING=enabled next dev --port 3600",
-    "supabase:status": "supabase status --workdir .."
+    "supabase:status": "supabase status --workdir ..",
+    "build:demo": "msw init public --save=false && NEXT_PUBLIC_DEMO=enabled NEXT_PUBLIC_API_MOCKING=enabled NEXT_PUBLIC_API_BASE_URL=/api/v1 next build",
+    "start:demo": "next start --port 3602",
+    "e2e:demo": "playwright test -c playwright.demo.config.ts"
   },
   "dependencies": {
     "@fontsource/big-shoulders-stencil-display": "5.3.0",

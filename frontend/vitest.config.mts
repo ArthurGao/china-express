@@ -5,7 +5,11 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      // Unit tests run as a non-demo build; demo-auth.test.ts imports the demo client directly.
+      "ce-auth-client": fileURLToPath(new URL("./src/lib/supabase/create-client.ts", import.meta.url)),
+    },
   },
   test: {
     environment: "jsdom",
@@ -17,6 +21,7 @@ export default defineConfig({
       NEXT_PUBLIC_SUPABASE_URL: "http://supabase.test",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "test-anon-key",
       NEXT_PUBLIC_API_MOCKING: "",
+      NEXT_PUBLIC_DEMO: "",
     },
   },
 });

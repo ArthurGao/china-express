@@ -1,12 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 import { generate } from "otplib";
+import { publishSeaParcelDraft, signInStaff } from "./support/flows";
 import { STAFF } from "./support/supabase";
 
-async function signIn(page: Page) {
-  await page.getByLabel("邮箱").fill(STAFF.email);
-  await page.getByLabel("密码").fill(STAFF.password);
-  await page.getByRole("button", { name: "登录" }).click();
-}
+const signIn = (page: Page) => signInStaff(page, STAFF);
 
 // TOTP codes are 30-second windows; wait for a fresh window so enrolment and the next sign-in never reuse a code.
 async function freshCode(secret: string) {
@@ -42,19 +39,6 @@ test("staff sign in with mandatory TOTP, then draft, simulate and publish a rate
   await expect(page).toHaveURL(/\/staff\/admin\/rates$/);
 
   // Rate change: draft → simulate → publish with a reason.
-  await page.getByRole("button", { name: "查看 海运小包 v1" }).click();
-  const panel = page.getByTestId("rate-version-panel");
-  await panel.getByRole("button", { name: "基于此版本新建草稿" }).click();
-  await panel.getByLabel("奥克兰 每 kg (NZD) 1").fill("2.20");
-  await panel.getByLabel("生效日期").fill("2026-11-01");
-  await panel.getByRole("button", { name: "创建草稿" }).click();
-  await expect(panel.getByText("已创建第 2 版草稿。")).toBeVisible();
-  await panel.getByRole("button", { name: "试算" }).click();
-  await expect(panel.getByTestId("simulation")).toContainText("上涨 1 · 下降 0 · 不变 1");
-  await panel.getByRole("button", { name: "发布" }).click();
-  const dialog = page.getByRole("dialog");
-  await dialog.getByLabel("发布原因").fill("11 月奥克兰调价");
-  await dialog.getByRole("button", { name: "确认发布" }).click();
-  await expect(panel.getByRole("status")).toHaveText("已发布第 2 版，2026-11-01 起生效。");
+  await publishSeaParcelDraft(page, "11 月奥克兰调价");
   await page.screenshot({ path: "test-results/staff-rates.png", fullPage: true });
 });

@@ -28,6 +28,9 @@
       ],
       "ce-mock-worker": [
         "./src/mocks/browser.ts"
+      ],
+      "ce-auth-client": [
+        "./src/lib/supabase/create-client.ts"
       ]
     }
   },
@@ -39,7 +42,9 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     ".next-e2e/types/**/*.ts",
-    ".next-e2e/dev/types/**/*.ts"
+    ".next-e2e/dev/types/**/*.ts",
+    ".next-demo/types/**/*.ts",
+    ".next-demo/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

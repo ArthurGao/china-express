@@ -5,6 +5,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 // so a prerendered shell buys little, and request-scoped reads (session cookie, locale header) would each need a
 // Suspense boundary. Revisit when public, cacheable pages appear.
 const mocking = process.env.NEXT_PUBLIC_API_MOCKING === "enabled";
+const demo = process.env.NEXT_PUBLIC_DEMO === "enabled";
 
 const nextConfig: NextConfig = {
   // e2e builds (with API mocking) go to their own directory so they never mix with the production build.
@@ -16,6 +17,8 @@ const nextConfig: NextConfig = {
       "ce-mock-worker": mocking
         ? { browser: "./src/mocks/browser.ts", default: "./src/mocks/disabled.ts" }
         : "./src/mocks/disabled.ts",
+      // The demo build (ADR 0004) signs in inside the browser; every other build uses the real Supabase client.
+      "ce-auth-client": demo ? "./src/lib/auth/demo-auth.ts" : "./src/lib/supabase/create-client.ts",
     },
     rules: {
       "*.css": {

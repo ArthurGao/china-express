@@ -407,5 +407,9 @@
     "linkFailed": "We could not link that sign-in method. If it already belongs to another account, sign in with it instead.",
     "recoveryTitle": "Lost access?",
     "recoveryBody": "Changed or lost your phone? Sign in with your email code, then update it here. If you cannot sign in any other way, contact us with your member number and a recent shipment, and our team will verify you."
+  },
+  "demo": {
+    "label": "Demo",
+    "body": "Sample data: prices are fixed worked examples and do not change with your input. Any email, password and 6-digit code sign you in."
   }
 }
