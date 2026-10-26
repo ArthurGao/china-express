@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChinaExpress 集运平台：难点与解决办法</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF1EF; --surface:#F8FAF9; --ink:#14263A; --ink-2:#4A5A69; --rule:#C9D1D0;
+  --steel:#2F5D7C; --high:#B4231A; --mid:#B97808; --low:#3F7452;
+  --high-tint:rgba(180,35,26,.08); --mid-tint:rgba(185,120,8,.10); --low-tint:rgba(63,116,82,.10);
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1A24; --surface:#152431; --ink:#E6ECEF; --ink-2:#A3B1BC; --rule:#2B3C4A;
+    --steel:#7FB0D1; --high:#F0796E; --mid:#E8B04A; --low:#7FC497;
+    --high-tint:rgba(240,121,110,.12); --mid-tint:rgba(232,176,74,.12); --low-tint:rgba(127,196,151,.12);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1A24; --surface:#152431; --ink:#E6ECEF; --ink-2:#A3B1BC; --rule:#2B3C4A;
+  --steel:#7FB0D1; --high:#F0796E; --mid:#E8B04A; --low:#7FC497;
+  --high-tint:rgba(240,121,110,.12); --mid-tint:rgba(232,176,74,.12); --low-tint:rgba(127,196,151,.12);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  font-size:16px; line-height:1.7;
+}
+.wrap{max-width:1040px; margin:0 auto; padding:48px 24px 72px}
+a{color:var(--steel)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--steel); outline-offset:3px}
+
+header h1{
+  font-size:clamp(28px,4.4vw,44px); line-height:1.2; margin:0 0 16px; font-weight:600; letter-spacing:-.01em;
+  max-width:22em;
+}
+header p.lead{color:var(--ink-2); margin:0 0 32px; max-width:40em}
+
+/* the tape strip: share of risks by severity */
+.tape{display:flex; height:44px; border-radius:4px; overflow:hidden; border:1px solid var(--rule)}
+.tape span{
+  display:flex; align-items:center; gap:8px; padding:0 14px; color:#fff; white-space:nowrap;
+  font-size:14px; font-weight:500;
+}
+.tape b{font-family:"Big Shoulders Stencil Display",sans-serif; font-size:26px; font-weight:800; letter-spacing:.02em}
+.tape .h{background:var(--high); flex:5}
+.tape .m{background:var(--mid); flex:8}
+.tape .l{background:var(--low); flex:5}
+:root[data-theme="dark"] .tape span{color:#0F1A24}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tape span{color:#0F1A24}}
+.tape-note{font-size:14px; color:var(--ink-2); margin:10px 0 0}
+
+.filters{display:flex; flex-wrap:wrap; gap:8px; margin:40px 0 8px; position:sticky; top:env(safe-area-inset-top,0px); background:var(--paper); padding:12px 0; z-index:5; border-bottom:1px solid var(--rule)}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--paper)}
+.filters button{
+  font:inherit; font-size:14px; padding:6px 14px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--rule); background:var(--surface); color:var(--ink);
+}
+.filters button[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.filters .count{margin-left:auto; align-self:center; font-size:14px; color:var(--ink-2)}
+
+.risk{
+  display:grid; grid-template-columns:96px 1fr; gap:0 24px;
+  padding:32px 0; border-bottom:1px solid var(--rule);
+}
+.risk[hidden]{display:none}
+.id{
+  font-family:"Big Shoulders Stencil Display",sans-serif; font-weight:800; font-size:52px; line-height:1;
+  color:var(--sev);
+}
+.risk.high{--sev:var(--high); --tint:var(--high-tint)}
+.risk.mid{--sev:var(--mid); --tint:var(--mid-tint)}
+.risk.low{--sev:var(--low); --tint:var(--low-tint)}
+.risk h2{font-size:21px; line-height:1.4; margin:2px 0 8px; font-weight:600}
+.meta{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; font-size:13px}
+.meta span{padding:2px 10px; border-radius:4px; background:var(--tint); color:var(--ink)}
+.meta .sev{color:var(--sev); font-weight:600}
+.cols{display:grid; grid-template-columns:1fr 1.25fr; gap:28px}
+.cols h3{font-size:14px; font-weight:600; color:var(--ink-2); margin:0 0 6px}
+.cols p{margin:0}
+.cols ul{margin:0; padding-left:1.2em}
+.cols li{margin:0 0 6px}
+.fix{border-left:3px solid var(--sev); padding-left:16px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.9em; background:var(--surface); border:1px solid var(--rule); padding:0 4px; border-radius:3px}
+.calc{display:block; margin-top:8px; padding:10px 12px; background:var(--surface); border:1px solid var(--rule); border-radius:4px; font-size:14px; overflow-x:auto}
+
+footer{margin-top:48px; font-size:14px; color:var(--ink-2)}
+footer h2{font-size:16px; color:var(--ink); margin:0 0 8px}
+footer ul{padding-left:1.2em; margin:0}
+
+@media (max-width:720px){
+  .wrap{padding:32px 18px 56px}
+  .risk{grid-template-columns:1fr; gap:4px}
+  .id{font-size:40px}
+  .cols{grid-template-columns:1fr; gap:18px}
+  .tape span{padding:0 10px; font-size:12px}
+  .tape b{font-size:22px}
+  .filters .count{width:100%; margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>ChinaExpress 集运平台：18 个难点，以及每个怎么解决</h1>
+  <p class="lead">第 1 阶段报价、登录、预报，第 2 阶段收货入库、合并、发货和人工收款（奥克兰真实试运行），第 3 阶段在线支付和扩展。部署在悉尼（Supabase），国内仓库经 AWS 专线访问（业主确认；第 0 周在广州实测一次）。待业主签字的<a href="https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu">计价决策表和实体关系表</a>是单独文档，签字后与原 PDF 冲突时以附件为准。</p>
+  <div class="tape" role="img" aria-label="高风险 5 项，中风险 8 项，低风险 5 项">
+    <span class="h"><b>5</b>高风险</span>
+    <span class="m"><b>8</b>中风险</span>
+    <span class="l"><b>5</b>低风险</span>
+  </div>
+  <p class="tape-note">5 项高风险里，四项要在第 1 阶段开工前解决，一项（试运行前置保障）决定第 2 阶段能不能真实运营。风险等级和阶段先后是两回事——支付放在最后，风险仍是中等。</p>
+</header>
+
+<nav class="filters" aria-label="按严重度筛选">
+  <button type="button" data-f="all" aria-pressed="true">全部</button>
+  <button type="button" data-f="high" aria-pressed="false">高风险</button>
+  <button type="button" data-f="mid" aria-pressed="false">中风险</button>
+  <button type="button" data-f="low" aria-pressed="false">低风险</button>
+  <span class="count" id="count" aria-live="polite">显示 18 项</span>
+</nav>
+
+<main id="list">
+
+<article class="risk high" data-sev="high" id="r1">
+  <div class="id">R1</div>
+  <div>
+    <h2>拆合包的数据模型还没有定义完整</h2>
+    <div class="meta"><span class="sev">高风险</span><span>第 1 阶段 · 数据模型</span><span>开发 + 业主签字</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>交接说明 8.1 把包裹直接挂在货件下，但业务允许单独发、合并发、拆掉包装后重新分箱。实际会发生：客户两次预报最后要一起发；一次预报到货五箱先发三箱、两箱继续存仓；三个入库包裹合并后重新装成两个出库箱。现在的描述说不清这些情况的归属、计价和追踪，照着开发很容易中途改表结构。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>区分五个实体：预报、入库包裹、合并作业、出库包装、运输货件，并保留原包裹到新包装的对应关系。</li>
+        <li>业主先决定三件事：是否支持跨预报合并、是否支持部分发货、同一批货能否分不同运输方式。</li>
+        <li>这三个决定和实体关系表（<a href="https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu">附件二</a>）签字后再建表，放在第 1 阶段最前面；附件与原 PDF 冲突时以签字后的附件为准。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk high" data-sev="high" id="r2">
+  <div class="id">R2</div>
+  <div>
+    <h2>报价规格有歧义，规格和算例要一起核对</h2>
+    <div class="meta"><span class="sev">高风险</span><span>第 1 阶段 · 报价</span><span>开发 + 业主签字</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>LCL 算例和直接计算差几分钱，可能是中间有舍入，也可能是算例本身错了，不能只凭结果反推规则。<span class="calc">1,820 ÷ 167 = 10.8982… × 144.88 = 1,578.93<br>算例预期 1,578.90 ＝ 10.898 × 144.88（先舍入到 3 位小数？）</span>另外还缺六个决定收费结果的定义：小包 100 kg / 1 CBM 上限按实重还是计费重、按单包还是整票；多个包装的体积重逐包算还是汇总算；清关费按包、按票还是按每次报关收；25 kg / 1.5 m 限制适用哪些产品；客户拒绝最终价时已发生的拆包、纸箱、人工费谁承担；货到仓时运价已变化用哪个版本。空运体积重系数和费率单位也没写。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>让业务方填计价决策表（<a href="https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu">附件一</a>），每项写明选定规则、算例、确认人和日期，同时修正规格和算例，不从算例反推规则。</li>
+        <li>决策表签字后再写引擎；每条规则一个测试，10 / 20 / 25 / 100 kg、1 CBM、1.5 m、货值三档的边界各一组。</li>
+        <li>引擎做成纯函数，输出带舍入记录，客服能解释每一分钱从哪来。</li>
+        <li>报价计算（含 FCL）只放在 NestJS 服务端，前端只调接口；验收标准是客户端篡改重量、金额或费率参数不能改变服务端结果。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk high" data-sev="high" id="r3">
+  <div class="id">R3</div>
+  <div>
+    <h2>“WhatsApp 一键验证”在网页上并不存在，反向验证要先通过安全验证</h2>
+    <div class="meta"><span class="sev">高风险</span><span>第 1 阶段 · 登录</span><span>业主 + 开发</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>WhatsApp 的一键或零点按自动填码只支持安卓原生 App，网页用户只能看到“复制验证码”按钮。替代方案“客户发一条消息即登录”业内有先例，但“8 位码 + 绑定会话 + 一次消费”挡不住这个攻击：攻击者在自己的浏览器生成验证码，诱导受害者用 WhatsApp 发出去，系统收到后把攻击者的浏览器登录成受害者。另外还要回答：从内置浏览器切出去后怎样回到原会话；换设备、换号码、号码被回收后账户怎么恢复。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>小型验证（4–6 小时）把“转发诱导登录”列为必须拒绝的用例，不通过不算方案成立。</li>
+        <li>加登录意图确认：webhook 收到消息后，系统回一条 WhatsApp 消息，要求客户在手机上选择页面显示的两位数字（数字匹配），攻击者看不到受害者的手机，无法完成。</li>
+        <li>基础规则仍要有：验证码 8 位以上、5 分钟有效、一次消费、绑定会话 ID、核对发送方号码。</li>
+        <li>兜底用 WhatsApp 验证模板发验证码；账户恢复（邮箱验证 + 人工核验）进第 1 阶段。</li>
+        <li>Meta 商业验证第一周启动；没批下来之前先用邮箱验证码登录。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk high" data-sev="high" id="r4">
+  <div class="id">R4</div>
+  <div>
+    <h2>客户从 WhatsApp、Facebook 点进来，用的是内置浏览器</h2>
+    <div class="meta"><span class="sev">高风险</span><span>第 1 阶段 · 登录</span><span>开发</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>Google 登录会拒绝嵌入式浏览器；魔法链接在另一个浏览器打开会丢会话。客户正是从聊天链接进来的，而这些问题在电脑上测试时全部看不到。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>识别内置浏览器，在登录前提示“在 Safari 或 Chrome 中打开”，并给出复制链接按钮。</li>
+        <li>邮箱登录用 6 位验证码，不用魔法链接；Supabase Auth 的邮箱 OTP 可以直接用。</li>
+        <li>测试清单里加入真机：iPhone 和安卓上的 WhatsApp、Messenger、Facebook 各走一遍。</li>
+        <li>第 3 阶段接支付时再处理付款跳转的同类问题（付款页用独立短链）。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk high" data-sev="high" id="r5">
+  <div class="id">R5</div>
+  <div>
+    <h2>第 2 阶段就要真实试运行，但员工权限和上线保障原来排在后面</h2>
+    <div class="meta"><span class="sev">高风险</span><span>第 1、2 阶段 · 试运行前置</span><span>开发 + 业主</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>第 1 阶段就能修改和发布价格，员工账户和双重验证原来在第 2 阶段，等于靠“不公开网址”保护价格表。第 2 阶段用真实客户收款、入库、发货，涉及客户资料、货物和钱，安全检查、备份恢复、告警、条款原来都在第 3 阶段。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>第 1 阶段先做最小管理员登录、双重验证和价格发布审计；第 2 阶段再扩展仓库、运营、财务角色。</li>
+        <li>第 2 阶段试运行的前置验收：最小安全与权限检查、自动备份加一次恢复验证、错误告警、已确认的服务/隐私/退款/货物处理条款、生产操作负责人和故障处理办法。</li>
+        <li>第 3 阶段只保留全面安全审查、压力测试和扩展支付方式。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk mid" data-sev="mid" id="r6">
+  <div class="id">R6</div>
+  <div>
+    <h2>分档价格出现“越重越便宜”</h2>
+    <div class="meta"><span class="sev">中风险</span><span>第 1 阶段 · 报价</span><span>业主决定</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>北岛其他地区海运小包：19.5 kg × 6 = 117 元，20 kg × 4 = 80 元。客户很快会发现凑重更便宜，仓库也会被要求“帮忙加点东西”。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>请业主三选一：维持整票按档（接受价格下降）、改成超额累进、或设价格下限（不低于上一档最高价）。</li>
+        <li>测试按选定规则写：选了整票按档，就只测档位边界；选了累进或下限，才测“重量增加价格不下降”。</li>
+        <li>分档规则放在费率表数据里，以后改规则不改代码。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk mid" data-sev="mid" id="r7">
+  <div class="id">R7</div>
+  <div>
+    <h2>合并发货是一个装箱问题，计价口径没写</h2>
+    <div class="meta"><span class="sev">中风险</span><span>第 2 阶段 · 入库与合并</span><span>开发 + 业主</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>单包超 25 kg 不能合并，合并后超 25 kg 要拆包，单边超 1.5 m 不能合并，只能同运输方式合并。拆成多包后，是每包分别计价还是按整票总重计价，规格没写，结果差别很大。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>装箱由仓库人员决定，系统只做资格校验和计价，不做自动装箱算法。</li>
+        <li>入库时自动打标签（可合并、超 25 kg、超大件），客户选择时就看到哪些包裹不能合并。</li>
+        <li>计价口径写进计价决策表（<a href="https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu">附件一</a> D1），开工前签字。</li>
+        <li>合并规则做成数据（重量上限、尺寸上限），方便以后调整。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk mid" data-sev="mid" id="r8">
+  <div class="id">R8</div>
+  <div>
+    <h2>价格会变：预估、实测、合并后，用哪个版本要锁定</h2>
+    <div class="meta"><span class="sev">中风险</span><span>第 1、2 阶段 · 报价与入库</span><span>开发 + 业主</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>一票货至少有三个价格：申报数据的预估价、入库实测价、合并重测后的最终价。如果货到仓时费率已经改过，用预报时的版本、入库时的版本还是最终确认时的版本，没有定义。客户拒绝最终价时，已经发生的费用怎么处理也没写。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>每次报价存成不可修改的快照（输入、费率版本、结果、有效期），预估和最终价并存，客户能看到差异和原因。</li>
+        <li>版本锁定规则由业主在计价决策表（<a href="https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu">附件一</a> E1、E2）里选定。</li>
+        <li>调价必须填原因并经审批，写审计日志。</li>
+        <li>第 3 阶段接支付时，再加发票自动定稿和贷项自动化；快照结构第 1 阶段就按这个需求设计好。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk mid" data-sev="mid" id="r9">
+  <div class="id">R9</div>
+  <div>
+    <h2>“一个简单价格”和大量排除费用之间有预期落差</h2>
+    <div class="meta"><span class="sev">中风险</span><span>第 1 阶段 · 文案与条款</span><span>业主 + 开发</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>交接说明一边承诺“一个简单的价格”，一边排除住宅派送、查验、检疫、仓储、危险品、超大件等费用。“最终价”之后还能不能加收、要不要客户再次同意，没有定义。这会成为客诉和拒付的争议点。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>区分四个层级并在界面上用不同措辞：自动报价、需人工复核的预估、已确认应付账单、清关或派送后可能发生的附加费。</li>
+        <li>定义“最终价”的成立条件和之后仍可加收的项目清单，写进条款，并在客户确认最终价的页面上展示。</li>
+        <li>需要人工复核的情况（“价格需询问”区域、超大件、特殊货物）自动转给运营，不出自动报价。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk mid" data-sev="mid" id="r10">
+  <div class="id">R10</div>
+  <div>
+    <h2>银行转账试运行要有财务闭环，开票资料不能等第 3 阶段</h2>
+    <div class="meta"><span class="sev">中风险</span><span>第 2 阶段 · 收款与开票</span><span>开发 + 业主 + 财务</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>第 2 阶段用银行转账收款并人工开税务发票，就要回答：客户应付多少、含不含税；少付、多付、分次付、一笔款付多票货怎么处理；谁能确认到账、录错怎么撤销；已开出的发票怎么更正；退款怎么记。开票主体、GST 号码、发票模板、逐项税务表原来都排在第 3 阶段，第 2 阶段根本开不出合规发票。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>第 2 阶段就做应收单、收款记录、付款分配、放货条件和撤销，每步带操作记录。</li>
+        <li>撤销错误记录和实际退钱是两件事：人工退款也要记录金额、关联款项、操作人和凭据。</li>
+        <li>开票主体与公司资料、发票编号规则、发票资料快照、已开票后的更正流程（作废重开或人工贷项）提前到第 2 阶段；自动定稿和 Xero 同步留在第 3 阶段。</li>
+        <li>业主在第 2 阶段开工前提供 GST 号码、发票模板和会计师确认的逐项税务表。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk mid" data-sev="mid" id="r11">
+  <div class="id">R11</div>
+  <div>
+    <h2>包裹匹配错误和重复录入：快递单号不是唯一标识</h2>
+    <div class="meta"><span class="sev">中风险</span><span>第 2 阶段 · 收货入库</span><span>开发 + 仓库</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>会员号是供应商手写在纸箱上的，写错一位就可能匹配到别人；快递单号选填，经常没有。一张快递单可能对应多箱（一单多箱、主子单），如果拿快递单号当唯一键，“重复扫码只提示不新建”会挡住正常收货。仓库网络抖动时同一次入库还可能提交两遍。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>会员号加一位校验位（例如 <code>CE-123456-7</code>），录错时系统直接拒绝。</li>
+        <li>四个标识分开：系统内部包裹号（唯一）、承运商 + 快递单号、主单/子单或件序号、入库请求的幂等键。</li>
+        <li>一张快递单对应多个实体包裹是否允许，由业主确认（<a href="https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu">附件一</a> D6）；允许时按件序号区分，重复扫同一件才提示。</li>
+        <li>匹配不上的进“无主包裹”队列，拍照留存，由客户认领或运营人工处理。</li>
+        <li>入库提交带幂等键，断线重连后不会重复记录；照片上传失败自动重试。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk mid" data-sev="mid" id="r12">
+  <div class="id">R12</div>
+  <div>
+    <h2>多种登录方式带来重复账户和账户劫持</h2>
+    <div class="meta"><span class="sev">中风险</span><span>第 1 阶段 · 登录</span><span>开发</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>同一个人用 WhatsApp、Google、邮箱各登录一次，就会有三个账户、三个唛头。按邮箱或手机号自动合并，又可能让别人接管账户。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>数据模型上一个客户对应多个登录身份，会员号挂在客户上，不挂在登录身份上。</li>
+        <li>新的登录方式只能在已登录状态下绑定；号码已属于别人时提示用原方式登录，不自动合并。</li>
+        <li>两个都已有货件的账户合并，只能由运营在后台操作并留审计。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk mid" data-sev="mid" id="r13">
+  <div class="id">R13</div>
+  <div>
+    <h2>中国支付方式不是开一个 Stripe 就有</h2>
+    <div class="meta"><span class="sev">中风险</span><span>第 3 阶段（最后）</span><span>业主开户 + 开发</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>Stripe 新西兰账户能收支付宝（NZD 结算），但微信支付的商户所在地列表里没有新西兰。集运、物流还可能被网关列为需要额外审核的行业。支付推迟到第 3 阶段不等于风险低：开户被拒会卡住整个阶段。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>方案 A：Windcave 托管支付页一次覆盖卡、Apple Pay、Google Pay、支付宝、微信支付、银联和新西兰网银转账。</li>
+        <li>方案 B：Stripe（卡、钱包、支付宝）+ Latipay（微信支付、新西兰网银）。</li>
+        <li>后端预留 <code>PaymentProvider</code> 接口，换哪家都不改业务代码。</li>
+        <li>开户审核以周计，第 3 阶段开工前一个月就去申请，并提前问清行业审核。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk low" data-sev="low" id="r14">
+  <div class="id">R14</div>
+  <div>
+    <h2>税务不能照交接说明原样写进引擎</h2>
+    <div class="meta"><span class="sev">低风险</span><span>第 1 阶段建模，第 2 阶段人工开票</span><span>开发 + 会计师</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>交接说明把进口 GST 简化为“CIF 达到 1,000”，混淆了征收门槛和计税基数；“本地费用一律 15%、国际运费不加税”也要按 IRD 的零税率条件逐项确认，不能直接固化。FCL 还混合 USD 和 NZD。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>会计师确认一份逐项税务表（每类费用的税码和税率），第 2 阶段开工前提供。</li>
+        <li>报价和发票的每一行保存税码、税率、金额，而不只是“是否计 GST”；第 1 阶段建表就按这个来。</li>
+        <li>进口税费只做告知（提示客户另付海关），系统不计算。</li>
+        <li>FCL 默认开 USD 运费单和 NZD 本地费用单两张发票；如需合成一张，按付款时锁定汇率并注明。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk low" data-sev="low" id="r15">
+  <div class="id">R15</div>
+  <div>
+    <h2>跨境隐私和海关责任会影响字段设计，不能全留到上线前</h2>
+    <div class="meta"><span class="sev">低风险</span><span>第 1 阶段定字段，第 2 阶段试运行前审核</span><span>业主 + 律师 + 报关行</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>仓库在中国，会处理客户姓名、电话和照片，涉及新西兰 2020 年隐私法的跨境披露要求，也可能涉及中国个人信息保护法。这决定预报要收哪些字段、仓库能看什么、照片保存多久，第 1 阶段建表时就要定。另外平台不能变成帮客户拆票规避进口税的工具。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>第 1 阶段确定收集字段和保留期；第 2 阶段试运行前取得律师意见，隐私政策和条款上线。</li>
+        <li>仓库角色看不到完整电话和地址：Supabase 的行级权限只控制“看哪些行”，隐藏字段要靠列权限、受限视图或服务端只返回需要的字段。</li>
+        <li>照片和个人信息到期自动删除。</li>
+        <li>预报页展示禁运、限运品清单，要求客户勾选确认；报关责任和报关行数据来源由业主与报关行确认。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk low" data-sev="low" id="r16">
+  <div class="id">R16</div>
+  <div>
+    <h2>FCL 静态预估的有效性和各区域的接单范围有歧义</h2>
+    <div class="meta"><span class="sev">低风险</span><span>第 1 阶段 · 范围</span><span>开发 + 业主</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>第 1 阶段 FCL 页沿用原型的静态运价（2026 年 10 月 1–14 日船公司运价），这份运价现在已经过期，但没写运价过期后是否停止出数、静态表由谁更新、版本怎么记。“三个大区”什么时候可询价、什么时候可接单，也容易和第 2 阶段的奥克兰试运行混淆。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>FCL 计算同样在服务端；静态运价表带版本号和有效期，过期后页面停止出数、转人工报价；第 1 阶段由开发记录版本，第 3 阶段交给管理员维护。</li>
+        <li>业主在第 1 阶段上线前提供新一期运价表；没有新表，FCL 页上线后全部转人工报价。</li>
+        <li>范围写死：第 1 阶段三个大区可询价；第 2 阶段仅奥克兰试运行接单；第 3 阶段开放北岛其他地区和南岛；FCL 在运价维护功能上线后才开放接单。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk low" data-sev="low" id="r17">
+  <div class="id">R17</div>
+  <div>
+    <h2>发往 +86 号码的短信送达不稳定</h2>
+    <div class="meta"><span class="sev">低风险</span><span>第 1 阶段 · 登录</span><span>开发</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>发往中国号码的短信需要模板报备，送达率不稳定。如果员工双重验证靠短信，仓库会经常登不进去。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>员工双重验证用 TOTP 验证器 App（Supabase Auth 支持），在大陆可正常使用。</li>
+        <li>客户登录优先 WhatsApp 和邮箱，短信只作备选。</li>
+        <li>OTP 按号码、IP、设备限流，防短信轰炸。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<article class="risk low" data-sev="low" id="r18">
+  <div class="id">R18</div>
+  <div>
+    <h2>外部审核周期不受开发控制</h2>
+    <div class="meta"><span class="sev">低风险</span><span>签约后第一周启动</span><span>业主</span></div>
+    <div class="cols">
+      <div><h3>难在哪</h3><p>Meta 商业验证、WhatsApp 模板审核、Facebook 登录应用审核、法律文本审核，每一项都以周计，而且可能被打回；第 3 阶段还有支付网关开户。</p></div>
+      <div class="fix"><h3>怎么解决</h3><ul>
+        <li>Meta 商业验证和 WhatsApp 模板第一周启动，它们卡着第 1 阶段的登录和第 2 阶段的通知。</li>
+        <li>每项准备降级方案：WhatsApp 未批先用邮箱验证码；支付未接先用银行转账加人工收款闭环。</li>
+        <li>把审核进度列入每周例会的固定议题。</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+</main>
+
+<footer>
+  <h2>来源</h2>
+  <ul>
+    <li><a href="https://docs.stripe.com/payments/alipay">Stripe：Alipay payments</a></li>
+    <li><a href="https://edge-docs.stripe.com/payments/wechat-pay/accept-a-payment">Stripe：Accept a WeChat Pay payment</a></li>
+    <li><a href="https://apps.xero.com/nz/app/windcave-payments">Xero App Store：Windcave Payments</a></li>
+    <li><a href="https://fao.wordpress.org/plugins/latipay-for-woo/">Latipay 支付插件说明</a></li>
+    <li><a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates/">Meta：WhatsApp Authentication Templates</a></li>
+    <li>ChinaExpress 集运物流平台：开发交接说明（中文版），2026 年 10 月 24 日</li>
+  </ul>
+</footer>
+</div>
+
+<script>
+(function(){
+  var buttons = document.querySelectorAll('.filters button');
+  var items = document.querySelectorAll('.risk');
+  var count = document.getElementById('count');
+  function apply(f){
+    var n = 0;
+    items.forEach(function(el){
+      var show = f === 'all' || el.getAttribute('data-sev') === f;
+      el.hidden = !show;
+      if (show) n++;
+    });
+    buttons.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-f') === f ? 'true' : 'false'); });
+    count.textContent = '显示 ' + n + ' 项';
+  }
+  buttons.forEach(function(b){ b.addEventListener('click', function(){ apply(b.getAttribute('data-f')); }); });
+})();
+</script>
+</body>
+</html>

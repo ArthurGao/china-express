@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Dependencies and build output
+node_modules/
+dist/
+.next/
+coverage/
+
+# Secrets: only .env.example is tracked
+.env*
+!.env.example
+
+# A global excludesfile hides CLAUDE.md on this machine; agent guides are tracked here.
+!**/CLAUDE.md

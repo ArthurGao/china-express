@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChinaExpress 集运平台：分阶段开发计划</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF1EF; --surface:#F8FAF9; --ink:#14263A; --ink-2:#4A5A69; --rule:#C9D1D0;
+  --steel:#2F5D7C; --c1:#2F5D7C; --c2:#3F7452; --c3:#B97808; --on:#FFFFFF;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1A24; --surface:#152431; --ink:#E6ECEF; --ink-2:#A3B1BC; --rule:#2B3C4A;
+    --steel:#7FB0D1; --c1:#7FB0D1; --c2:#7FC497; --c3:#E8B04A; --on:#0F1A24; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1A24; --surface:#152431; --ink:#E6ECEF; --ink-2:#A3B1BC; --rule:#2B3C4A;
+  --steel:#7FB0D1; --c1:#7FB0D1; --c2:#7FC497; --c3:#E8B04A; --on:#0F1A24; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  font-size:16px; line-height:1.7}
+.wrap{max-width:1000px; margin:0 auto; padding:48px 24px 72px}
+h1{font-size:clamp(28px,4.4vw,42px); line-height:1.2; margin:0 0 16px; font-weight:600; letter-spacing:-.01em}
+.lead{color:var(--ink-2); margin:0 0 28px; max-width:42em}
+.bar{display:flex; height:52px; border-radius:4px; overflow:hidden; border:1px solid var(--rule)}
+.bar span{display:flex; align-items:center; gap:10px; padding:0 14px; color:var(--on); white-space:nowrap; font-size:14px; font-weight:500}
+.bar b{font-family:"Big Shoulders Stencil Display",sans-serif; font-size:26px; font-weight:800}
+.b1{background:var(--c1)} .b2{background:var(--c2)} .b3{background:var(--c3)}
+.facts{display:flex; flex-wrap:wrap; gap:8px 28px; margin:14px 0 0; padding:0; list-style:none; color:var(--ink-2); font-size:14px}
+.facts strong{color:var(--ink)}
+.stage{padding:44px 0 8px; border-bottom:1px solid var(--rule)}
+.s1{--c:var(--c1)} .s2{--c:var(--c2)} .s3{--c:var(--c3)}
+.stage-head{display:grid; grid-template-columns:92px 1fr; gap:0 20px}
+.no{font-family:"Big Shoulders Stencil Display",sans-serif; font-weight:800; font-size:56px; line-height:1; color:var(--c)}
+.stage h2{font-size:22px; margin:2px 0 6px; font-weight:600}
+.goal{margin:0 0 6px; max-width:44em}
+.sum{margin:0 0 18px; color:var(--ink-2)}
+.sum strong{color:var(--c)}
+.tw{overflow-x:auto; border-top:3px solid var(--c)}
+table{width:100%; border-collapse:collapse; font-size:15px; min-width:560px}
+th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--rule); vertical-align:top}
+th{font-size:13px; font-weight:600; color:var(--ink-2)}
+.n{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+tr.tot td{font-weight:600; border-bottom:none; background:var(--surface)}
+.two{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:20px 0 28px}
+.deps{margin:0}
+.acc{margin:0 0 28px; padding:16px 18px; background:var(--surface); border-left:3px solid var(--c); border-radius:4px}
+.acc ul{color:var(--ink)}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+.deps h3{font-size:15px; margin:0 0 6px; font-weight:600}
+.deps ul{margin:0; padding-left:1.2em; color:var(--ink-2)}
+.notes{margin-top:40px}
+.notes h2{font-size:18px; margin:0 0 8px}
+.notes ul{padding-left:1.2em; margin:0; color:var(--ink-2)}
+@media (max-width:720px){
+  .wrap{padding:32px 18px 56px}
+  .stage-head{grid-template-columns:1fr}
+  .no{font-size:42px; margin-bottom:6px}
+  .bar span{padding:0 8px; font-size:12px; gap:6px}
+  .bar b{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>ChinaExpress 集运平台：三个阶段，约 464 小时</h1>
+  <p class="lead">先做报价、登录、预报，再做收货入库、合并、发货和人工收款并在奥克兰真实试运行；在线支付和扩展放在最后。每个阶段结束都能演示一条完整、可用的流程。待业主签字的<a href="https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu">计价决策表和实体关系表</a>是单独文档，签字后与原 PDF 冲突时以附件为准。</p>
+  <div class="bar" role="img" aria-label="第 1 阶段 145 小时，第 2 阶段 206 小时，第 3 阶段 113 小时"><span class="b1" style="flex:145"><b>145 h</b>第 1 阶段</span><span class="b2" style="flex:206"><b>206 h</b>第 2 阶段</span><span class="b3" style="flex:113"><b>113 h</b>第 3 阶段</span></div>
+  <ul class="facts">
+    <li>开发 <strong>326 小时</strong></li>
+    <li>测试 <strong>138 小时</strong></li>
+    <li>区间 <strong>348–580 小时</strong>（±25%）</li>
+    <li>一人全职约 <strong>15 周</strong>（按每周 30 小时有效工作）</li>
+  </ul>
+</header>
+<section class="stage s1" id="stage-1">
+  <div class="stage-head">
+    <div class="no">S1</div>
+    <div>
+      <h2>第 1 阶段：报价、登录和预报</h2>
+      <p class="goal">客户能注册、拿到三种运输方式的报价并发出预报；价格和签字后的计价决策表一致，每份报价都保存下来。三个大区都可询价，不接单；FCL 页只做预估。管理员能安全地修改和发布价格。</p>
+      <p class="sum"><strong>145 小时</strong>（开发 110，测试 35），区间 109–181 小时，一人约 4.8 周</p>
+    </div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>功能</th><th class="n">开发（小时）</th><th class="n">测试（小时）</th><th class="n">合计</th></tr></thead>
+    <tbody>
+<tr><td>项目搭建：代码仓库、Supabase 项目、测试和正式环境、自动部署</td><td class='n'>6</td><td class='n'>1</td><td class='n'><strong>7</strong></td></tr>
+<tr><td>实体关系和状态模型确认（<a href='https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu'>附件二</a>）</td><td class='n'>6</td><td class='n'>1</td><td class='n'><strong>7</strong></td></tr>
+<tr><td>数据表和权限：含税码字段、保留期、列权限或受限视图</td><td class='n'>16</td><td class='n'>3</td><td class='n'><strong>19</strong></td></tr>
+<tr><td>最小管理员登录、双重验证、价格发布审计</td><td class='n'>6</td><td class='n'>2</td><td class='n'><strong>8</strong></td></tr>
+<tr><td>注册登录：邮箱验证码、Google 登录、会员号生成（含校验位）</td><td class='n'>8</td><td class='n'>3</td><td class='n'><strong>11</strong></td></tr>
+<tr><td>WhatsApp 登录方案小型验证：转发诱导登录为必拒用例，登录意图确认（数字匹配）</td><td class='n'>6</td><td class='n'>2</td><td class='n'><strong>8</strong></td></tr>
+<tr><td>WhatsApp 登录正式实现（验证通过后）</td><td class='n'>8</td><td class='n'>4</td><td class='n'><strong>12</strong></td></tr>
+<tr><td>账户恢复和登录方式绑定</td><td class='n'>4</td><td class='n'>1</td><td class='n'><strong>5</strong></td></tr>
+<tr><td>报价计算：海运小包、空运、海运拼箱、邮编区域，报价快照和版本锁定，按<a href='https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu'>附件一</a>写测试</td><td class='n'>14</td><td class='n'>8</td><td class='n'><strong>22</strong></td></tr>
+<tr><td>费率导入和价格管理页：修改、试算、生效日期、修改记录</td><td class='n'>11</td><td class='n'>3</td><td class='n'><strong>14</strong></td></tr>
+<tr><td>客户报价页面：三种方式并排、四级价格措辞；FCL 预估页服务端计算，静态运价表带版本和有效期，过期转人工</td><td class='n'>11</td><td class='n'>3</td><td class='n'><strong>14</strong></td></tr>
+<tr><td>预报：仓库地址一键复制、禁运品告知确认、快递单号补填</td><td class='n'>7</td><td class='n'>2</td><td class='n'><strong>9</strong></td></tr>
+<tr><td>推广链接来源追踪</td><td class='n'>4</td><td class='n'>1</td><td class='n'><strong>5</strong></td></tr>
+<tr><td>中英文界面切换</td><td class='n'>3</td><td class='n'>1</td><td class='n'><strong>4</strong></td></tr>
+<tr class='tot'><td>小计</td><td class='n'>110</td><td class='n'>35</td><td class='n'>145</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="deps"><h3>需要业主在这一阶段前提供</h3><ul><li><a href='https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu'>计价决策表（附件一）</a>签字：边界、舍入、拆合包计价、版本锁定、税码、访客是否要登录后才能报价，每项含选定规则、算例、确认人和日期</li><li><a href='https://claude.ai/artifact/4ZWS7mxi3DJzvpTA9h6ggu'>实体关系表（附件二）</a>的三个决定：是否跨预报合并、是否部分发货、同一批货能否分运输方式</li><li>“最终价”的定义和之后仍可加收的项目清单</li><li>费率核对：Oamaru 派送费率、空运费率表、奥克兰邮编边界（0600–2699）</li><li>交接说明附录 A 列出的原始文件：NAL 门到门费率表、Fliway 邮编表（1,305 个邮编）、FCL 港口运价表、原型 v5 压缩包。目前开发方只拿到交接 PDF，费率导入和测试算例要用原件</li><li>新一期 FCL 港口运价表：现有运价是 2026 年 10 月 1–14 日的，已经过期；没有新表，FCL 页上线后只能转人工报价</li><li>广州仓库真实中文地址和联系人；收集字段和保留期</li><li>Meta 商业账号验证（WhatsApp 登录依赖它，未批前先用邮箱登录）</li></ul></div>
+    <div class="deps"><h3>估算假设和不包含的内容</h3><ul><li>规则在开工前签字，第 1 阶段中途不改计价口径；附件与原 PDF 冲突时以附件为准</li><li>WhatsApp 正式实现的 12 小时只在小型验证通过后发生，否则改为验证模板验证码（约 4 小时）</li><li>FCL 静态运价表由开发录入并记录版本，过期后不出数</li><li>不含 Facebook 登录、短信登录（第 3 阶段）</li></ul></div>
+  </div>
+  <div class="deps acc"><h3>第 1 阶段验收场景</h3><ul><li>计价：10 / 20 / 25 / 100 kg、1 CBM、1.5 m 和货值三档的边界各一组，结果与签字后的附件一一致；重量变化的方向性按附件一 C1 选定的规则测。</li><li>服务端独立计算：客户端修改重量、金额或费率参数不改变服务端结果（含 FCL）。</li><li>快照：费率发布新版本后，历史报价的数值和费率版本保持不变。</li><li>权限：价格发布有操作人和前后值记录；管理员登录需双重验证。</li><li>登录：iPhone 和安卓上从 WhatsApp、Messenger、Facebook 打开链接都能完成登录；如果上线 WhatsApp 反向验证，转发诱导登录用例被拒绝。</li><li>账户：已有的登录身份不会被自动合并；换号码、号码被回收时账户恢复流程能走通。</li><li>预报：不勾选禁运品告知不能提交；复制的仓库地址带正确的会员号。</li></ul></div>
+</section>
+<section class="stage s2" id="stage-2">
+  <div class="stage-head">
+    <div class="no">S2</div>
+    <div>
+      <h2>第 2 阶段：收货入库、合并、发货和人工收款（奥克兰试运行）</h2>
+      <p class="goal">广州仓库能扫码入库、拍照称重、做合并；客户能实时看到包裹、选择处理方式并确认最终价；运营能推进每票货到送达，并用银行转账完成收款、开票和放货。阶段结束可以用奥克兰真实客户试运行，前提是试运行前置验收通过。</p>
+      <p class="sum"><strong>206 小时</strong>（开发 145，测试 61），区间 154–258 小时，一人约 6.9 周</p>
+    </div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>功能</th><th class="n">开发（小时）</th><th class="n">测试（小时）</th><th class="n">合计</th></tr></thead>
+    <tbody>
+<tr><td>仓库入库：扫码、拍照、称重测量、自动打标签；内部包裹号、承运商单号和件序号分开；重复扫码和断线重提交防重</td><td class='n'>16</td><td class='n'>5</td><td class='n'><strong>21</strong></td></tr>
+<tr><td>包裹标签打印（条码）和扫码枪录入</td><td class='n'>4</td><td class='n'>2</td><td class='n'><strong>6</strong></td></tr>
+<tr><td>包裹匹配和无主包裹处理</td><td class='n'>6</td><td class='n'>3</td><td class='n'><strong>9</strong></td></tr>
+<tr><td>异常处理：破损、违禁品、部分到货、退件</td><td class='n'>5</td><td class='n'>2</td><td class='n'><strong>7</strong></td></tr>
+<tr><td>客户包裹列表、处理方式选择（单独发、合并、合并拆包）、最终价确认</td><td class='n'>9</td><td class='n'>3</td><td class='n'><strong>12</strong></td></tr>
+<tr><td>合并作业和最终价计算，显示预估价与最终价的差异</td><td class='n'>12</td><td class='n'>5</td><td class='n'><strong>17</strong></td></tr>
+<tr><td>状态模型：包裹、仓库作业、运输、付款四条状态线，回退规则和纠错，映射到客户 7 步进度</td><td class='n'>10</td><td class='n'>4</td><td class='n'><strong>14</strong></td></tr>
+<tr><td>调价：填写原因并经审批</td><td class='n'>4</td><td class='n'>2</td><td class='n'><strong>6</strong></td></tr>
+<tr><td>客户面板：多票货、进度条、照片和测量数据</td><td class='n'>10</td><td class='n'>3</td><td class='n'><strong>13</strong></td></tr>
+<tr><td>运营控制台：看板、搜索、推进和回退、内部备注、线索漏斗、追踪链接生成</td><td class='n'>14</td><td class='n'>4</td><td class='n'><strong>18</strong></td></tr>
+<tr><td>仓库、运营、财务角色扩展和操作记录（管理员在第 1 阶段已有）</td><td class='n'>6</td><td class='n'>2</td><td class='n'><strong>8</strong></td></tr>
+<tr><td>站内和邮件通知、通知偏好设置，客户端和仓库端实时刷新</td><td class='n'>10</td><td class='n'>3</td><td class='n'><strong>13</strong></td></tr>
+<tr><td>WhatsApp 通知消息</td><td class='n'>6</td><td class='n'>3</td><td class='n'><strong>9</strong></td></tr>
+<tr><td>开票主体和公司资料、地址簿</td><td class='n'>4</td><td class='n'>1</td><td class='n'><strong>5</strong></td></tr>
+<tr><td>人工收款闭环：应收单、收款记录、付款分配（一笔款对多票、少付多付）、放货条件、撤销；退款记录（金额、关联款项、操作人、凭据）</td><td class='n'>16</td><td class='n'>5</td><td class='n'><strong>21</strong></td></tr>
+<tr><td>税务发票 PDF（人工开具）：按行税码、编号规则、发票资料快照、已开票后的更正流程（作废重开或人工贷项）</td><td class='n'>7</td><td class='n'>2</td><td class='n'><strong>9</strong></td></tr>
+<tr><td>试运行前置：最小安全与权限检查、自动备份加一次恢复验证、错误告警</td><td class='n'>6</td><td class='n'>4</td><td class='n'><strong>10</strong></td></tr>
+<tr><td>整条流程联调：客户和仓库同时操作，在仓库实际网络下</td><td class='n'>0</td><td class='n'>8</td><td class='n'><strong>8</strong></td></tr>
+<tr class='tot'><td>小计</td><td class='n'>145</td><td class='n'>61</td><td class='n'>206</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="deps"><h3>需要业主在这一阶段前提供</h3><ul><li>合并费、纸箱费、拆包费的正式金额和计费方式</li><li>三种处理方式的操作规则（哪些货不能拆包等）</li><li>状态回退规则：已付款回退是否退款、已发运能否回退、回退后通知怎么处理</li><li>收款规则：谁确认到账、放货条件、未足额时的例外审批人</li><li>开票资料：公司 GST 号码、发票模板、会计师确认的逐项税务表、发票编号规则</li><li>一张快递单对应多个实体包裹是否允许（附件一 D6）</li><li>试运行前确认的服务、隐私、退款和货物处理条款；生产操作负责人和故障处理办法</li><li>客户沟通方式：WhatsApp 加订单备注，还是站内聊天</li><li>免费仓储期、仓储费、危险品政策</li><li>WhatsApp 通知模板审核通过</li></ul></div>
+    <div class="deps"><h3>估算假设和不包含的内容</h3><ul><li>仓库只用平板或电脑的浏览器，不做原生 App</li><li>标签打印走浏览器打印，不接专用打印机 SDK</li><li>收款只支持银行转账人工确认，不接任何在线网关；人工退款在系统内只做记录</li><li>发票 PDF 用固定模板，内容由会计师确认的税务表决定；不同步 Xero</li><li>试运行只接奥克兰的单</li></ul></div>
+  </div>
+  <div class="deps acc"><h3>第 2 阶段验收场景</h3><ul><li>并发：两名员工同时操作同一个包裹，不会重复入库、重复合并或重复出库；同一件重复扫码只提示不新建，一单多箱按件序号正常收货。</li><li>权限：客户看不到其他客户的货件和照片；仓库账号看不到客户完整电话和地址。</li><li>实时：入库提交后 5 秒内客户端可见，在仓库实际网络下测试；一次合并作业能算出最终价。</li><li>收款：重复的收款确认不会重复记账；撤销和退款都留操作人、时间和凭据；发票更正不改原发票。</li><li>通知：重复的事件不会重复发送；失败的发送可见并可重试。</li><li>恢复：从备份恢复后，货件、照片关联、收款记录能核对一致；告警能在 5 分钟内送达负责人。</li><li>界面：所有客户界面为英文，所有仓库界面有中文。</li></ul></div>
+</section>
+<section class="stage s3" id="stage-3">
+  <div class="stage-head">
+    <div class="no">S3</div>
+    <div>
+      <h2>第 3 阶段：在线支付、发票自动化和扩展上线</h2>
+      <p class="goal">客户能在线付款并自动收到税务发票；整柜运价、利润规则和北岛、南岛产品可以由管理员维护并正式接单；FCL 开放接单；系统正式对外。</p>
+      <p class="sum"><strong>113 小时</strong>（开发 71，测试 42），区间 85–141 小时，一人约 3.8 周</p>
+    </div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>功能</th><th class="n">开发（小时）</th><th class="n">测试（小时）</th><th class="n">合计</th></tr></thead>
+    <tbody>
+<tr><td>在线支付（按业主最终清单：卡、Apple Pay、Google Pay、支付宝、微信、新西兰网银等）</td><td class='n'>14</td><td class='n'>6</td><td class='n'><strong>20</strong></td></tr>
+<tr><td>付款结果确认、退款、对账</td><td class='n'>8</td><td class='n'>5</td><td class='n'><strong>13</strong></td></tr>
+<tr><td>发票自动定稿、贷项通知单、补差价（复用第 2 阶段的应收和发票模型）</td><td class='n'>8</td><td class='n'>3</td><td class='n'><strong>11</strong></td></tr>
+<tr><td>同步到 Xero</td><td class='n'>6</td><td class='n'>3</td><td class='n'><strong>9</strong></td></tr>
+<tr><td>Facebook 登录和短信验证码登录</td><td class='n'>6</td><td class='n'>3</td><td class='n'><strong>9</strong></td></tr>
+<tr><td>整柜运价表管理：导入、有效期、版本</td><td class='n'>6</td><td class='n'>2</td><td class='n'><strong>8</strong></td></tr>
+<tr><td>利润规则：FCL 加价、汇率规则</td><td class='n'>5</td><td class='n'>2</td><td class='n'><strong>7</strong></td></tr>
+<tr><td>北岛其他地区和南岛正式接单（配置数据和派送规则）</td><td class='n'>3</td><td class='n'>3</td><td class='n'><strong>6</strong></td></tr>
+<tr><td>报表：收入、货量、利润</td><td class='n'>6</td><td class='n'>2</td><td class='n'><strong>8</strong></td></tr>
+<tr><td>全面安全审查、压力测试</td><td class='n'>5</td><td class='n'>5</td><td class='n'><strong>10</strong></td></tr>
+<tr><td>正式上线和问题修复</td><td class='n'>4</td><td class='n'>8</td><td class='n'><strong>12</strong></td></tr>
+<tr class='tot'><td>小计</td><td class='n'>71</td><td class='n'>42</td><td class='n'>113</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="deps"><h3>需要业主在这一阶段前提供</h3><ul><li>最终支付方式清单（是否含 PayPal、分次支付），支付网关选定并开户（审核以周计，本阶段开工前一个月申请）</li><li>整柜运价的利润规则、汇率规则和下一期运价表，以及由谁维护</li><li>利润报表的成本来源、汇率和共同费用分摊方式</li><li>报关行的数据如何进入平台（第一期人工录入）</li><li>Facebook 应用审核</li></ul></div>
+    <div class="deps"><h3>估算假设和不包含的内容</h3><ul><li>支付用网关托管页面，卡号不经过平台</li><li>一个网关或“Stripe + Latipay”两个网关，不超过两个；接入工时在网关选定后重估</li><li>Xero 只同步发票、付款和贷项通知单</li><li>报表基于平台内数据，不接外部成本系统</li></ul></div>
+  </div>
+  <div class="deps acc"><h3>第 3 阶段验收场景</h3><ul><li>支付：重复、乱序、超时的回调不会重复记账或漏记；每种支付方式成功、失败、退款各一遍。</li><li>对账：网关结算、平台收款和 Xero 三方核对，差异进财务待办。</li><li>扩展：管理员改一个费率，所有渠道报新价；新区域不改代码就能上线；FCL 运价过期后停止出数。</li><li>压力：报价接口 50 请求/秒下 p95 响应小于 500 毫秒；入库高峰不丢请求。</li></ul></div>
+</section>
+
+<section class="notes">
+  <h2>估算说明</h2>
+  <ul>
+    <li>中间值是在“规则已签字、范围如上”的前提下给出的初步估算；区间 ±25% 覆盖正常的实现偏差，不覆盖登录方案、税务规则、拆合包模型这类需求变更。</li>
+    <li>附件签字和 WhatsApp 小型验证完成后，重估账户恢复、异常处理和支付接入三项，它们目前依赖很严格的范围限制。</li>
+    <li>小时数只算开发和测试，不含需求沟通、等待业主确认和外部审核（Meta、支付网关、Facebook、法律）的时间。</li>
+    <li>范围：第 1 阶段三个大区可询价；第 2 阶段仅奥克兰试运行接单；第 3 阶段开放北岛其他地区和南岛；FCL 第 1 阶段仅预估，第 3 阶段运价维护上线后才接单。</li>
+    <li>交接说明里标为“锦上添花”或“第二阶段”的项目没有列入：新西兰地址自动补全、中国快递状态查询、WhatsApp 聊天机器人报价、可安装的 PWA。需要时另行估算。</li>
+  </ul>
+</section>
+</div>
+</body>
+</html>
