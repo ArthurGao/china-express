@@ -15,7 +15,7 @@ interface QuoteInput {
   product: Product;
   destination: { region: Region; cityId?: string; postcode?: string };
   packages: { weightKg: Decimal; lengthCm?: Decimal; widthCm?: Decimal; heightCm?: Decimal; volumeM3?: Decimal }[];
-  valueBand: ValueBand;
+  valueBand: ValueBand;          // 服务层由 API 的 declaredValueNzd（金额字符串）映射，前端不做分档
   fcl?: { size: '20' | '40'; originPort: string; destPort: string; includeLocalCharges: boolean };
 }
 
@@ -39,6 +39,10 @@ interface QuoteResult {
 ```
 
 前端只显示 `lines`、`totals` 和“+GST”字样，不计算 GST 金额（发票才算）。
+
+API 层（`POST /quotes/estimate`，见 `frontend/openapi/openapi.json`）：请求按纸箱逐行（长宽高 cm、kg、件数）加申报货值
+`declaredValueNzd`；响应一次返回三种产品的 `options[]`，每项 `status` 为 `OK` / `REQUIRES_REVIEW` / `UNAVAILABLE`
+（如超过海运小包上限）、`reviewReasons`、`tags`（`CHEAPEST` / `FASTEST`，服务端判定）、`lines`、`totals`，并带回 `input`。
 
 ## 通用规则
 

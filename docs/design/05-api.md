@@ -1,6 +1,7 @@
 # 05 API
 
-REST + JSON，前缀 `/api/v1`。OpenAPI 由后端生成（`/api/v1/openapi.json`），前端据此生成类型安全的客户端。
+REST + JSON，前缀 `/api/v1`。**契约先行**（ADR 0003）：第 1 阶段接口写在 `frontend/openapi/openapi.json`，后端实现后
+`pnpm openapi` 必须生成同样的文件（契约测试），前端据此生成类型安全的客户端。改接口先改契约。
 
 ## 约定
 
@@ -20,8 +21,10 @@ REST + JSON，前缀 `/api/v1`。OpenAPI 由后端生成（`/api/v1/openapi.json
 | `POST /me/identities/link` | customer | 1 | 已登录状态下绑定新登录方式 |
 | `POST /auth/whatsapp/start` · `/auth/whatsapp/confirm` | public | 1 | 仅在 WhatsApp 反向验证 spike 通过后实现（见 06） |
 | `POST /quotes/estimate` | customer（DECISION(A4) 签“匿名可报价”后改为 public） | 1 | 三种产品一次返回；登录后保存快照 |
-| `POST /quotes/fcl` | customer（同 A4） | 1 | FCL 预估 |
-| `GET /quotes/:id` | owner / staff | 1 | |
+| `POST /quotes/fcl` | customer（同 A4） | 1 | FCL 预估；运价表过期返回 `REQUIRES_REVIEW` + `FCL_RATE_EXPIRED` |
+| `GET /fcl/ports` | customer | 1 | 起运港（常用 / 其他）、目的港、运价表版本和有效期 |
+| `GET /destinations/cities?region=` · `GET /destinations/postcodes/{postcode}` | customer | 1 | 先选大区再选城市；城镇不在列表时按邮编查区域 |
+| `GET /quotes/:id` | owner / staff | 1 | 返回快照及其 `input`（预报取目的地） |
 | `POST /leads/touch` | public | 1 | 记录来源参数和漏斗阶段 |
 | `POST /pre-notices` · `GET /pre-notices` · `PATCH /pre-notices/:id/trackings` | customer | 1 | 预报、补快递单号 |
 | `GET /warehouse-address` | customer | 1 | 含会员号的中文地址文本 |

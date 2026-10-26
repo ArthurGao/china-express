@@ -9,7 +9,7 @@ Prototype for flows and customer copy: https://gleeful-eclair-72d527.netlify.app
 
 ```
 frontend/
-  openapi/openapi.json          # copied from backend by `pnpm openapi` there
+  openapi/openapi.json          # the API contract: hand-maintained until the backend exists (ADR 0003)
   messages/en.json  messages/zh-CN.json
   src/
     app/
@@ -22,7 +22,8 @@ frontend/
     lib/realtime/               # EventSource wrapper with reconnect + query invalidation
     lib/offline/                # IndexedDB upload queue (warehouse)
     lib/in-app-browser.ts       # detect FB/Messenger/WhatsApp/Instagram webviews
-    middleware.ts               # session refresh, staff route protection, locale
+    proxy.ts                    # Next 16 name for middleware: session refresh, route guard, locale area
+    mocks/                      # MSW handlers serving the contract's examples (dev/test only, never shipped)
   tests/                        # Playwright e2e
 ```
 
@@ -47,14 +48,33 @@ frontend/
 ## Commands (define these scripts at T1.1)
 
 ```
-pnpm dev
+pnpm dev             # next dev on 3600 against NEXT_PUBLIC_API_BASE_URL
+pnpm dev:mock        # same, with MSW serving the contract examples (no backend needed)
 pnpm build
-pnpm typecheck
+pnpm check:bundle    # after build: fails if MSW leaked into the production bundle
+pnpm typecheck       # next typegen + tsc
 pnpm lint
-pnpm test          # vitest
-pnpm e2e           # playwright (mobile + desktop projects)
-pnpm gen:api       # generate src/lib/api from openapi/openapi.json
+pnpm lint:api        # redocly lint of openapi/openapi.json
+pnpm test            # vitest
+pnpm e2e             # playwright: production build in .next-e2e on 3601 (iPhone, Pixel, desktop)
+pnpm gen:api         # generate src/lib/api/generated from openapi/openapi.json
+pnpm supabase:start  # local Supabase Auth + Mailpit (Docker); required by dev login and e2e
 ```
+
+Local setup: `pnpm install`, `pnpm supabase:start`, copy `.env.example` to `.env.local` and fill
+`NEXT_PUBLIC_SUPABASE_ANON_KEY` with the PUBLISHABLE_KEY from `pnpm supabase:status -o json`, then `pnpm dev:mock`.
+
+## Lessons specific to this app
+
+- Money is formatted from strings with `formatMoney()` (`Intl.NumberFormat` string input); `toMoneyString()` only pads
+  what a customer typed. ESLint (`eslint.config.mjs`, AGENTS.md rule 1 block) fails on parseFloat, toFixed, Math
+  rounding, `Number()`, arithmetic on money-like names or a GST constant in production source.
+- After sign-in or TOTP verification navigate with `hardNavigate()` (`src/lib/navigation.ts`), not `router.replace`:
+  production prefetch can cache a signed-out / `aal1` redirect. Staff links render only at `aal2` for the same reason.
+- Tests: build mock URLs with `apiUrl()` and answer with `exampleHandler()` / `spyOn()` from `src/mocks/handlers.ts`
+  (path, method and status come from the contract); compare formatted money with `normalizeSpaces()`.
+- openapi-fetch must resolve `fetch` per call (see `lib/api/client.ts`) or MSW cannot intercept it.
+- Next's route announcer also has `role="alert"`; scope alert queries in e2e by text.
 
 ## Testing expectations
 
@@ -62,3 +82,13 @@ pnpm gen:api       # generate src/lib/api from openapi/openapi.json
 - Playwright: login → quote → pre-notice on an iPhone viewport; staff login with TOTP; from stage 2, customer +
   warehouse in two browser contexts (receive a parcel, customer sees it within 5 s).
 - Tamper test: modify quote request payload in the browser; the displayed result must match the server's.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
