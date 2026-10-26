@@ -5,9 +5,10 @@
 /*
  * Visual direction: logistics-industrial (swiss-grid owns layout and palette; see docs/design/07-frontend.md).
  * Steel is the single accent. Red is reserved for errors and over-limit states.
- * Dark mode follows prefers-color-scheme; there is no manual toggle.
+ * Light by default; dark or "follow the system" is the viewer's choice (ThemeToggle, cookie ce-theme). <html
+ * data-theme> carries the colours to show; the server sets it, and for "system" an inline script resolves it.
  */
-@custom-variant dark (@media (prefers-color-scheme: dark));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
   --color-background: var(--background);
@@ -98,45 +99,43 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f1a24;
-    --surface: #152431;
-    --foreground: #e6ecef;
-    --rule: #2b3c4a;
-    --card: #152431;
-    --card-foreground: #e6ecef;
-    --popover: #152431;
-    --popover-foreground: #e6ecef;
-    --primary: #7fb0d1;
-    --primary-foreground: #0f1a24;
-    --secondary: #1d3040;
-    --secondary-foreground: #e6ecef;
-    --muted: #1d3040;
-    --muted-foreground: #a3b1bc;
-    --accent: #203a4f;
-    --accent-foreground: #e6ecef;
-    --destructive: #f0796e;
-    --success: #7fc497;
-    --warning: #e8b04a;
-    --border: #2b3c4a;
-    --input: #2b3c4a;
-    --ring: #7fb0d1;
-    --chart-1: #7fb0d1;
-    --chart-2: #7fc497;
-    --chart-3: #e8b04a;
-    --chart-4: #a3b1bc;
-    --chart-5: #e6ecef;
-    --sidebar: #152431;
-    --sidebar-foreground: #e6ecef;
-    --sidebar-primary: #7fb0d1;
-    --sidebar-primary-foreground: #0f1a24;
-    --sidebar-accent: #203a4f;
-    --sidebar-accent-foreground: #e6ecef;
-    --sidebar-border: #2b3c4a;
-    --sidebar-ring: #7fb0d1;
-    color-scheme: dark;
-  }
+:root[data-theme="dark"] {
+  --background: #0f1a24;
+  --surface: #152431;
+  --foreground: #e6ecef;
+  --rule: #2b3c4a;
+  --card: #152431;
+  --card-foreground: #e6ecef;
+  --popover: #152431;
+  --popover-foreground: #e6ecef;
+  --primary: #7fb0d1;
+  --primary-foreground: #0f1a24;
+  --secondary: #1d3040;
+  --secondary-foreground: #e6ecef;
+  --muted: #1d3040;
+  --muted-foreground: #a3b1bc;
+  --accent: #203a4f;
+  --accent-foreground: #e6ecef;
+  --destructive: #f0796e;
+  --success: #7fc497;
+  --warning: #e8b04a;
+  --border: #2b3c4a;
+  --input: #2b3c4a;
+  --ring: #7fb0d1;
+  --chart-1: #7fb0d1;
+  --chart-2: #7fc497;
+  --chart-3: #e8b04a;
+  --chart-4: #a3b1bc;
+  --chart-5: #e6ecef;
+  --sidebar: #152431;
+  --sidebar-foreground: #e6ecef;
+  --sidebar-primary: #7fb0d1;
+  --sidebar-primary-foreground: #0f1a24;
+  --sidebar-accent: #203a4f;
+  --sidebar-accent-foreground: #e6ecef;
+  --sidebar-border: #2b3c4a;
+  --sidebar-ring: #7fb0d1;
+  color-scheme: dark;
 }
 
 @layer base {

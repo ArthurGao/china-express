@@ -9,7 +9,7 @@
 - 主方向 **swiss-grid**（KB `design/directions/swiss-grid.md`）负责布局和配色，与给客户的计划 / 难点页面同一套视觉：
   网格、1px 分隔线、编号小节（01 / 02）、无渐变、小圆角。
 - 颜色：纸色底 `#EEF1EF`、表面 `#F8FAF9`、墨色 `#14263A`、次级 `#4A5A69`、线 `#C9D1D0`；唯一强调色钢蓝 `#2F5D7C`；
-  红色只表示错误和超限；状态色只表语义。暗色按 `prefers-color-scheme`。Token 在 `frontend/src/app/globals.css`。
+  红色只表示错误和超限；状态色只表语义。默认浅色；访客可切换「浅色 / 深色 / 跟随系统」（cookie `ce-theme`，服务端直接输出对应配色；客户在页脚切换，员工在页头切换）。Token 在 `frontend/src/app/globals.css`。
 - 字体：IBM Plex Sans / Mono（`@fontsource` 自托管，不加载 Google 资源）；中文回落系统字体，不打包中文网字体。
   **Big Shoulders Stencil（镂空字）只用于会员号、唛头和大号步骤编号**，呼应纸箱喷印。
 - 客户端靠留白、直白文案和逐行价格拆分建立信任；员工控制台同一配色，只借 dense-data 的密度纪律

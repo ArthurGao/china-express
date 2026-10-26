@@ -15,6 +15,8 @@ test("a visitor signs in with any code, quotes and sends a pre-notice", async ({
 
   await expect(page).toHaveURL(/\/quote\?src=fb-marketplace$/);
   await expect(page.getByTestId("member-no")).toHaveText("CE-123456-7");
+  // The signed-in header must fit the phone: no sideways scrolling.
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await quoteSampleParcel(page);
   await page.getByTestId("option-SEA_PARCEL").getByRole("button", { name: "Choose this option" }).click();
   await page.getByRole("button", { name: "What to do next" }).click();
@@ -53,4 +55,26 @@ test("staff need the TOTP step before the rates console, then publish", async ({
   await page.getByRole("navigation", { name: "模块" }).getByRole("link", { name: "管理" }).click();
   await expect(page).toHaveURL(/\/staff\/admin\/rates$/);
   await publishSeaParcelDraft(page, "演示调价");
+});
+
+test.describe("colour theme", () => {
+  test.use({ colorScheme: "dark" });
+
+  test("is light by default even on a dark device, and a chosen theme survives a reload", async ({ page }) => {
+    await page.goto("/login");
+    const html = page.locator("html");
+    await expect(html).toHaveAttribute("data-theme", "light");
+    expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe("rgb(238, 241, 239)");
+
+    await page.getByLabel("Colour theme").selectOption("dark");
+    await expect(html).toHaveAttribute("data-theme", "dark");
+    await page.reload();
+    await expect(html).toHaveAttribute("data-theme", "dark");
+    expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe("rgb(15, 26, 36)");
+
+    await page.getByLabel("Colour theme").selectOption("system");
+    await page.reload();
+    await expect(html).toHaveAttribute("data-theme", "dark"); // follows the dark device
+    await expect(page.getByLabel("Colour theme")).toHaveValue("system");
+  });
 });

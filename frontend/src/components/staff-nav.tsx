@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { STAFF_LOCALE_COOKIE, type Locale } from "@/i18n/config";
 import { STAFF_LOGIN } from "@/lib/auth/routes";
@@ -45,6 +46,7 @@ export function StaffNav() {
       )}
       <div className="ml-auto flex items-center gap-2">
         {me.data && <span className="hidden text-muted-foreground md:inline">{me.data.name}</span>}
+        <ThemeToggle />
         <Button variant="ghost" size="sm" onClick={switchLocale} aria-label={t("language")}>
           {locale === "zh-CN" ? "English" : "中文"}
         </Button>

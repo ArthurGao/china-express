@@ -3,7 +3,8 @@
     "brand": "China Express",
     "error": "Something went wrong. Please try again.",
     "plusGst": "+GST",
-    "memberLabel": "Member"
+    "memberLabel": "Member",
+    "terms": "Terms of service"
   },
   "customerNav": {
     "quote": "Quote",
@@ -1285,5 +1286,11 @@
       "chargeableKg": "Chargeable kg",
       "byProduct": "Shipments by service"
     }
+  },
+  "theme": {
+    "label": "Colour theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   }
 }

@@ -3,7 +3,8 @@
     "brand": "China Express",
     "error": "出错了，请重试。",
     "plusGst": "+GST",
-    "memberLabel": "会员号"
+    "memberLabel": "会员号",
+    "terms": "服务条款"
   },
   "customerNav": {
     "quote": "报价",
@@ -1285,5 +1286,11 @@
       "chargeableKg": "计费重 kg",
       "byProduct": "按服务统计"
     }
+  },
+  "theme": {
+    "label": "配色",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
   }
 }

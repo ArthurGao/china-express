@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
+import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
 // Latin subsets only: Chinese falls back to system fonts, and no Cyrillic/Greek/Vietnamese faces are needed.
 import "@fontsource/ibm-plex-sans/latin-400.css";
@@ -11,6 +12,7 @@ import "./globals.css";
 import { DemoBanner } from "@/components/demo-banner";
 import { Providers } from "@/components/providers";
 import { DEMO } from "@/lib/demo";
+import { SYSTEM_THEME_SCRIPT, THEME_COOKIE, parseTheme } from "@/lib/theme/theme";
 
 export const metadata: Metadata = {
   title: "China Express",
@@ -27,8 +29,13 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
+  const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
   return (
-    <html lang={locale} className="h-full antialiased">
+    // "system" renders light on the server and is resolved by the inline script before first paint.
+    <html lang={locale} className="h-full antialiased" data-choice={theme} data-theme={theme === "dark" ? "dark" : "light"} suppressHydrationWarning>
+      <head>
+        {theme === "system" && <script dangerouslySetInnerHTML={{ __html: SYSTEM_THEME_SCRIPT }} />}
+      </head>
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>
           {DEMO && <DemoBanner />}
