@@ -25,14 +25,21 @@ src/app/
     quote/                      三种方式并排报价（不预选）
     quote/fcl/                  FCL 预估
     pre-notice/[id]/            预报成功：仓库地址复制、补快递单号
-    shipments/  shipments/[id]/ 客户面板：多票货、7 步进度、照片、处理方式选择、最终价确认（第 2 阶段）
-    account/                    资料、登录方式绑定、开票主体（第 2 阶段）、通知偏好
+    shipments/  shipments/[id]/ 客户面板：多票货、7 步进度、照片、最终价确认、付款说明（第 2 阶段）；处理方式选择在 pre-notice/[id]
+    notifications/              站内通知（未读数显示在导航）
+    payments/result/            在线支付返回页，只显示服务端状态（第 3 阶段）
+    terms/                      条款（DECISION(X-5)，正文待业主提供）
+    account/                    资料、登录方式绑定、开票主体、地址簿、通知偏好
   staff/
     login/                      邮箱 + 密码 + TOTP
     admin/rates/                价格管理：草稿、试算、发布（第 1 阶段）
-    warehouse/                  扫码入库、无主包裹、合并作业、出库（第 2 阶段，中文）
-    ops/                        看板、搜索、货件推进/回退、备注、线索漏斗、追踪链接（第 2 阶段）
-    finance/                    收款、分配、退款、发票（第 2 阶段）
+    page.tsx                    按 GET /staff/me 的角色跳到第一个可用模块；导航只显示有角色的模块
+    warehouse/                  扫码入库、parcels/[id]、unclaimed、consolidations/[id]、dispatch（第 2 阶段，中文，平板）
+    ops/                        看板、search、shipments/[id]（推进/回退/备注/追踪/调价）、unclaimed 指派、price-adjustments、
+                                leads、notifications 发送记录、customers/[id]（含合并）（第 2 阶段）
+    finance/                    应收、receivables/[id]（发票、放货申请）、payments（收款/分配/冲销/退款）、overrides、
+                                reconciliation（第 3 阶段）
+    admin/                      rates、staff、audit；fcl-rates、reports（第 3 阶段，默认不进导航）
   api/                          仅放 Next 自身需要的路由（如 auth callback），不放业务逻辑
 ```
 

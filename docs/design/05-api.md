@@ -49,5 +49,12 @@ REST + JSON，前缀 `/api/v1`。**契约先行**（ADR 0003）：第 1 阶段�
 | `POST /auth-hooks/send-sms` | Supabase Auth Hook（签名校验） | 1 | 把手机验证码改由 WhatsApp 认证模板发送 |
 | `POST /webhooks/whatsapp` | WhatsApp（签名校验） | 1–2 | |
 
+契约已补全（2026-10-27，前端先行）：除上表外还定义了 `GET /staff/me`（员工角色）、`GET /pre-notices/:id/handling`、
+`POST /shipments/:id/payments` 与 `GET /payments/:id`（第 3 阶段在线支付）、`/me/billing-entities`、`/me/addresses`、
+`POST /me/notifications/read`、`GET /wh/parcels/:id`、`GET /wh/consolidations`、`GET /wh/dispatch`、`PUT /ops/shipments/:id/tracking`、
+`POST /ops/shipments/:id/notes`、`/ops/notification-deliveries`、`/ops/customers/:id`（含合并）、`/finance/release-overrides`、
+`/finance/reconciliation`、`/admin/staff`、`/admin/audit-logs`、`/admin/fcl-rate-sheets`、`/admin/reports/summary`。
+状态迁移接口返回精简的 `TransitionResult`，因为仓库角色也调用它（发运），不能拿到客户联系方式。
+
 第 3 阶段新增：`POST /shipments/:id/payments`（网关会话）、`POST /webhooks/:provider`、Xero 同步任务、
 `/admin/fcl-rates`、Facebook / 短信登录。
