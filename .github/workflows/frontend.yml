@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
+        with:
+          # The pnpm version comes from frontend/package.json "packageManager" (defaults.run.working-directory does not apply to actions).
+          package_json_file: frontend/package.json
       - uses: actions/setup-node@v5
         with:
           node-version-file: frontend/.nvmrc
@@ -38,6 +41,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
+        with:
+          # The pnpm version comes from frontend/package.json "packageManager" (defaults.run.working-directory does not apply to actions).
+          package_json_file: frontend/package.json
       - uses: actions/setup-node@v5
         with:
           node-version-file: frontend/.nvmrc
