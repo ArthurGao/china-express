@@ -1,5 +1,6 @@
 "use client";
 
+import { safeHref } from "@/lib/safe-href";
 import { upsertById } from "@/lib/api/cache";
 import { ErrorText } from "@/components/feedback";
 import { useQueryClient } from "@tanstack/react-query";
@@ -49,7 +50,7 @@ export function Payments() {
           {list.data?.map((p) => (
             <tr key={p.id} className={`${DATA_ROW} align-top`}>
               <td className="font-mono">{p.paymentNo}</td>
-              <td>{p.reference}{p.evidenceUrl && <> · <a href={p.evidenceUrl} target="_blank" rel="noreferrer" className="underline">{t("evidence")}</a></>}</td>
+              <td>{p.reference}{safeHref(p.evidenceUrl) && <> · <a href={safeHref(p.evidenceUrl)!} target="_blank" rel="noreferrer" className="underline">{t("evidence")}</a></>}</td>
               <td className="tabular">{p.receivedAt}</td>
               <td className="text-right"><Money amount={p.amount} currency={p.currency} /></td>
               <td className="text-right font-semibold"><Money amount={p.unallocated} currency={p.currency} /></td>

@@ -1,5 +1,6 @@
 "use client";
 
+import { safeHref } from "@/lib/safe-href";
 import { ErrorText, Flash, useFlash } from "@/components/feedback";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
@@ -107,7 +108,7 @@ export function ReceivableDetail({ id }: { id: string }) {
         <ul className="divide-y divide-rule border-y border-rule" data-testid="invoices">
           {r.invoices.map((inv) => (
             <li key={inv.id} className="flex flex-wrap items-center gap-3 py-2">
-              <a href={inv.pdfUrl} target="_blank" rel="noreferrer" className={`font-mono underline ${inv.status === "void" ? "line-through" : ""}`}>{inv.invoiceNo}</a>
+              <a href={safeHref(inv.pdfUrl) ?? undefined} target="_blank" rel="noreferrer" className={`font-mono underline ${inv.status === "void" ? "line-through" : ""}`}>{inv.invoiceNo}</a>
               <span className="text-muted-foreground">{t(`kinds.${inv.kind}`)}{inv.status === "void" && ` · ${t("void")}`}{inv.replacesInvoiceNo && ` · ${t("replaces", { invoiceNo: inv.replacesInvoiceNo })}`}</span>
               <When iso={inv.issuedAt} date />
               {inv.kind === "tax_invoice" && inv.status === "issued" && (

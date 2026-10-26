@@ -1685,7 +1685,7 @@ export interface components {
             id: string;
             /** @enum {string} */
             kind: "label" | "overview" | "damage";
-            url: string;
+            url: components["schemas"]["SafeUrl"];
         };
         /** @enum {string} */
         ParcelStatus: "expected" | "received" | "unclaimed" | "held" | "returned" | "awaiting_choice" | "packed" | "dispatched";
@@ -1784,7 +1784,7 @@ export interface components {
             kind: "tax_invoice" | "credit_note";
             /** Format: date-time */
             issuedAt: string;
-            pdfUrl: string;
+            pdfUrl: components["schemas"]["SafeUrl"];
         };
         ReceivableSummary: {
             receivableNo: string;
@@ -1816,7 +1816,7 @@ export interface components {
             final: components["schemas"]["PricedSnapshot"] | null;
             receivable: components["schemas"]["ReceivableSummary"] | null;
             onlinePaymentAvailable: boolean;
-            trackingUrl: string | null;
+            trackingUrl: components["schemas"]["SafeUrl"] | null;
             actions: components["schemas"]["CustomerAction"][];
             timeline: components["schemas"]["TimelineEvent"][];
         };
@@ -1826,7 +1826,7 @@ export interface components {
         PaymentSession: {
             /** Format: uuid */
             paymentId: string;
-            redirectUrl: string;
+            redirectUrl: components["schemas"]["SafeUrl"];
         };
         OnlinePayment: {
             /** Format: uuid */
@@ -1845,7 +1845,7 @@ export interface components {
             type: string;
             title: components["schemas"]["I18nText"];
             body: components["schemas"]["I18nText"];
-            link: string | null;
+            link: components["schemas"]["SafeUrl"] | null;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
@@ -2081,7 +2081,7 @@ export interface components {
         DashboardException: {
             kind: string;
             reference: string;
-            href: string;
+            href: components["schemas"]["SafeUrl"];
             /** Format: date-time */
             since: string;
             note: components["schemas"]["I18nText"];
@@ -2098,7 +2098,7 @@ export interface components {
             reference: string;
             title: string;
             subtitle: string;
-            href: string;
+            href: components["schemas"]["SafeUrl"];
         };
         Transition: {
             to: components["schemas"]["ShipmentStatus"];
@@ -2137,7 +2137,7 @@ export interface components {
             final: components["schemas"]["PricedSnapshot"] | null;
             receivable: components["schemas"]["ReceivableSummary"] | null;
             allowedTransitions: components["schemas"]["Transition"][];
-            trackingUrl: string | null;
+            trackingUrl: components["schemas"]["SafeUrl"] | null;
             notes: components["schemas"]["OpsNote"][];
             timeline: components["schemas"]["TimelineEvent"][];
         };
@@ -2157,7 +2157,7 @@ export interface components {
             text: string;
         };
         TrackingUpdate: {
-            trackingUrl: string;
+            trackingUrl: components["schemas"]["SafeUrl"];
         };
         AdjustmentLine: {
             code: string;
@@ -2299,7 +2299,7 @@ export interface components {
             status: "issued" | "void";
             /** Format: date-time */
             issuedAt: string;
-            pdfUrl: string;
+            pdfUrl: components["schemas"]["SafeUrl"];
             replacesInvoiceNo: string | null;
         };
         Allocation: {
@@ -2382,7 +2382,7 @@ export interface components {
             /** Format: date */
             receivedAt: string;
             recordedBy: string;
-            evidenceUrl: string | null;
+            evidenceUrl: components["schemas"]["SafeUrl"] | null;
             allocated: components["schemas"]["Money"];
             unallocated: components["schemas"]["Money"];
             allocations: {
@@ -2548,6 +2548,8 @@ export interface components {
             /** Format: date-time */
             at: string;
         };
+        /** @description Absolute https URL or a same-site path. The frontend also refuses anything else (safeHref). */
+        SafeUrl: string;
     };
     responses: {
         /** @description RFC 7807 problem */

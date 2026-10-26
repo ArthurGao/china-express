@@ -1,5 +1,6 @@
 "use client";
 
+import { safeHref } from "@/lib/safe-href";
 import { MeasurementsText } from "@/components/warehouse/measurement-fields";
 import { ErrorText } from "@/components/feedback";
 import { useTranslations } from "next-intl";
@@ -27,6 +28,7 @@ export function ShipmentView({ id }: { id: string }) {
   if (!s) return null;
   // Sections are numbered in reading order (swiss-grid section markers), counting only those shown.
   const review = s.actions.includes("CONFIRM_FINAL_PRICE");
+  const trackingUrl = safeHref(s.trackingUrl);
   const shown = [review, !!s.receivable, !review && !!s.final, s.packages.length > 0, s.parcels.length > 0, true];
   const n = (index: number) => String(shown.slice(0, index + 1).filter(Boolean).length).padStart(2, "0");
 
@@ -40,8 +42,8 @@ export function ShipmentView({ id }: { id: string }) {
         </div>
         <p className="text-sm text-muted-foreground">{tq(`products.${s.product}`)} · {tq(`regions.${s.destination.region}`)}</p>
         <JourneyProgress step={s.step} exception={s.exception} />
-        {s.trackingUrl && (
-          <a href={s.trackingUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center justify-self-start text-sm font-medium underline">{t("track")}</a>
+        {trackingUrl && (
+          <a href={trackingUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center justify-self-start text-sm font-medium underline">{t("track")}</a>
         )}
       </div>
 

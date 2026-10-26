@@ -1,5 +1,6 @@
 "use client";
 
+import { safeHref } from "@/lib/safe-href";
 import { ErrorText } from "@/components/feedback";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -34,7 +35,14 @@ export function PaymentPanel({ shipment, n }: { shipment: ShipmentDetail; n: str
     pay.mutate(
       { params: { path: { shipmentId: shipment.id }, header: idem() } },
       // The gateway's page; the result page waits for the gateway callback rather than trusting the redirect.
-      { onSuccess: (session) => hardNavigate(session.redirectUrl), onError: () => setError(true) },
+      {
+        onSuccess: (session) => {
+          const target = safeHref(session.redirectUrl);
+          if (target) hardNavigate(target);
+          else setError(true);
+        },
+        onError: () => setError(true),
+      },
     );
   }
 
@@ -81,7 +89,7 @@ export function PaymentPanel({ shipment, n }: { shipment: ShipmentDetail; n: str
           <ul className="grid gap-1 text-sm">
             {receivable.invoices.map((inv) => (
               <li key={inv.invoiceNo} className="flex flex-wrap items-baseline gap-3">
-                <a href={inv.pdfUrl} target="_blank" rel="noreferrer" className="font-mono underline">{inv.invoiceNo}</a>
+                <a href={safeHref(inv.pdfUrl) ?? undefined} target="_blank" rel="noreferrer" className="font-mono underline">{inv.invoiceNo}</a>
                 <span className="text-muted-foreground">{t(`invoiceKinds.${inv.kind}`)} · <When iso={inv.issuedAt} date /></span>
               </li>
             ))}

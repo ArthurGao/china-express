@@ -1,5 +1,6 @@
 "use client";
 
+import { safeHref } from "@/lib/safe-href";
 import { ErrorText } from "@/components/feedback";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
@@ -42,7 +43,7 @@ export function NotificationList() {
                 {localized(n.title)}
               </span>
               <p className="text-sm text-muted-foreground">{localized(n.body)}</p>
-              {n.link && <Link href={n.link} className="inline-flex min-h-11 items-center justify-self-start text-sm font-medium underline">{t("open")}</Link>}
+              {safeHref(n.link) && <Link href={safeHref(n.link)!} className="inline-flex min-h-11 items-center justify-self-start text-sm font-medium underline">{t("open")}</Link>}
             </li>
           ))}
         </ul>

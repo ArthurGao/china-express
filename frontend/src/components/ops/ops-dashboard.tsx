@@ -1,5 +1,6 @@
 "use client";
 
+import { safeHref } from "@/lib/safe-href";
 import { ErrorText } from "@/components/feedback";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -42,7 +43,7 @@ export function OpsDashboard() {
             {d.exceptions.map((e) => (
               <tr key={e.reference} className={DATA_ROW}>
                 <td className="font-medium text-warning">{tj(e.kind)}</td>
-                <td><Link className="font-mono underline" href={e.href}>{e.reference}</Link></td>
+                <td><Link className="font-mono underline" href={safeHref(e.href) ?? "#"}>{e.reference}</Link></td>
                 <td>{localized(e.note)}</td>
                 <td><When iso={e.since} /></td>
               </tr>

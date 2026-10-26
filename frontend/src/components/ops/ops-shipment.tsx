@@ -1,5 +1,6 @@
 "use client";
 
+import { safeHref } from "@/lib/safe-href";
 import { ErrorText, Flash, useFlash } from "@/components/feedback";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
@@ -39,6 +40,7 @@ export function OpsShipment({ id }: { id: string }) {
   if (shipment.isError) return <ErrorText>{t("loadFailed")}</ErrorText>;
   const s = shipment.data;
   if (!s) return null;
+  const trackingUrl = safeHref(s.trackingUrl);
 
   function move(tr: Transition, reason: string | null) {
     flash.clear();
@@ -140,7 +142,7 @@ export function OpsShipment({ id }: { id: string }) {
 
         <section className="grid gap-2">
           <h2 className="font-semibold">{t("tracking")}</h2>
-          {s.trackingUrl && tracking === null && <a href={s.trackingUrl} target="_blank" rel="noreferrer" className="break-all underline">{s.trackingUrl}</a>}
+          {trackingUrl && tracking === null && <a href={trackingUrl} target="_blank" rel="noreferrer" className="break-all underline">{s.trackingUrl}</a>}
           {tracking === null ? (
             <Button size="sm" variant="outline" className="justify-self-start" onClick={() => setTrackingText(s.trackingUrl ?? "https://")}>
               {t(s.trackingUrl ? "editTracking" : "addTracking")}

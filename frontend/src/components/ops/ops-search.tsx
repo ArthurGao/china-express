@@ -1,5 +1,6 @@
 "use client";
 
+import { safeHref } from "@/lib/safe-href";
 import { ErrorText } from "@/components/feedback";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -24,7 +25,7 @@ export function OpsSearch() {
         <ul className="divide-y divide-rule border-y border-rule" data-testid="search-results">
           {results.data.map((r) => (
             <li key={`${r.type}-${r.id}`}>
-              <Link href={r.href} className="grid grid-cols-[6rem_1fr] gap-x-3 py-2 hover:bg-surface">
+              <Link href={safeHref(r.href) ?? "#"} className="grid grid-cols-[6rem_1fr] gap-x-3 py-2 hover:bg-surface">
                 <span className="text-xs text-muted-foreground uppercase">{t(`types.${r.type}`)}</span>
                 <span><span className="font-mono">{r.reference}</span> · {r.title}<span className="block text-muted-foreground">{r.subtitle}</span></span>
               </Link>

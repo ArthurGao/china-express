@@ -73,6 +73,28 @@ describe("ShipmentView", () => {
     await vi.waitFor(() => expect(navigate).toHaveBeenCalledWith("/payments/result?payment=0193a600-8888-7000-8000-000000000001"));
   });
 
+  it("renders no tracking link for a URL that is not https (e.g. javascript:)", async () => {
+    const held = exampleFor({ operationId: "getShipment", example: "customsHeld" }) as object;
+    server.use(http.get(apiUrl("/shipments/{shipmentId}"), () => HttpResponse.json({ ...held, trackingUrl: "javascript:alert(document.cookie)" })));
+    renderWithProviders(<ShipmentView id="0193a5e0-5555-7000-8000-000000000002" />);
+    await screen.findByTestId("shipment-no");
+    expect(screen.queryByRole("link", { name: "Track with the NZ courier" })).toBeNull();
+    expect(document.querySelector('a[href^="javascript"]')).toBeNull();
+  });
+
+  it("does not follow a payment redirect that is not https or on this site", async () => {
+    const user = userEvent.setup();
+    server.use(
+      http.get(apiUrl("/shipments/{shipmentId}"), () => HttpResponse.json(exampleFor({ operationId: "confirmFinalPrice" }) as object)),
+      http.post(apiUrl("/shipments/{shipmentId}/payments"), () =>
+        HttpResponse.json({ paymentId: "0193a600-8888-7000-8000-000000000001", redirectUrl: "javascript:alert(1)" }, { status: 201 })),
+    );
+    renderWithProviders(<ShipmentView id={S1} />);
+    await user.click(await screen.findByRole("button", { name: "Pay online" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("We could not start the online payment.");
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
   it("offers no payment for a paid shipment and shows its invoice", async () => {
     renderWithProviders(<ShipmentView id="0193a5e0-5555-7000-8000-000000000003" />);
     expect(nbsp((await screen.findByTestId("balance")).textContent ?? "")).toBe("NZD 0.00");

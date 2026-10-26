@@ -10657,7 +10657,7 @@
             ]
           },
           "url": {
-            "type": "string"
+            "$ref": "#/components/schemas/SafeUrl"
           }
         }
       },
@@ -11115,7 +11115,7 @@
             "format": "date-time"
           },
           "pdfUrl": {
-            "type": "string"
+            "$ref": "#/components/schemas/SafeUrl"
           }
         }
       },
@@ -11281,9 +11281,13 @@
             "type": "boolean"
           },
           "trackingUrl": {
-            "type": [
-              "string",
-              "null"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SafeUrl"
+              },
+              {
+                "type": "null"
+              }
             ]
           },
           "actions": {
@@ -11325,7 +11329,7 @@
             "format": "uuid"
           },
           "redirectUrl": {
-            "type": "string"
+            "$ref": "#/components/schemas/SafeUrl"
           }
         }
       },
@@ -11395,9 +11399,13 @@
             "$ref": "#/components/schemas/I18nText"
           },
           "link": {
-            "type": [
-              "string",
-              "null"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SafeUrl"
+              },
+              {
+                "type": "null"
+              }
             ]
           },
           "createdAt": {
@@ -12447,7 +12455,7 @@
             "type": "string"
           },
           "href": {
-            "type": "string"
+            "$ref": "#/components/schemas/SafeUrl"
           },
           "since": {
             "type": "string",
@@ -12515,7 +12523,7 @@
             "type": "string"
           },
           "href": {
-            "type": "string"
+            "$ref": "#/components/schemas/SafeUrl"
           }
         }
       },
@@ -12694,9 +12702,13 @@
             }
           },
           "trackingUrl": {
-            "type": [
-              "string",
-              "null"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SafeUrl"
+              },
+              {
+                "type": "null"
+              }
             ]
           },
           "notes": {
@@ -12783,8 +12795,7 @@
         ],
         "properties": {
           "trackingUrl": {
-            "type": "string",
-            "pattern": "^https://"
+            "$ref": "#/components/schemas/SafeUrl"
           }
         }
       },
@@ -13373,7 +13384,7 @@
             "format": "date-time"
           },
           "pdfUrl": {
-            "type": "string"
+            "$ref": "#/components/schemas/SafeUrl"
           },
           "replacesInvoiceNo": {
             "type": [
@@ -13708,9 +13719,13 @@
             "type": "string"
           },
           "evidenceUrl": {
-            "type": [
-              "string",
-              "null"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SafeUrl"
+              },
+              {
+                "type": "null"
+              }
             ]
           },
           "allocated": {
@@ -14374,6 +14389,11 @@
             "format": "date-time"
           }
         }
+      },
+      "SafeUrl": {
+        "type": "string",
+        "pattern": "^(https://|/(?![/\\\\]))",
+        "description": "Absolute https URL or a same-site path. The frontend also refuses anything else (safeHref)."
       }
     }
   }

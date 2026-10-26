@@ -49,12 +49,16 @@ const PROBE_ORIGIN = "http://same-site.invalid";
  * must stay on the same origin.
  */
 export function safeNext(next: string | null | undefined, fallback = "/quote"): string {
-  if (!next || !next.startsWith("/") || next.startsWith("//") || /[\u0000-\u001F\u007F\\]/.test(next)) return fallback;
+  return sameSitePath(next) ?? fallback;
+}
+
+/** `path` normalised if it is a relative path on this site, else null (see safeNext for why each check exists). */
+export function sameSitePath(path: string | null | undefined): string | null {
+  if (!path || !path.startsWith("/") || path.startsWith("//") || /[\u0000-\u001F\u007F\\]/.test(path)) return null;
   try {
-    const url = new URL(next, PROBE_ORIGIN);
-    if (url.origin !== PROBE_ORIGIN) return fallback;
-    return url.pathname + url.search + url.hash;
+    const url = new URL(path, PROBE_ORIGIN);
+    return url.origin === PROBE_ORIGIN ? url.pathname + url.search + url.hash : null;
   } catch {
-    return fallback;
+    return null;
   }
 }
