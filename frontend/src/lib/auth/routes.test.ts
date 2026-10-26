@@ -5,11 +5,15 @@ describe("checkAccess", () => {
   it("sends a signed-out visitor from the quote page to login, keeping where they were going", () => {
     expect(checkAccess("/quote", null)).toEqual({ allow: false, redirectTo: "/login?next=%2Fquote" });
     expect(checkAccess("/pre-notice/abc", null)).toEqual({ allow: false, redirectTo: "/login?next=%2Fpre-notice%2Fabc" });
+    expect(checkAccess("/shipments/abc", null)).toEqual({ allow: false, redirectTo: "/login?next=%2Fshipments%2Fabc" });
+    expect(checkAccess("/notifications", null)).toEqual({ allow: false, redirectTo: "/login?next=%2Fnotifications" });
+    expect(checkAccess("/payments/result", null, "?payment=1")).toEqual({ allow: false, redirectTo: "/login?next=%2Fpayments%2Fresult%3Fpayment%3D1" });
   });
 
   it("lets anyone see the landing and login pages", () => {
     expect(checkAccess("/", null)).toEqual({ allow: true });
     expect(checkAccess("/login", null)).toEqual({ allow: true });
+    expect(checkAccess("/terms", null)).toEqual({ allow: true });
   });
 
   it("lets a signed-in customer quote", () => {

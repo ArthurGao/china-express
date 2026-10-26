@@ -1,5 +1,6 @@
 "use client";
 
+import { ErrorText } from "@/components/feedback";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
@@ -11,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { oauthRedirectTo, safeNext } from "@/lib/auth/routes";
 import { hardNavigate } from "@/lib/navigation";
+import { DEMO } from "@/lib/demo";
 import { touchLead } from "@/lib/leads";
 import { getSupabase } from "@/lib/supabase/browser";
 
@@ -19,6 +21,7 @@ const codeSchema = z.object({ code: z.string().regex(/^\d{6}$/) });
 
 export function CustomerLogin() {
   const t = useTranslations("auth");
+  const tDemo = useTranslations("demo");
   const next = safeNext(useSearchParams().get("next"));
   const [email, setEmail] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +65,8 @@ export function CustomerLogin() {
         </form>
       ) : (
         <form onSubmit={codeForm.handleSubmit(verifyCode)} className="grid gap-3" noValidate>
-          <p className="text-sm text-muted-foreground">{t("code.sentTo", { email })}</p>
+          {/* The demo build (ADR 0004) sends no email; say so instead of claiming a code was sent. */}
+          <p className="text-sm text-muted-foreground">{DEMO ? tDemo("emailCode") : t("code.sentTo", { email })}</p>
           <Label htmlFor="code">{t("code.label")}</Label>
           <Input id="code" inputMode="numeric" autoComplete="one-time-code" maxLength={6}
             className="h-12 font-mono text-xl tracking-[0.4em]" aria-invalid={!!codeForm.formState.errors.code}
@@ -82,7 +86,7 @@ export function CustomerLogin() {
         <Button type="button" variant="outline" size="lg" className="h-12" onClick={google}>{t("google")}</Button>
       </div>
 
-      {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
+      <ErrorText className="text-sm">{error}</ErrorText>
     </div>
   );
 }

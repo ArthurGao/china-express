@@ -6,10 +6,14 @@
     "memberLabel": "会员号"
   },
   "customerNav": {
-    "quote": "获取报价",
-    "account": "我的账户",
+    "quote": "报价",
+    "account": "账户",
     "signOut": "退出登录",
-    "signIn": "登录"
+    "signIn": "登录",
+    "shipments": "我的货件",
+    "notifications": "通知",
+    "sections": "你的账户",
+    "unread": "{count} 条未读"
   },
   "landing": {
     "title": "从中国到新西兰，门到门运输。",
@@ -23,9 +27,40 @@
     }
   },
   "staffNav": {
-    "rates": "价格管理",
     "signOut": "退出登录",
-    "language": "语言"
+    "language": "语言",
+    "modulesLabel": "模块",
+    "loadFailed": "无法读取你的员工信息。",
+    "noRole": "你的账号还没有分配角色，请联系管理员。",
+    "modules": {
+      "warehouse": "仓库",
+      "ops": "运营",
+      "finance": "财务",
+      "admin": "管理"
+    },
+    "pages": {
+      "receive": "扫码入库",
+      "unclaimed": "无主包裹",
+      "consolidations": "合并作业",
+      "dispatch": "发运",
+      "dashboard": "看板",
+      "search": "搜索",
+      "assign": "指派无主包裹",
+      "adjustments": "调价申请",
+      "leads": "线索漏斗",
+      "deliveries": "发送记录",
+      "receivables": "应收",
+      "payments": "收款",
+      "overrides": "放货审批",
+      "reconciliation": "对账",
+      "rates": "价格",
+      "fclRates": "整柜运价",
+      "staff": "员工",
+      "audit": "审计日志",
+      "reports": "报表"
+    },
+    "noAccess": "你的账号没有此模块的权限，如需开通请联系管理员。",
+    "laterStage": "此页面属于第 3 阶段，尚未开放。"
   },
   "auth": {
     "title": "登录",
@@ -406,10 +441,849 @@
     "linked": "已绑定 {provider}。",
     "linkFailed": "无法绑定这个登录方式。如果它已属于另一个账户，请直接用它登录。",
     "recoveryTitle": "无法登录？",
-    "recoveryBody": "换了或丢了手机？先用邮箱验证码登录，再在这里更新。如果没有其他方式登录，请带上会员号和最近一票货的信息联系我们，团队核验后帮你恢复。"
+    "recoveryBody": "换了或丢了手机？先用邮箱验证码登录，再在这里更新。如果没有其他方式登录，请带上会员号和最近一票货的信息联系我们，团队核验后帮你恢复。",
+    "billing": {
+      "title": "开票信息",
+      "intro": "发票开给默认的那一项。",
+      "default": "默认",
+      "add": "添加开票信息",
+      "type": "开票对象",
+      "types": {
+        "individual": "个人",
+        "company": "公司"
+      },
+      "legalName": "全名或公司名称",
+      "gstNumber": "GST 号",
+      "invalid": "请填写名称和完整地址（4 位邮编）。",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "address": {
+      "line1": "街道地址",
+      "line2": "单元、楼层（可选）",
+      "city": "城市或城镇",
+      "postcode": "邮编"
+    },
+    "addresses": {
+      "title": "收货地址",
+      "default": "默认",
+      "add": "添加地址",
+      "label": "地址名称",
+      "invalid": "请填写地址名称和完整地址（4 位邮编）。",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "prefs": {
+      "title": "通知",
+      "save": "保存设置",
+      "saved": "已保存。",
+      "email": {
+        "label": "邮件",
+        "body": "货件进度、付款通知和发票。"
+      },
+      "whatsapp": {
+        "label": "WhatsApp",
+        "body": "包裹到仓和货件状态变化时的简短通知。"
+      },
+      "marketing": {
+        "label": "优惠和资讯",
+        "body": "偶尔的推广信息，可随时关闭。"
+      }
+    }
   },
   "demo": {
     "label": "演示",
-    "body": "示例数据：价格是固定算例，不随输入变化。任意邮箱、密码和 6 位数字验证码都可以登录。"
+    "body": "示例数据：价格是固定算例，不随输入变化。任意邮箱、密码和 6 位数字验证码都可以登录。",
+    "emailCode": "演示版：不会发送邮件，输入任意 6 位数字即可，例如 123456。",
+    "staffSignIn": "演示版：任意邮箱和密码都可以登录。",
+    "totp": "演示版：不需要验证器 App，输入任意 6 位数字即可，例如 123456。"
+  },
+  "status": {
+    "shipment": {
+      "awaiting_final_confirmation": "待确认最终价",
+      "awaiting_payment": "待付款",
+      "released": "已放货",
+      "dispatched": "已发运",
+      "arrived_nz": "已到新西兰",
+      "customs_clearing": "清关中",
+      "customs_held": "海关扣留",
+      "out_for_delivery": "派送中",
+      "delivery_failed": "派送失败",
+      "delivered": "已签收",
+      "cancelled": "已取消"
+    },
+    "parcel": {
+      "expected": "预计到达",
+      "received": "已入库",
+      "unclaimed": "无主",
+      "held": "扣留",
+      "returned": "已退回",
+      "awaiting_choice": "待选择处理方式",
+      "packed": "已打包",
+      "dispatched": "已发运"
+    },
+    "receivable": {
+      "issued": "已开立",
+      "partially_paid": "部分付款",
+      "paid": "已付清",
+      "overpaid": "多付",
+      "refunded": "已退款",
+      "void": "已作废"
+    },
+    "consolidation": {
+      "requested": "待处理",
+      "in_progress": "进行中",
+      "completed": "已完成",
+      "cancelled": "已取消"
+    },
+    "payment": {
+      "recorded": "已登记",
+      "reversed": "已冲销"
+    },
+    "approval": {
+      "pending": "待审批",
+      "approved": "已批准",
+      "rejected": "已驳回"
+    },
+    "delivery": {
+      "queued": "排队中",
+      "sent": "已发送",
+      "failed": "失败"
+    },
+    "onlinePayment": {
+      "PROCESSING": "处理中",
+      "SUCCEEDED": "已付款",
+      "FAILED": "失败"
+    },
+    "staff": {
+      "active": "在职",
+      "inactive": "已停用"
+    },
+    "rateSheet": {
+      "draft": "草稿",
+      "published": "已发布",
+      "retired": "已停用",
+      "expired": "已过期"
+    }
+  },
+  "journey": {
+    "label": "第 {step} 步，共 {total} 步",
+    "steps": {
+      "1": "已提交预报",
+      "2": "已到仓库",
+      "3": "最终价",
+      "4": "已付款",
+      "5": "运输中",
+      "6": "已到新西兰",
+      "7": "已签收"
+    },
+    "exceptions": {
+      "PARCEL_UNCLAIMED": "有包裹无法匹配",
+      "PARCEL_HELD": "有包裹被扣留",
+      "CUSTOMS_HELD": "被新西兰海关扣留",
+      "DELIVERY_FAILED": "派送失败",
+      "PARTIALLY_PAID": "部分付款"
+    },
+    "exceptionHelp": {
+      "PARCEL_UNCLAIMED": "我们收到一个无法匹配到你的包裹。请检查唛头，或把快递单号发给我们。",
+      "PARCEL_HELD": "我们暂扣了一个包裹（破损或限制物品），处理前会先联系你。",
+      "CUSTOMS_HELD": "新西兰海关正在检查这票货，我们会告诉你需要提供什么。",
+      "DELIVERY_FAILED": "快递未能送达，我们会安排再次派送。",
+      "PARTIALLY_PAID": "已收到部分款项，付清余款后发货。"
+    }
+  },
+  "reasonDialog": {
+    "reason": "原因（记入审计日志）",
+    "invalid": "请填写原因（至少 3 个字）。",
+    "cancel": "取消"
+  },
+  "shipments": {
+    "title": "我的货件",
+    "back": "全部货件",
+    "track": "新西兰快递追踪",
+    "history": "记录",
+    "packages": "发出的纸箱",
+    "empty": "还没有内容。提交预报后，货件会显示在这里。",
+    "startQuote": "去报价",
+    "parcelsSoFar": "{received, plural, =0 {仓库暂未收到包裹} other {仓库已收到 # 件}}",
+    "parcelsOf": "仓库已收到 {received}/{expected} 件",
+    "actions": {
+      "CHOOSE_HANDLING": "选择发货方式",
+      "CONFIRM_FINAL_PRICE": "确认最终价",
+      "PAY": "付款"
+    },
+    "errors": {
+      "load": "无法读取你的货件，请重试。"
+    },
+    "parcels": {
+      "title": "仓库已收到的包裹",
+      "received": "入库",
+      "measured": "{kg} kg · {l} × {w} × {h} cm",
+      "damaged": "外箱到仓时有破损，请看照片。",
+      "photo": {
+        "label": "{parcel} 的快递面单",
+        "overview": "{parcel} 的照片",
+        "damage": "{parcel} 的破损处"
+      }
+    },
+    "final": {
+      "title": "你的最终价",
+      "estimate": "预估价",
+      "final": "最终价",
+      "agreed": "已确认的价格",
+      "validUntil": "最终价有效期至",
+      "later": "确认后仍可能产生的费用（仅在发生时）：",
+      "confirm": "确认最终价",
+      "changed": "价格刚刚更新，请重新查看。",
+      "failed": "确认失败，请重试。"
+    },
+    "payment": {
+      "title": "付款",
+      "receivableNo": "付款单号",
+      "total": "含 GST 合计",
+      "paid": "已付",
+      "balance": "待付",
+      "bankTitle": "银行转账",
+      "accountName": "户名",
+      "accountNumber": "账号",
+      "reference": "参考号",
+      "copy": "复制",
+      "copied": "已复制",
+      "placeholder": "银行信息正在确认，请等确认后再付款。",
+      "bankNote": "请准确填写参考号以便核对。收到款项后安排发货。",
+      "payOnline": "在线付款",
+      "payOnlineNote": "在支付页面用银行卡、Apple Pay、Google Pay 等方式付款。",
+      "payFailed": "无法发起在线付款，请重试或改用银行转账。",
+      "invoices": "发票",
+      "invoiceKinds": {
+        "tax_invoice": "税务发票",
+        "credit_note": "贷项通知单"
+      }
+    },
+    "handling": {
+      "title": "{count, plural, other {仓库已收到 # 件包裹}}",
+      "question": "这些包裹怎么发？",
+      "pick": "请选择一种方式。",
+      "submit": "确认选择",
+      "chosen": "你选择了：{mode}。我们会据此出最终价。",
+      "noFee": "无额外费用",
+      "finalNote": "最终价按打包后的实际重量和尺寸计算。",
+      "changed": "仓库情况有变化，请重新选择。",
+      "failed": "保存失败，请重试。",
+      "modes": {
+        "SINGLE": {
+          "name": "原包裹单独发",
+          "body": "不重新打包，每件按自身尺寸重量计费。"
+        },
+        "CONSOLIDATE": {
+          "name": "合并成更少的纸箱",
+          "body": "把包裹重新合箱，通常运费更低。"
+        },
+        "CONSOLIDATE_UNPACK": {
+          "name": "合并并去掉原包装",
+          "body": "取出货物紧凑打包，更省空间。"
+        }
+      }
+    }
+  },
+  "notifications": {
+    "title": "通知",
+    "unread": "{count, plural, =0 {全部已读} other {# 条未读}}",
+    "readAll": "全部标为已读",
+    "empty": "暂无通知。",
+    "open": "查看",
+    "new": "新",
+    "errors": {
+      "load": "无法读取通知。"
+    }
+  },
+  "payment": {
+    "title": {
+      "PROCESSING": "正在确认付款",
+      "SUCCEEDED": "已收到付款",
+      "FAILED": "付款未成功"
+    },
+    "body": {
+      "PROCESSING": "可能需要一分钟。你可以离开此页，确认后会通知你。",
+      "SUCCEEDED": "谢谢。货件将安排放货发运。",
+      "FAILED": "没有扣款。你可以重试，或改用银行转账。"
+    },
+    "back": "返回货件",
+    "notFound": "找不到这笔付款。"
+  },
+  "terms": {
+    "title": "服务条款",
+    "placeholder": "这是提纲草稿。完整条款由业主准备，目前内容不具约束力。",
+    "sections": {
+      "service": {
+        "title": "我们的服务",
+        "body": "我们运送什么、从哪里到哪里，以及你需要做什么。"
+      },
+      "prohibited": {
+        "title": "禁运和限运物品",
+        "body": "不能接收的物品，以及被发现后的处理方式。"
+      },
+      "prices": {
+        "title": "预估价和最终价",
+        "body": "预估价如何变成最终价，以及之后仍可能收取的费用。"
+      },
+      "payment": {
+        "title": "付款",
+        "body": "何时付款，以及退款方式。"
+      },
+      "liability": {
+        "title": "丢失和损坏",
+        "body": "我们的责任范围和索赔方式。"
+      },
+      "privacy": {
+        "title": "你的信息",
+        "body": "我们保存哪些信息、保存多久、谁能看到。"
+      }
+    }
+  },
+  "warehouse": {
+    "measure": {
+      "weightKg": "重量 kg",
+      "lengthCm": "长 cm",
+      "widthCm": "宽 cm",
+      "heightCm": "高 cm"
+    },
+    "photos": {
+      "take": "拍照",
+      "processing": "处理中…",
+      "kind": {
+        "label": "快递面单",
+        "overview": "外箱",
+        "damage": "破损处"
+      },
+      "state": {
+        "pending": "上传中",
+        "uploaded": "已上传",
+        "failed": "稍后重传"
+      }
+    },
+    "label": {
+      "noProduct": "—",
+      "unclaimed": "无主",
+      "barcode": "条码 {parcelNo}",
+      "weight": "重量",
+      "size": "尺寸",
+      "to": "目的地"
+    },
+    "receive": {
+      "title": "扫码入库",
+      "waiting": "{count, plural, =0 {照片已全部上传} other {# 张照片待上传}}",
+      "scanLabel": "扫描快递面单或唛头",
+      "lookUp": "查询",
+      "scanFailed": "查询失败，请检查网络后重扫。",
+      "match": {
+        "PRE_NOTICE": "已匹配预报",
+        "MEMBER": "找到会员，未匹配到预报",
+        "DUPLICATE": "已经入库过，不要重复入库",
+        "NONE": "无法匹配，将按无主包裹入库"
+      },
+      "receivedSoFar": "已收 {count} 件",
+      "receivedOf": "已收 {received}/{expected} 件",
+      "carrier": "快递公司",
+      "trackingNo": "快递单号",
+      "pieceNo": "件序号（一单多箱时填）",
+      "condition": "外包装",
+      "conditions": {
+        "OK": "完好",
+        "DAMAGED": "破损"
+      },
+      "damageNote": "描述破损情况",
+      "incomplete": "请填写重量和长宽高，至少拍一张照片（等上传完成），破损时写明情况。",
+      "photosUploading": "还有照片在上传。",
+      "submit": "确认入库",
+      "receiveFailed": "入库失败，请重试（不会重复入库）。",
+      "done": "已入库，包裹号 {parcelNo}。请把标签贴到箱子上。",
+      "doneUnclaimed": "已按无主包裹入库，包裹号 {parcelNo}。请把标签贴到箱子上。",
+      "printAgain": "重新打印标签",
+      "next": "下一件"
+    },
+    "parcel": {
+      "loadFailed": "无法读取包裹。",
+      "member": "会员号",
+      "preNotice": "预报",
+      "tracking": "快递 / 单号",
+      "received": "入库",
+      "measurements": "测量",
+      "condition": "破损",
+      "holdReason": "扣留原因",
+      "none": "—",
+      "flags": {
+        "consolidatable": "可合并",
+        "over_25kg": "超过 25 kg",
+        "oversize": "超大件"
+      },
+      "correct": "更正测量",
+      "reason": "原因",
+      "save": "保存更正",
+      "cancel": "取消",
+      "correctInvalid": "请填写四项测量值并写明原因（至少 3 个字）。",
+      "corrected": "已更正，原数值保留在下方记录中。",
+      "held": "已扣留，等待运营处理。",
+      "conflict": "包裹已被他人修改，请刷新后重试。",
+      "failed": "保存失败，请重试。",
+      "hold": "扣留",
+      "holdKind": "扣留类型",
+      "holdKinds": {
+        "DAMAGED": "破损",
+        "PROHIBITED": "违禁品",
+        "OTHER": "其他"
+      },
+      "holdTitle": "扣留 {parcelNo}",
+      "holdBody": "会通知客户和运营。",
+      "holdConfirm": "确认扣留",
+      "history": "测量记录",
+      "when": "时间",
+      "by": "操作人",
+      "before": "更正前",
+      "after": "更正后",
+      "photos": "照片",
+      "photoKinds": {
+        "label": "快递面单",
+        "overview": "外箱",
+        "damage": "破损处"
+      },
+      "print": "打印标签"
+    },
+    "unclaimed": {
+      "title": "无主包裹",
+      "intro": "匹配不到预报和会员号的包裹，由运营指派。",
+      "loadFailed": "无法读取无主包裹。",
+      "empty": "没有无主包裹。",
+      "parcelNo": "包裹号",
+      "tracking": "快递 / 单号",
+      "measurements": "测量",
+      "received": "入库时间"
+    },
+    "consolidations": {
+      "title": "合并作业",
+      "filter": "按状态筛选",
+      "all": "全部",
+      "loadFailed": "无法读取作业。",
+      "reference": "作业号",
+      "member": "会员号",
+      "mode": "类型",
+      "parcels": "包裹数",
+      "status": "状态",
+      "requested": "申请时间"
+    },
+    "job": {
+      "loadFailed": "无法读取作业。",
+      "back": "全部作业",
+      "inputs": "{count, plural, other {本作业 # 件包裹}}",
+      "parcelNo": "包裹号",
+      "tracking": "快递 / 单号",
+      "measurements": "测量",
+      "start": "开始作业",
+      "limit": "每个输出纸箱不超过 {kg} kg（完成时校验）。",
+      "carton": "输出纸箱 {n}",
+      "removeCarton": "删除此纸箱",
+      "addCarton": "再加一个纸箱",
+      "charges": "使用的物料和操作",
+      "units": {
+        "per_package": "按箱",
+        "per_parcel": "按件",
+        "per_shipment": "按作业"
+      },
+      "incomplete": "请测量每个纸箱，把每件包裹放进纸箱，物料数量填整数。",
+      "complete": "完成作业",
+      "completed": "作业已完成，客户最终价已生成。",
+      "packageNo": "纸箱号",
+      "contains": "包含",
+      "conflict": "作业已变化，请刷新后重试。",
+      "rejected": "后台拒绝（例如纸箱超重），请检查后重试。",
+      "failed": "保存失败，请重试。"
+    },
+    "dispatch": {
+      "title": "发运",
+      "intro": "已付款（或已批准放货）的货件，可以出仓。",
+      "loadFailed": "无法读取发运列表。",
+      "empty": "没有待发运的货件。",
+      "shipmentNo": "货件号",
+      "member": "会员号",
+      "product": "服务",
+      "cartons": "纸箱",
+      "released": "放货时间",
+      "select": "选择 {shipmentNo}",
+      "dispatch": "{count, plural, =0 {标记为已发运} other {将 # 票标记为已发运}}",
+      "irreversible": "发运后不可回退。",
+      "done": "已发运：{list}",
+      "failed": "未发运（期间有变化）：{list}"
+    }
+  },
+  "ops": {
+    "dashboard": {
+      "title": "运营看板",
+      "intro": "现在需要处理的事项，每分钟刷新。",
+      "loadFailed": "无法读取看板。",
+      "groups": {
+        "parcel": "包裹",
+        "shipment": "货件"
+      },
+      "exceptions": "未处理异常",
+      "kind": "异常",
+      "reference": "单号",
+      "note": "说明",
+      "since": "开始时间"
+    },
+    "search": {
+      "title": "搜索",
+      "intro": "会员号、快递单号、包裹号、货件号或姓名。",
+      "label": "搜索",
+      "placeholder": "CE-123456-7、SF…、P2610-…、CE-S2610-…",
+      "submit": "搜索",
+      "failed": "搜索失败。",
+      "none": "没有找到。",
+      "types": {
+        "CUSTOMER": "客户",
+        "SHIPMENT": "货件",
+        "PARCEL": "包裹",
+        "PRE_NOTICE": "预报"
+      }
+    },
+    "shipment": {
+      "loadFailed": "无法读取货件。",
+      "transitions": "状态",
+      "noTransitions": "当前不能变更状态。",
+      "moveTo": "推进到：{status}",
+      "rollbackTo": "回退到：{status}",
+      "rollbackBody": "回退会记入审计日志，并通知客户这是一次更正。",
+      "reasonBody": "这个变更需要填写原因，会记入审计日志。",
+      "confirm": "确认",
+      "moved": "状态已更新为：{status}。",
+      "conflict": "货件期间有变化，请刷新后重试。",
+      "failed": "状态变更失败。",
+      "finalPrice": "最终价",
+      "requestAdjustment": "申请调价",
+      "adjustmentRequested": "已提交调价申请，需管理员审批，之后客户需重新确认。",
+      "receivable": "付款",
+      "balance": "待付",
+      "timeline": "记录",
+      "customer": "客户",
+      "tracking": "新西兰追踪链接",
+      "addTracking": "添加追踪链接",
+      "editTracking": "修改追踪链接",
+      "trackingInvalid": "追踪链接必须以 https:// 开头",
+      "save": "保存",
+      "notes": "内部备注",
+      "newNote": "添加内部备注（客户看不到）",
+      "addNote": "添加备注"
+    },
+    "adjust": {
+      "line": "费用项",
+      "current": "当前",
+      "new": "新金额",
+      "newFor": "{line} 的新金额",
+      "reason": "原因",
+      "note": "批准后由系统重新计算合计和 GST。",
+      "submit": "提交审批",
+      "badAmount": "金额格式如 12.00。",
+      "nothingChanged": "请至少修改一项金额。",
+      "needReason": "请填写原因（至少 3 个字）。",
+      "failed": "提交失败。"
+    },
+    "assign": {
+      "title": "指派无主包裹",
+      "intro": "和客户核对快递单号后，把包裹指派给客户。",
+      "open": "指派",
+      "memberNo": "会员号",
+      "reason": "核对方式",
+      "invalid": "请填写会员号（如 CE-123456-7）和核对方式。",
+      "noMember": "没有这个会员号的客户。",
+      "failed": "指派失败。",
+      "cancel": "取消",
+      "confirm": "确认指派",
+      "done": "{parcelNo} 已指派给 {memberNo}。",
+      "assigned": "已指派"
+    },
+    "adjustments": {
+      "title": "调价申请",
+      "intro": "修改最终价的申请，由管理员批准或驳回。",
+      "loadFailed": "无法读取申请。",
+      "shipment": "货件",
+      "changes": "调整",
+      "reason": "原因",
+      "requested": "申请",
+      "status": "状态",
+      "approve": "批准",
+      "reject": "驳回",
+      "rejectTitle": "驳回 {shipmentNo} 的调价申请"
+    },
+    "leads": {
+      "title": "线索漏斗",
+      "intro": "客户从哪里来、走到哪一步。",
+      "loadFailed": "无法读取漏斗。",
+      "period": "{from} 至 {to}",
+      "source": "来源",
+      "stages": {
+        "LANDING": "访问",
+        "SIGNED_UP": "注册",
+        "QUOTED": "报价",
+        "PRE_NOTICED": "预报",
+        "SHIPPED": "发货"
+      }
+    },
+    "deliveries": {
+      "title": "发送记录",
+      "intro": "发给客户和员工的通知，失败的可以重发。",
+      "loadFailed": "无法读取发送记录。",
+      "filter": "按状态筛选",
+      "all": "全部",
+      "event": "事件",
+      "reference": "单号",
+      "channel": "渠道",
+      "recipient": "收件人",
+      "status": "状态",
+      "attempts": "次数",
+      "at": "创建时间",
+      "resend": "重发",
+      "channels": {
+        "in_app": "站内",
+        "email": "邮件",
+        "whatsapp": "WhatsApp"
+      }
+    },
+    "customer": {
+      "loadFailed": "无法读取客户。",
+      "email": "邮箱",
+      "phone": "电话",
+      "since": "注册时间",
+      "source": "首次来源",
+      "identities": "登录方式",
+      "addresses": "地址",
+      "shipments": "货件",
+      "preNotices": "预报",
+      "mergeTitle": "合并到另一个账户",
+      "mergeBody": "同一个人有两个账户时使用。货件记录和登录方式会转到另一个账户。",
+      "mergeTarget": "保留的会员号",
+      "merge": "合并",
+      "mergeConfirmTitle": "把 {from} 合并到 {to}",
+      "mergeConfirmBody": "控制台无法撤销此操作，会记入审计日志。",
+      "merged": "已合并到 {memberNo}。",
+      "mergedInto": "此账户已合并到 {memberNo}。",
+      "mergeFailed": "合并失败。"
+    }
+  },
+  "finance": {
+    "receivables": {
+      "title": "应收",
+      "intro": "客户按货件应付的款项。",
+      "filter": "按状态筛选",
+      "all": "全部",
+      "loadFailed": "无法读取应收。",
+      "receivableNo": "应收单号",
+      "customer": "客户",
+      "shipment": "货件",
+      "total": "含 GST 合计",
+      "balance": "余额",
+      "status": "状态",
+      "issued": "开立日期"
+    },
+    "receivable": {
+      "loadFailed": "无法读取应收单。",
+      "back": "全部应收",
+      "billTo": "开票对象",
+      "line": "费用项",
+      "exTax": "不含税",
+      "taxCode": "税码",
+      "taxRate": "税率",
+      "tax": "GST",
+      "subtotal": "小计",
+      "gst": "GST",
+      "total": "合计",
+      "paid": "已付",
+      "balance": "余额",
+      "taxProvisional": "税码为暂定，等会计师确认逐项税务表（DECISION(F1)）。",
+      "allocations": "已分配的收款",
+      "noAllocations": "暂无收款。",
+      "invoices": "发票",
+      "issueInvoice": "开具税务发票",
+      "kinds": {
+        "tax_invoice": "税务发票",
+        "credit_note": "贷项通知单"
+      },
+      "void": "已作废",
+      "replaces": "替代 {invoiceNo}",
+      "reissue": "作废重开",
+      "reissueTitle": "作废 {invoiceNo} 并重新开具",
+      "reissueBody": "原发票保留并标记作废，新发票使用新编号。",
+      "creditNote": "开贷项单",
+      "creditTitle": "针对 {invoiceNo} 开贷项通知单",
+      "creditBody": "开具贷项通知单，原发票不变。",
+      "overrideTitle": "未付清放货",
+      "overrideBody": "需管理员批准。请说明为什么现在可以放货。",
+      "requestOverride": "申请审批",
+      "overrideRequested": "已提交审批。",
+      "failed": "操作失败，请刷新后重试。"
+    },
+    "payments": {
+      "title": "收款",
+      "intro": "登记收款、分配到应收、冲销录错的款项、登记退款。",
+      "loadFailed": "无法读取收款。",
+      "recordTitle": "登记收款",
+      "amount": "金额",
+      "currency": "币种",
+      "method": "方式",
+      "methods": {
+        "bank_transfer": "银行转账",
+        "card": "刷卡",
+        "other": "其他"
+      },
+      "reference": "参考号",
+      "received": "到账日期",
+      "evidence": "凭据",
+      "record": "登记收款",
+      "invalid": "请填写金额（如 55.80）、参考号和到账日期。",
+      "uploadFailed": "凭据上传失败。",
+      "failed": "登记失败。",
+      "paymentNo": "收款号",
+      "unallocated": "未分配",
+      "allocatedTo": "已分配 / 已退款",
+      "status": "状态",
+      "refunded": "已退",
+      "allocate": "分配",
+      "allocateTitle": "分配 {paymentNo}",
+      "available": "可分配：",
+      "due": "待付",
+      "allocateFor": "{receivableNo} 分配金额",
+      "allocateNote": "系统会校验金额不超过收款和各应收余额。",
+      "allocateInvalid": "请至少填写一项金额，如 55.80。",
+      "allocateRejected": "被拒绝：请核对金额与收款、余额。",
+      "cancel": "取消",
+      "reverse": "冲销",
+      "reverseTitle": "冲销 {paymentNo}",
+      "reverseBody": "用于录错的收款。会新增冲销记录，不删除任何数据。",
+      "refund": "退款",
+      "refundTitle": "登记 {paymentNo} 的退款",
+      "paidAt": "退款日期",
+      "refundReason": "原因",
+      "refundInvalid": "请填写金额、日期和原因。",
+      "refundRejected": "被拒绝：退款金额超过可退金额。",
+      "recordRefund": "登记退款"
+    },
+    "overrides": {
+      "title": "放货审批",
+      "intro": "未付清就申请放货的货件。",
+      "loadFailed": "无法读取申请。",
+      "empty": "没有申请。",
+      "shipment": "货件",
+      "receivable": "应收单",
+      "balance": "未付",
+      "reason": "原因",
+      "requested": "申请",
+      "status": "状态",
+      "approve": "批准",
+      "reject": "驳回",
+      "rejectTitle": "驳回 {shipmentNo} 的放货申请"
+    },
+    "reconciliation": {
+      "title": "对账",
+      "intro": "在线支付在网关、平台和 Xero 三方之间的核对（第 3 阶段）。",
+      "date": "日期",
+      "loadFailed": "无法读取对账。",
+      "xeroLast": "上次 Xero 同步：",
+      "xeroPending": "{count} 条待同步",
+      "xeroFailed": "{count} 条失败",
+      "gateway": "网关",
+      "platform": "平台",
+      "xero": "Xero",
+      "amount": "金额",
+      "result": "结果",
+      "statuses": {
+        "MATCHED": "一致",
+        "MISSING_PLATFORM": "平台未登记",
+        "MISSING_XERO": "Xero 缺失",
+        "AMOUNT_MISMATCH": "金额不一致"
+      }
+    }
+  },
+  "admin": {
+    "roles": {
+      "admin": "管理",
+      "warehouse": "仓库",
+      "nz_ops": "运营",
+      "finance": "财务"
+    },
+    "staff": {
+      "title": "员工",
+      "intro": "员工账号和各自能打开的模块，变更会记入审计日志。",
+      "loadFailed": "无法读取员工。",
+      "name": "姓名",
+      "email": "邮箱",
+      "roles": "角色",
+      "mfa": "两步验证",
+      "lastSignIn": "最近登录",
+      "status": "状态",
+      "roleFor": "{name} 的{role}角色",
+      "mfaOn": "已开启",
+      "mfaPending": "尚未设置",
+      "deactivate": "停用",
+      "reactivate": "重新启用",
+      "inviteTitle": "邀请员工",
+      "invite": "发送邀请",
+      "inviteNote": "对方首次登录时设置密码和两步验证。",
+      "inviteInvalid": "请填写姓名、有效邮箱，并至少选一个角色。",
+      "inviteFailed": "邀请发送失败。",
+      "invited": "已向 {email} 发送邀请。"
+    },
+    "audit": {
+      "title": "审计日志",
+      "intro": "每一次价格变更、回退、收款更正、退款和账户合并，以及原因。",
+      "entity": "对象类型",
+      "entityPlaceholder": "如 shipment、payment、parcel",
+      "filter": "筛选",
+      "loadFailed": "无法读取审计日志。",
+      "at": "时间",
+      "actor": "操作人",
+      "action": "操作",
+      "entityCol": "记录",
+      "before": "变更前",
+      "after": "变更后",
+      "reason": "原因"
+    },
+    "fcl": {
+      "title": "整柜运价",
+      "intro": "港到港整柜运价（美元）。导入运价表、核对、发布（第 3 阶段）。",
+      "loadFailed": "无法读取运价表。",
+      "expired": "已发布的运价已于 {date} 过期。发布新运价前，整柜报价转人工。",
+      "version": "版本",
+      "status": "状态",
+      "valid": "有效期",
+      "source": "文件",
+      "imported": "导入",
+      "view": "查看",
+      "ratesOf": "v{version} 运价",
+      "origin": "起运港",
+      "destination": "目的港",
+      "publish": "发布",
+      "publishTitle": "发布整柜运价 v{version}",
+      "publishBody": "自 {from} 起报价使用此运价，发布后不可修改。",
+      "importTitle": "导入运价表",
+      "file": "运价表（.xlsx 或 .csv）",
+      "validFrom": "生效日期",
+      "validTo": "截止日期",
+      "import": "导入为草稿",
+      "importInvalid": "请选择文件并填写两个日期。",
+      "importFailed": "运价表导入失败。"
+    },
+    "reports": {
+      "title": "报表",
+      "intro": "按月的收入和货量（第 3 阶段）。",
+      "from": "开始",
+      "to": "结束",
+      "loadFailed": "无法读取报表。",
+      "revenue": "收入",
+      "month": "月份",
+      "exGst": "不含 GST",
+      "currencyNote": "NZD 和 USD 分别统计，不做换算。",
+      "volume": "货量",
+      "shipments": "票数",
+      "chargeableKg": "计费重 kg",
+      "byProduct": "按服务统计"
+    }
   }
 }

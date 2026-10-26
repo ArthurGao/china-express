@@ -7,7 +7,7 @@ const PORT = 3602;
 
 export default defineConfig({
   ...base,
-  testMatch: /demo\.spec\.ts/,
+  testMatch: /demo(-modules)?\.spec\.ts/,
   globalSetup: undefined, // no Supabase to prepare
   reporter: [["list"], ["html", { open: "never", outputFolder: "playwright-report/demo" }]],
   use: { ...base.use, baseURL: `http://localhost:${PORT}` },

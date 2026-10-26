@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { CustomerNav } from "@/components/customer-nav";
+import { CustomerNav, CustomerTabs } from "@/components/customer-nav";
 
 export default async function CustomerLayout({ children }: LayoutProps<"/">) {
   const t = await getTranslations("common");
@@ -14,6 +14,7 @@ export default async function CustomerLayout({ children }: LayoutProps<"/">) {
           <CustomerNav />
         </div>
       </header>
+      <CustomerTabs />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">{children}</main>
     </div>
   );

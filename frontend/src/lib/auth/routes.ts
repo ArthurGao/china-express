@@ -3,7 +3,7 @@
 
 export const CUSTOMER_LOGIN = "/login";
 export const STAFF_LOGIN = "/staff/login";
-export const STAFF_HOME = "/staff/admin/rates";
+export const STAFF_HOME = "/staff";
 export const AUTH_CALLBACK = "/auth/callback";
 
 /** Where Supabase sends the browser back after OAuth (sign-in or linking), continuing to `next`. */
@@ -12,7 +12,7 @@ export function oauthRedirectTo(next: string): string {
 }
 
 // Login before quoting: DECISION(A4) ★, as the handover says (guests only see the login page).
-const CUSTOMER_PROTECTED = ["/quote", "/pre-notice", "/account"];
+const CUSTOMER_PROTECTED = ["/quote", "/pre-notice", "/account", "/shipments", "/notifications", "/payments"];
 
 function under(pathname: string, prefix: string) {
   return pathname === prefix || pathname.startsWith(`${prefix}/`);

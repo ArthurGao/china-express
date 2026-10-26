@@ -11,7 +11,7 @@ test("a visitor signs in with any code, quotes and sends a pre-notice", async ({
 
   await page.goto("/quote?src=fb-marketplace");
   await expect(page).toHaveURL(/\/login\?next=%2Fquote%3Fsrc%3Dfb-marketplace$/);
-  await signInWithEmailCode(page, "visitor@example.com", () => "123456");
+  await signInWithEmailCode(page, "visitor@example.com", () => "123456", "Demo: no email is sent. Enter any 6 digits, for example 123456.");
 
   await expect(page).toHaveURL(/\/quote\?src=fb-marketplace$/);
   await expect(page.getByTestId("member-no")).toHaveText("CE-123456-7");
@@ -38,6 +38,7 @@ test("staff need the TOTP step before the rates console, then publish", async ({
   await expect(page).toHaveURL(/\/staff\/login$/);
   await expect(page.getByTestId("demo-banner")).toContainText("任意邮箱、密码和 6 位数字验证码");
 
+  await expect(page.getByText("演示版：任意邮箱和密码都可以登录。")).toBeVisible();
   await signInStaff(page, DEMO_STAFF);
   // Password alone is aal1: the console still refuses.
   await expect(page.getByLabel("验证器动态码")).toBeVisible();
@@ -45,8 +46,11 @@ test("staff need the TOTP step before the rates console, then publish", async ({
   await expect(page).toHaveURL(/\/staff\/login$/);
 
   await signInStaff(page, DEMO_STAFF);
+  await expect(page.getByText("演示版：不需要验证器 App，输入任意 6 位数字即可，例如 123456。")).toBeVisible();
   await page.getByLabel("验证器动态码").fill("654321");
   await page.getByRole("button", { name: "验证" }).click();
+  await expect(page).toHaveURL(/\/staff\/warehouse$/);
+  await page.getByRole("navigation", { name: "模块" }).getByRole("link", { name: "管理" }).click();
   await expect(page).toHaveURL(/\/staff\/admin\/rates$/);
   await publishSeaParcelDraft(page, "演示调价");
 });

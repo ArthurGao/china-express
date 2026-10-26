@@ -2,3 +2,6 @@
 export const DATA_TABLE = "w-full border-collapse text-[13px] [&_td]:px-2 [&_td]:py-1 [&_th]:px-2 [&_th]:py-1 [&_th]:font-medium";
 export const DATA_HEAD_ROW = "border-b border-rule text-left text-muted-foreground";
 export const DATA_ROW = "border-b border-rule";
+// Warehouse tablet rows: a 56 px touch target, the whole row opens the record (pair with ROW_LINK on its link).
+export const WH_ROW = "relative h-14 border-b border-rule hover:bg-surface";
+export const ROW_LINK = "font-mono underline after:absolute after:inset-0";

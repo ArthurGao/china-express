@@ -19,8 +19,9 @@ frontend/
     components/…                # feature components
     lib/api/                    # generated client + TanStack Query hooks (do not hand-edit generated files)
     lib/supabase/               # @supabase/ssr browser/server clients — AUTH ONLY
-    lib/realtime/               # EventSource wrapper with reconnect + query invalidation
-    lib/offline/                # IndexedDB upload queue (warehouse)
+    lib/live/                   # SSE over fetch (Authorization header), Last-Event-ID resume, query invalidation
+    lib/photos/                 # photo compression + IndexedDB upload queue (warehouse)
+    lib/staff/                  # staff modules per role, /staff/me
     lib/in-app-browser.ts       # detect FB/Messenger/WhatsApp/Instagram webviews
     proxy.ts                    # Next 16 name for middleware: session refresh, route guard, locale area
     mocks/                      # MSW handlers serving the contract's examples (dev/test only, never shipped)
@@ -44,6 +45,8 @@ frontend/
 - **Forms**: react-hook-form + zod. Client validation is for UX only; the backend is the authority.
 - **Accessibility & mobile**: test at 375 px width; tap targets ≥ 44 px; respect `prefers-color-scheme`.
 - Do not show a feature that belongs to a later stage (e.g. online payment buttons) — hide it, don't stub fake data.
+  Stage 3 staff pages are built but hidden from the nav unless `NEXT_PUBLIC_DEMO` or `NEXT_PUBLIC_LATER_STAGES` is
+  `enabled` (`src/lib/staff/modules.ts`); online payment shows only when the API says `onlinePaymentAvailable`.
 
 ## Commands (define these scripts at T1.1)
 

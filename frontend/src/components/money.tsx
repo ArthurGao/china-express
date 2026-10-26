@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import type { QuoteLine, Total } from "@/lib/api/types";
+import { useLocalized } from "@/lib/i18n-text";
 import { formatMoney } from "@/lib/money";
 
 // Display only: every amount here is a string the backend computed.
@@ -23,11 +24,12 @@ export function TotalAmount({ total, ...props }: { total: Total } & React.Compon
 
 /** The backend's priced lines, label left and amount right. */
 export function PriceLines({ lines }: { lines: QuoteLine[] }) {
+  const localized = useLocalized();
   return (
     <dl className="grid gap-1 text-sm">
       {lines.map((line) => (
         <div key={line.code} className="flex justify-between gap-4">
-          <dt className="text-muted-foreground">{line.label.en}</dt>
+          <dt className="text-muted-foreground">{localized(line.label)}</dt>
           <dd><Money amount={line.amount} currency={line.currency} /></dd>
         </div>
       ))}

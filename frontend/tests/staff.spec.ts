@@ -24,7 +24,8 @@ test("staff sign in with mandatory TOTP, then draft, simulate and publish a rate
   const secret = (await page.getByTestId("totp-secret").textContent())!.trim();
   await page.getByLabel("验证器动态码").fill(await freshCode(secret));
   await page.getByRole("button", { name: "验证" }).click();
-  await expect(page).toHaveURL(/\/staff\/admin\/rates$/);
+  // /staff opens the first module the roles allow (warehouse for this all-roles account).
+  await expect(page).toHaveURL(/\/staff\/warehouse$/);
 
   // Second sign-in: the enrolled factor is verified, not enrolled again.
   await page.getByRole("button", { name: "退出登录" }).click();
@@ -36,6 +37,8 @@ test("staff sign in with mandatory TOTP, then draft, simulate and publish a rate
   await new Promise((r) => setTimeout(r, (31 - (Math.floor(Date.now() / 1000) % 30)) * 1000));
   await page.getByLabel("验证器动态码").fill(await generate({ secret }));
   await page.getByRole("button", { name: "验证" }).click();
+  await expect(page).toHaveURL(/\/staff\/warehouse$/);
+  await page.getByRole("navigation", { name: "模块" }).getByRole("link", { name: "管理" }).click();
   await expect(page).toHaveURL(/\/staff\/admin\/rates$/);
 
   // Rate change: draft → simulate → publish with a reason.

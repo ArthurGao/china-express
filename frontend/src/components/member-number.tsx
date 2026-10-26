@@ -10,7 +10,6 @@ export function MemberNumber() {
   // Rendered only for a signed-in customer (CustomerNav); first call also creates the customer record.
   const { data } = $api.useQuery("get", "/me", {}, { staleTime: Infinity });
   if (!data) return null;
-  // Links to the account page, which is the way into the account on phones (the text nav is hidden there).
   return (
     <Link href="/account" className="flex items-baseline gap-2 text-sm whitespace-nowrap hover:underline">
       <span className="hidden text-muted-foreground sm:inline">{t("memberLabel")}</span>

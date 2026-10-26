@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { $api, newIdempotencyKey } from "@/lib/api/client";
+import { $api, idem } from "@/lib/api/client";
 import type { PreNotice } from "@/lib/api/types";
 import { parseTrackingLines } from "@/lib/tracking";
 
@@ -22,7 +22,7 @@ export function TrackingNumbers({ notice }: { notice: PreNotice }) {
     setInvalid(parsed === null || parsed.length === 0);
     if (!parsed || parsed.length === 0) return;
     add.mutate(
-      { params: { path: { preNoticeId: notice.id }, header: { "Idempotency-Key": newIdempotencyKey() } }, body: { add: parsed } },
+      { params: { path: { preNoticeId: notice.id }, header: idem() }, body: { add: parsed } },
       {
         onSuccess: (updated) => {
           queryClient.setQueryData(

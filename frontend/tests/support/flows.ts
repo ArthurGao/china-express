@@ -2,10 +2,16 @@ import { expect, type Page } from "@playwright/test";
 
 // Steps shared by the real-auth specs and the demo spec. Data comes from the contract examples in both.
 
-export async function signInWithEmailCode(page: Page, email: string, code: () => Promise<string> | string) {
+/** `notice` is the text shown after the code is requested (the demo build says no email is sent). */
+export async function signInWithEmailCode(
+  page: Page,
+  email: string,
+  code: () => Promise<string> | string,
+  notice = `We sent a code to ${email}.`,
+) {
   await page.getByLabel("Email").fill(email);
   await page.getByRole("button", { name: "Email me a code" }).click();
-  await expect(page.getByText(`We sent a code to ${email}.`)).toBeVisible();
+  await expect(page.getByText(notice)).toBeVisible();
   await page.getByLabel("6-digit code").fill(await code());
   await page.getByRole("button", { name: "Sign in" }).click();
 }
@@ -46,3 +52,18 @@ export async function publishSeaParcelDraft(page: Page, reason: string) {
   await dialog.getByRole("button", { name: "确认发布" }).click();
   await expect(panel.getByRole("status")).toHaveText("已发布第 2 版，2026-11-01 起生效。");
 }
+
+/** Demo staff sign-in: any credentials, then any 6-digit code (demo build only). */
+export async function signInDemoStaff(page: Page) {
+  await page.goto("/staff/login");
+  await signInStaff(page, { email: "ops@example.com", password: "demo" });
+  await page.getByLabel("验证器动态码").fill("123456");
+  await page.getByRole("button", { name: "验证" }).click();
+  await expect(page).toHaveURL(/\/staff\/warehouse$/);
+}
+
+// 1×1 PNG: enough for the browser to decode, shrink and re-encode as WebP.
+export const TINY_PNG = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+  "base64",
+);

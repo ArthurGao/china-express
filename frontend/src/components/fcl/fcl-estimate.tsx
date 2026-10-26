@@ -1,12 +1,13 @@
 "use client";
 
+import { ErrorText } from "@/components/feedback";
 import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Money, PriceLines, TotalAmount } from "@/components/money";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { $api, newIdempotencyKey } from "@/lib/api/client";
+import { $api, idem } from "@/lib/api/client";
 import type { FclEstimate as FclEstimateResult, FclPorts } from "@/lib/api/types";
 
 type Size = "20" | "40";
@@ -49,7 +50,7 @@ export function FclEstimate() {
     setMissing(false);
     estimate.mutate({
       body: { size, originPort: origin, destPort: dest, includeLocalCharges },
-      params: { header: { "Idempotency-Key": newIdempotencyKey() } },
+      params: { header: idem() },
     });
   }
 
@@ -106,7 +107,7 @@ export function FclEstimate() {
         <Button type="button" size="lg" variant="outline" className="h-12" onClick={() => request(true)} disabled={estimate.isPending}>{t("addB")}</Button>
       </div>
       {missing && <p className="text-sm text-destructive">{t("errors.required")}</p>}
-      {estimate.isError && <p role="alert" className="text-destructive">{t("errors.submit")}</p>}
+      {estimate.isError && <ErrorText>{t("errors.submit")}</ErrorText>}
 
       {result && result.status === "REQUIRES_REVIEW" && (
         <section className="grid gap-2 border border-rule bg-surface p-4" data-testid="fcl-review">

@@ -6,6 +6,10 @@ import { server } from "@/mocks/server";
 import { renderWithProviders } from "@/test/render";
 import { CustomerLogin } from "./customer-login";
 
+// Toggled per test: the demo build (ADR 0004) changes only the copy after "Email me a code".
+const build = vi.hoisted(() => ({ demo: false }));
+vi.mock("@/lib/demo", () => ({ get DEMO() { return build.demo; } }));
+
 vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams("next=/pre-notice/new") }));
 // Successful sign-in does a full page navigation, which jsdom cannot perform; observe the helper call instead.
 const assign = vi.hoisted(() => vi.fn());
@@ -18,6 +22,7 @@ describe("CustomerLogin (email 6-digit code)", () => {
 
   beforeEach(() => {
     otpRequests = [];
+    build.demo = false;
     assign.mockReset();
     server.use(
       http.post(`${AUTH}/otp`, async ({ request }) => {
@@ -67,5 +72,15 @@ describe("CustomerLogin (email 6-digit code)", () => {
     await user.type(screen.getByLabelText("6-digit code"), "123456");
     await user.click(screen.getByRole("button", { name: "Sign in" }));
     await vi.waitFor(() => expect(assign).toHaveBeenCalledWith("/pre-notice/new"));
+  });
+
+  it("in the demo build, says no email is sent instead of claiming one was", async () => {
+    build.demo = true;
+    const user = userEvent.setup();
+    renderWithProviders(<CustomerLogin />);
+    await user.type(screen.getByLabelText("Email"), "alex@example.co.nz");
+    await user.click(screen.getByRole("button", { name: "Email me a code" }));
+    expect(await screen.findByText("Demo: no email is sent. Enter any 6 digits, for example 123456.")).toBeInTheDocument();
+    expect(screen.queryByText(/We sent a code/)).toBeNull();
   });
 });

@@ -1,0 +1,9 @@
+# Uploaded source for the demo deployment (ADR 0004): never local env files or build output.
+.env*
+!.env.example
+.next
+.next-*
+node_modules
+test-results
+playwright-report
+public/mockServiceWorker.js

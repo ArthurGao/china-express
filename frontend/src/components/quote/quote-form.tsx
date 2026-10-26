@@ -12,11 +12,11 @@ import { SectionHeading } from "@/components/section-heading";
 import { $api, fetchClient } from "@/lib/api/client";
 import type { EstimateRequest } from "@/lib/api/types";
 import { toMoneyString } from "@/lib/money";
-import { QUANTITY } from "@/lib/validation";
+import { POSITIVE_DECIMAL, QUANTITY } from "@/lib/validation";
 
 const REGIONS = ["AKL", "NI_OTHER", "SI"] as const;
 // Client validation is for UX only; the backend validates again and is the authority.
-const positiveDecimal = z.string().trim().regex(/^(?!0+(\.0+)?$)\d+(\.\d{1,3})?$/, "positive");
+const positiveDecimal = z.string().trim().regex(POSITIVE_DECIMAL, "positive");
 
 const formSchema = z
   .object({

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { $api, newIdempotencyKey } from "@/lib/api/client";
+import { $api, idem } from "@/lib/api/client";
 import { DATA_HEAD_ROW, DATA_ROW, DATA_TABLE } from "./data-table";
 import { PublishDialog } from "./publish-dialog";
 import { SeaParcelEditor, isSeaParcelPayload, seaParcelValid } from "./sea-parcel-editor";
@@ -67,7 +67,7 @@ export function RateVersionPanel({ versionId, notice, onDraftCreated }: {
     setDateInvalid(false);
     createDraft.mutate(
       {
-        params: { path: { rateCardId: version.rateCardId }, header: { "Idempotency-Key": newIdempotencyKey() } },
+        params: { path: { rateCardId: version.rateCardId }, header: idem() },
         body: { basedOnVersionId: version.id, effectiveFrom: editing.effectiveFrom, payload: editing.payload },
       },
       {
@@ -82,7 +82,7 @@ export function RateVersionPanel({ versionId, notice, onDraftCreated }: {
 
   const runPublish = (reason: string) =>
     publish.mutate(
-      { params: { path: { versionId: version.id }, header: { "Idempotency-Key": newIdempotencyKey() } }, body: { reason } },
+      { params: { path: { versionId: version.id }, header: idem() }, body: { reason } },
       {
         onSuccess: (published) => {
           queryClient.setQueryData(versionKey(published.id), published);

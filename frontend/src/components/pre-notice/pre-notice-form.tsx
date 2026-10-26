@@ -1,5 +1,6 @@
 "use client";
 
+import { ErrorText } from "@/components/feedback";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -113,7 +114,7 @@ export function PreNoticeForm({ quoteId, product }: { quoteId: string | null; pr
       <Button type="submit" size="lg" className="h-12 justify-self-start px-8 text-base" disabled={create.isPending || !quote.data}>
         {t("new.submit")}
       </Button>
-      {create.isError && <p role="alert" className="text-destructive">{t("errors.submit")}</p>}
+      {create.isError && <ErrorText>{t("errors.submit")}</ErrorText>}
     </form>
   );
 }

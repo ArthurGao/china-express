@@ -140,6 +140,11 @@
 }
 
 @layer base {
+  /* Native checkboxes and radios take the steel accent, not the browser's blue. */
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: var(--primary);
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -184,5 +189,18 @@
     position: fixed;
     inset: 0;
     border: none !important;
+  }
+}
+
+/* Warehouse carton label: 4×6 in, no margins (thermal label printers). */
+@page parcel-label {
+  size: 4in 6in;
+  margin: 0;
+}
+@media print {
+  .parcel-label {
+    page: parcel-label;
+    width: 4in !important;
+    height: 6in;
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { ErrorText } from "@/components/feedback";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -9,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { STAFF_HOME } from "@/lib/auth/routes";
+import { DEMO } from "@/lib/demo";
 import { hardNavigate } from "@/lib/navigation";
 import { getSupabase } from "@/lib/supabase/browser";
 
@@ -24,6 +26,7 @@ type Step =
 // backend both require aal2.
 export function StaffLogin() {
   const t = useTranslations("staffAuth");
+  const tDemo = useTranslations("demo");
   const [step, setStep] = useState<Step>({ kind: "credentials" });
   const [error, setError] = useState<string | null>(null);
 
@@ -64,12 +67,13 @@ export function StaffLogin() {
   if (step.kind === "credentials") {
     return (
       <form onSubmit={credForm.handleSubmit(signIn)} className="grid gap-3" noValidate>
+        {DEMO && <p className="text-muted-foreground">{tDemo("staffSignIn")}</p>}
         <Label htmlFor="staff-email">{t("email")}</Label>
         <Input id="staff-email" type="email" autoComplete="username" {...credForm.register("email")} />
         <Label htmlFor="staff-password">{t("password")}</Label>
         <Input id="staff-password" type="password" autoComplete="current-password" {...credForm.register("password")} />
         <Button type="submit" className="mt-2 h-10" disabled={credForm.formState.isSubmitting}>{t("signIn")}</Button>
-        {error && <p role="alert" className="text-destructive">{error}</p>}
+        <ErrorText>{error}</ErrorText>
       </form>
     );
   }
@@ -87,12 +91,13 @@ export function StaffLogin() {
           </p>
         </div>
       )}
+      {DEMO && <p className="text-muted-foreground">{tDemo("totp")}</p>}
       <Label htmlFor="totp">{t("code")}</Label>
       <Input id="totp" inputMode="numeric" autoComplete="one-time-code" maxLength={6}
         className="font-mono tracking-[0.3em]" {...codeForm.register("code")} />
       {codeForm.formState.errors.code && <p className="text-destructive">{t("errors.codeFormat")}</p>}
       <Button type="submit" className="mt-2 h-10" disabled={codeForm.formState.isSubmitting}>{t("verify")}</Button>
-      {error && <p role="alert" className="text-destructive">{error}</p>}
+      <ErrorText>{error}</ErrorText>
     </form>
   );
 }

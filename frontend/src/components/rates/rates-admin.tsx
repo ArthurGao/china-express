@@ -1,10 +1,11 @@
 "use client";
 
+import { ErrorText } from "@/components/feedback";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { $api } from "@/lib/api/client";
+import { $api, errorStatus } from "@/lib/api/client";
 import { DATA_HEAD_ROW, DATA_ROW, DATA_TABLE } from "./data-table";
 import { RateVersionPanel } from "./rate-version-panel";
 
@@ -15,8 +16,8 @@ export function RatesAdmin() {
   const [notice, setNotice] = useState<string | undefined>();
 
   if (cards.isError) {
-    const forbidden = (cards.error as { status?: number } | null)?.status === 403;
-    return <p role="alert" className="text-destructive">{t(forbidden ? "errors.forbidden" : "errors.load")}</p>;
+    const forbidden = errorStatus(cards.error) === 403;
+    return <ErrorText>{t(forbidden ? "errors.forbidden" : "errors.load")}</ErrorText>;
   }
 
   return (

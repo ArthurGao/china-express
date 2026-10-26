@@ -11,6 +11,9 @@ import { Label } from "@/components/ui/label";
 import { $api } from "@/lib/api/client";
 import { oauthRedirectTo } from "@/lib/auth/routes";
 import { getSupabase } from "@/lib/supabase/browser";
+import { Addresses } from "./addresses";
+import { BillingEntities } from "./billing-entities";
+import { NotificationPrefs } from "./notification-prefs";
 
 export function AccountPage() {
   const t = useTranslations("account");
@@ -94,6 +97,10 @@ export function AccountPage() {
           </p>
         )}
       </section>
+
+      <BillingEntities />
+      <Addresses />
+      <NotificationPrefs />
 
       <section className="grid gap-2 border-t border-rule pt-6">
         <h2 className="font-semibold">{t("recoveryTitle")}</h2>

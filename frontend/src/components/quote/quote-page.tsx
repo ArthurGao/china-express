@@ -1,9 +1,10 @@
 "use client";
 
+import { ErrorText } from "@/components/feedback";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { $api, newIdempotencyKey } from "@/lib/api/client";
+import { $api, idem } from "@/lib/api/client";
 import type { EstimateRequest, ProductQuote } from "@/lib/api/types";
 import { touchLead } from "@/lib/leads";
 import { LeadTouch } from "@/components/lead-touch";
@@ -21,7 +22,7 @@ export function QuotePage() {
   function submit(body: EstimateRequest) {
     setSelected(null);
     estimate.mutate(
-      { body, params: { header: { "Idempotency-Key": newIdempotencyKey() } } },
+      { body, params: { header: idem() } },
       { onSuccess: () => { void touchLead("QUOTE_CALCULATED"); requestAnimationFrame(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" })); } },
     );
   }
@@ -39,7 +40,7 @@ export function QuotePage() {
         <p className="mt-2 text-muted-foreground">{t("intro")}</p>
       </div>
       <QuoteForm onSubmit={submit} submitting={estimate.isPending} />
-      {estimate.isError && <p role="alert" className="text-destructive">{t("errors.submit")}</p>}
+      {estimate.isError && <ErrorText>{t("errors.submit")}</ErrorText>}
       <div ref={resultsRef}>
         {estimate.data && <QuoteResults estimate={estimate.data} selected={selected} onSelect={setSelected} onNext={next} />}
       </div>

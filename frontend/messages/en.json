@@ -6,10 +6,14 @@
     "memberLabel": "Member"
   },
   "customerNav": {
-    "quote": "Get a quote",
-    "account": "My account",
+    "quote": "Quote",
+    "account": "Account",
     "signOut": "Sign out",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "shipments": "My shipments",
+    "notifications": "Notifications",
+    "sections": "Your account",
+    "unread": "{count} unread"
   },
   "landing": {
     "title": "Ship from China to New Zealand, door to door.",
@@ -23,9 +27,40 @@
     }
   },
   "staffNav": {
-    "rates": "Rates",
     "signOut": "Sign out",
-    "language": "Language"
+    "language": "Language",
+    "modulesLabel": "Modules",
+    "loadFailed": "Could not load your staff profile.",
+    "noRole": "No role has been assigned to your account yet. Ask an admin.",
+    "modules": {
+      "warehouse": "Warehouse",
+      "ops": "Operations",
+      "finance": "Finance",
+      "admin": "Admin"
+    },
+    "pages": {
+      "receive": "Receive",
+      "unclaimed": "Unclaimed",
+      "consolidations": "Consolidation",
+      "dispatch": "Dispatch",
+      "dashboard": "Dashboard",
+      "search": "Search",
+      "assign": "Assign unclaimed",
+      "adjustments": "Price adjustments",
+      "leads": "Leads",
+      "deliveries": "Notification log",
+      "receivables": "Receivables",
+      "payments": "Payments",
+      "overrides": "Release approvals",
+      "reconciliation": "Reconciliation",
+      "rates": "Rates",
+      "fclRates": "FCL rates",
+      "staff": "Staff",
+      "audit": "Audit log",
+      "reports": "Reports"
+    },
+    "noAccess": "Your account does not have access to this module. Ask an admin if you need it.",
+    "laterStage": "This page belongs to stage 3 and is not open yet."
   },
   "auth": {
     "title": "Sign in",
@@ -406,10 +441,849 @@
     "linked": "{provider} is now linked.",
     "linkFailed": "We could not link that sign-in method. If it already belongs to another account, sign in with it instead.",
     "recoveryTitle": "Lost access?",
-    "recoveryBody": "Changed or lost your phone? Sign in with your email code, then update it here. If you cannot sign in any other way, contact us with your member number and a recent shipment, and our team will verify you."
+    "recoveryBody": "Changed or lost your phone? Sign in with your email code, then update it here. If you cannot sign in any other way, contact us with your member number and a recent shipment, and our team will verify you.",
+    "billing": {
+      "title": "Invoice details",
+      "intro": "Invoices are made out to the default entry.",
+      "default": "Default",
+      "add": "Add invoice details",
+      "type": "Invoice to",
+      "types": {
+        "individual": "Individual",
+        "company": "Company"
+      },
+      "legalName": "Full or legal name",
+      "gstNumber": "GST number",
+      "invalid": "Please fill in the name and a full address with a 4-digit postcode.",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "address": {
+      "line1": "Street address",
+      "line2": "Unit, floor (optional)",
+      "city": "City or town",
+      "postcode": "Postcode"
+    },
+    "addresses": {
+      "title": "Delivery addresses",
+      "default": "Default",
+      "add": "Add an address",
+      "label": "Name for this address",
+      "invalid": "Please give the address a name and fill in a full address with a 4-digit postcode.",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "prefs": {
+      "title": "Notifications",
+      "save": "Save preferences",
+      "saved": "Saved.",
+      "email": {
+        "label": "Email",
+        "body": "Shipment updates, payment requests and invoices."
+      },
+      "whatsapp": {
+        "label": "WhatsApp",
+        "body": "Short updates when your parcels arrive and when your shipment moves."
+      },
+      "marketing": {
+        "label": "Offers and news",
+        "body": "Occasional promotions. You can turn this off at any time."
+      }
+    }
   },
   "demo": {
     "label": "Demo",
-    "body": "Sample data: prices are fixed worked examples and do not change with your input. Any email, password and 6-digit code sign you in."
+    "body": "Sample data: prices are fixed worked examples and do not change with your input. Any email, password and 6-digit code sign you in.",
+    "emailCode": "Demo: no email is sent. Enter any 6 digits, for example 123456.",
+    "staffSignIn": "Demo: any email and password work.",
+    "totp": "Demo: no authenticator app needed. Enter any 6 digits, for example 123456."
+  },
+  "status": {
+    "shipment": {
+      "awaiting_final_confirmation": "Awaiting confirmation",
+      "awaiting_payment": "Awaiting payment",
+      "released": "Released",
+      "dispatched": "In transit",
+      "arrived_nz": "Arrived in NZ",
+      "customs_clearing": "Customs clearance",
+      "customs_held": "Held by customs",
+      "out_for_delivery": "Out for delivery",
+      "delivery_failed": "Delivery failed",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "parcel": {
+      "expected": "Expected",
+      "received": "Received",
+      "unclaimed": "Unclaimed",
+      "held": "On hold",
+      "returned": "Returned",
+      "awaiting_choice": "Awaiting choice",
+      "packed": "Packed",
+      "dispatched": "Dispatched"
+    },
+    "receivable": {
+      "issued": "Issued",
+      "partially_paid": "Part paid",
+      "paid": "Paid",
+      "overpaid": "Overpaid",
+      "refunded": "Refunded",
+      "void": "Void"
+    },
+    "consolidation": {
+      "requested": "Requested",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "payment": {
+      "recorded": "Recorded",
+      "reversed": "Reversed"
+    },
+    "approval": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "delivery": {
+      "queued": "Queued",
+      "sent": "Sent",
+      "failed": "Failed"
+    },
+    "onlinePayment": {
+      "PROCESSING": "Processing",
+      "SUCCEEDED": "Paid",
+      "FAILED": "Failed"
+    },
+    "staff": {
+      "active": "Active",
+      "inactive": "Deactivated"
+    },
+    "rateSheet": {
+      "draft": "Draft",
+      "published": "Published",
+      "retired": "Retired",
+      "expired": "Expired"
+    }
+  },
+  "journey": {
+    "label": "Step {step} of {total}",
+    "steps": {
+      "1": "Shipment notice sent",
+      "2": "At our warehouse",
+      "3": "Final price",
+      "4": "Paid",
+      "5": "In transit",
+      "6": "Arrived in NZ",
+      "7": "Delivered"
+    },
+    "exceptions": {
+      "PARCEL_UNCLAIMED": "A parcel could not be matched",
+      "PARCEL_HELD": "A parcel is on hold",
+      "CUSTOMS_HELD": "Held by NZ Customs",
+      "DELIVERY_FAILED": "Delivery failed",
+      "PARTIALLY_PAID": "Part paid"
+    },
+    "exceptionHelp": {
+      "PARCEL_UNCLAIMED": "We received a parcel we could not match to you. Check the shipping mark, or contact us with the courier tracking number.",
+      "PARCEL_HELD": "We are holding a parcel (damage or restricted goods). We will contact you before anything else happens.",
+      "CUSTOMS_HELD": "NZ Customs is checking this shipment. We will tell you what they need.",
+      "DELIVERY_FAILED": "The courier could not deliver. We will arrange another attempt.",
+      "PARTIALLY_PAID": "We have received part of the payment. The shipment leaves once the balance is paid."
+    }
+  },
+  "reasonDialog": {
+    "reason": "Reason (recorded in the audit log)",
+    "invalid": "Please give a reason (at least 3 characters).",
+    "cancel": "Cancel"
+  },
+  "shipments": {
+    "title": "My shipments",
+    "back": "All shipments",
+    "track": "Track with the NZ courier",
+    "history": "History",
+    "packages": "Cartons shipped",
+    "empty": "Nothing here yet. Your shipments appear after you send a shipment notice.",
+    "startQuote": "Get a quote",
+    "parcelsSoFar": "{received, plural, =0 {No parcels at the warehouse yet} one {# parcel at the warehouse} other {# parcels at the warehouse}}",
+    "parcelsOf": "{received} of {expected} parcels at the warehouse",
+    "actions": {
+      "CHOOSE_HANDLING": "Choose how to ship",
+      "CONFIRM_FINAL_PRICE": "Confirm the final price",
+      "PAY": "Pay"
+    },
+    "errors": {
+      "load": "We could not load your shipments. Please try again."
+    },
+    "parcels": {
+      "title": "Parcels we received",
+      "received": "Received",
+      "measured": "{kg} kg · {l} × {w} × {h} cm",
+      "damaged": "The outer box arrived damaged. See the photos.",
+      "photo": {
+        "label": "Courier label of {parcel}",
+        "overview": "Photo of {parcel}",
+        "damage": "Damage on {parcel}"
+      }
+    },
+    "final": {
+      "title": "Your final price",
+      "estimate": "Estimate",
+      "final": "Final price",
+      "agreed": "Agreed price",
+      "validUntil": "This final price is valid until",
+      "later": "Still possible after this price, only if they apply:",
+      "confirm": "Confirm final price",
+      "changed": "The price was updated while you were looking. Please review it again.",
+      "failed": "We could not confirm the price. Please try again."
+    },
+    "payment": {
+      "title": "Payment",
+      "receivableNo": "Payment request",
+      "total": "Total incl. GST",
+      "paid": "Paid",
+      "balance": "To pay",
+      "bankTitle": "Pay by bank transfer",
+      "accountName": "Account name",
+      "accountNumber": "Account number",
+      "reference": "Reference",
+      "copy": "Copy",
+      "copied": "Copied",
+      "placeholder": "Bank details are being finalised. Please wait for them before paying.",
+      "bankNote": "Use the reference exactly so we can match your payment. We ship once the payment is received.",
+      "payOnline": "Pay online",
+      "payOnlineNote": "Card, Apple Pay, Google Pay or other methods on the payment provider's page.",
+      "payFailed": "We could not start the online payment. Please try again or pay by bank transfer.",
+      "invoices": "Invoices",
+      "invoiceKinds": {
+        "tax_invoice": "Tax invoice",
+        "credit_note": "Credit note"
+      }
+    },
+    "handling": {
+      "title": "{count, plural, one {# parcel is at our warehouse} other {# parcels are at our warehouse}}",
+      "question": "How should we ship them?",
+      "pick": "Please choose an option.",
+      "submit": "Confirm my choice",
+      "chosen": "You chose: {mode}. We will prepare your final price.",
+      "noFee": "No extra fee",
+      "finalNote": "Your final price is worked out after packing, from the actual weight and size.",
+      "changed": "Something changed at the warehouse. Please choose again.",
+      "failed": "We could not save your choice. Please try again.",
+      "modes": {
+        "SINGLE": {
+          "name": "Ship each parcel as it is",
+          "body": "No repacking. Each parcel is charged on its own size and weight."
+        },
+        "CONSOLIDATE": {
+          "name": "Combine into fewer cartons",
+          "body": "We repack your parcels together, which usually lowers the freight."
+        },
+        "CONSOLIDATE_UNPACK": {
+          "name": "Combine and remove original packaging",
+          "body": "We take out the goods and pack them tightly to save more space."
+        }
+      }
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "{count, plural, =0 {All read} one {# unread} other {# unread}}",
+    "readAll": "Mark all as read",
+    "empty": "No notifications yet.",
+    "open": "Open",
+    "new": "New",
+    "errors": {
+      "load": "We could not load your notifications."
+    }
+  },
+  "payment": {
+    "title": {
+      "PROCESSING": "We are confirming your payment",
+      "SUCCEEDED": "Payment received",
+      "FAILED": "Payment did not go through"
+    },
+    "body": {
+      "PROCESSING": "This can take a minute. You can leave this page; we will notify you when it is confirmed.",
+      "SUCCEEDED": "Thank you. Your shipment will be released for dispatch.",
+      "FAILED": "No money was taken. You can try again or pay by bank transfer."
+    },
+    "back": "Back to the shipment",
+    "notFound": "We could not find this payment."
+  },
+  "terms": {
+    "title": "Terms of service",
+    "placeholder": "Draft outline. The owner is preparing the full terms; nothing here is binding yet.",
+    "sections": {
+      "service": {
+        "title": "Our service",
+        "body": "What we carry, from where to where, and what you need to do."
+      },
+      "prohibited": {
+        "title": "Prohibited and restricted goods",
+        "body": "Goods we cannot accept and what happens if they are found."
+      },
+      "prices": {
+        "title": "Estimates and final prices",
+        "body": "How estimates become final prices and what may still be charged."
+      },
+      "payment": {
+        "title": "Payment",
+        "body": "When payment is due and how refunds work."
+      },
+      "liability": {
+        "title": "Loss and damage",
+        "body": "What we are responsible for, and how to make a claim."
+      },
+      "privacy": {
+        "title": "Your information",
+        "body": "What we keep about you, for how long, and who sees it."
+      }
+    }
+  },
+  "warehouse": {
+    "measure": {
+      "weightKg": "Weight kg",
+      "lengthCm": "Length cm",
+      "widthCm": "Width cm",
+      "heightCm": "Height cm"
+    },
+    "photos": {
+      "take": "Take photos",
+      "processing": "Processing…",
+      "kind": {
+        "label": "Courier label",
+        "overview": "Carton",
+        "damage": "Damage"
+      },
+      "state": {
+        "pending": "Uploading",
+        "uploaded": "Uploaded",
+        "failed": "Will retry"
+      }
+    },
+    "label": {
+      "noProduct": "—",
+      "unclaimed": "UNCLAIMED",
+      "barcode": "Barcode {parcelNo}",
+      "weight": "Weight",
+      "size": "Size",
+      "to": "To"
+    },
+    "receive": {
+      "title": "Receive parcels",
+      "waiting": "{count, plural, =0 {All photos uploaded} one {# photo waiting to upload} other {# photos waiting to upload}}",
+      "scanLabel": "Scan the courier label or the shipping mark",
+      "lookUp": "Look up",
+      "scanFailed": "Lookup failed. Check the network and scan again.",
+      "match": {
+        "PRE_NOTICE": "Matched a shipment notice",
+        "MEMBER": "Member found, no matching shipment notice",
+        "DUPLICATE": "Already received — do not receive again",
+        "NONE": "No match — it will be received as unclaimed"
+      },
+      "receivedSoFar": "{count} received so far",
+      "receivedOf": "{received} of {expected} received",
+      "carrier": "Courier",
+      "trackingNo": "Tracking number",
+      "pieceNo": "Piece no. (several cartons, one label)",
+      "condition": "Outer packaging",
+      "conditions": {
+        "OK": "Intact",
+        "DAMAGED": "Damaged"
+      },
+      "damageNote": "Describe the damage",
+      "incomplete": "Fill in weight and all three sides, take at least one photo (wait for it to upload), and describe any damage.",
+      "photosUploading": "Some photos are still uploading.",
+      "submit": "Receive parcel",
+      "receiveFailed": "Could not receive the parcel. Try again — it will not be received twice.",
+      "done": "Received as {parcelNo}. Stick the label on the carton.",
+      "doneUnclaimed": "Received as unclaimed parcel {parcelNo}. Stick the label on the carton.",
+      "printAgain": "Print label again",
+      "next": "Next parcel"
+    },
+    "parcel": {
+      "loadFailed": "Could not load the parcel.",
+      "member": "Member no.",
+      "preNotice": "Shipment notice",
+      "tracking": "Courier / tracking",
+      "received": "Received",
+      "measurements": "Measurements",
+      "condition": "Damage",
+      "holdReason": "Hold reason",
+      "none": "—",
+      "flags": {
+        "consolidatable": "Can be consolidated",
+        "over_25kg": "Over 25 kg",
+        "oversize": "Oversize"
+      },
+      "correct": "Correct measurements",
+      "reason": "Reason",
+      "save": "Save correction",
+      "cancel": "Cancel",
+      "correctInvalid": "Fill in all four values and give a reason (at least 3 characters).",
+      "corrected": "Measurements corrected. The previous values are kept below.",
+      "held": "Parcel put on hold. Operations will decide what happens next.",
+      "conflict": "Someone else changed this parcel. Reload and try again.",
+      "failed": "Could not save. Try again.",
+      "hold": "Put on hold",
+      "holdKind": "Hold type",
+      "holdKinds": {
+        "DAMAGED": "Damaged",
+        "PROHIBITED": "Prohibited goods",
+        "OTHER": "Other"
+      },
+      "holdTitle": "Put {parcelNo} on hold",
+      "holdBody": "The customer and operations are notified.",
+      "holdConfirm": "Put on hold",
+      "history": "Measurement history",
+      "when": "When",
+      "by": "By",
+      "before": "Before",
+      "after": "After",
+      "photos": "Photos",
+      "photoKinds": {
+        "label": "Courier label",
+        "overview": "Carton",
+        "damage": "Damage"
+      },
+      "print": "Print label"
+    },
+    "unclaimed": {
+      "title": "Unclaimed parcels",
+      "intro": "Parcels that matched no shipment notice and no member number. Operations assigns them.",
+      "loadFailed": "Could not load unclaimed parcels.",
+      "empty": "No unclaimed parcels.",
+      "parcelNo": "Parcel",
+      "tracking": "Courier / tracking",
+      "measurements": "Measurements",
+      "received": "Received"
+    },
+    "consolidations": {
+      "title": "Consolidation jobs",
+      "filter": "Filter by status",
+      "all": "All",
+      "loadFailed": "Could not load jobs.",
+      "reference": "Job",
+      "member": "Member no.",
+      "mode": "Type",
+      "parcels": "Parcels",
+      "status": "Status",
+      "requested": "Requested"
+    },
+    "job": {
+      "loadFailed": "Could not load the job.",
+      "back": "All jobs",
+      "inputs": "{count, plural, one {# parcel in this job} other {# parcels in this job}}",
+      "parcelNo": "Parcel",
+      "tracking": "Courier / tracking",
+      "measurements": "Measurements",
+      "start": "Start job",
+      "limit": "Each output carton must weigh {kg} kg or less (checked when you complete).",
+      "carton": "Output carton {n}",
+      "removeCarton": "Remove this carton",
+      "addCarton": "Add another carton",
+      "charges": "Items used",
+      "units": {
+        "per_package": "per carton",
+        "per_parcel": "per parcel",
+        "per_shipment": "per job"
+      },
+      "incomplete": "Measure every carton, put every parcel in a carton, and enter whole numbers for items used.",
+      "complete": "Complete job",
+      "completed": "Job completed. The customer's final price is ready.",
+      "packageNo": "Carton",
+      "contains": "Contains",
+      "conflict": "The job changed meanwhile. Reload and try again.",
+      "rejected": "The backend refused it (for example a carton over the weight limit). Check and try again.",
+      "failed": "Could not save. Try again."
+    },
+    "dispatch": {
+      "title": "Dispatch",
+      "intro": "Paid (or approved) shipments ready to leave the warehouse.",
+      "loadFailed": "Could not load the dispatch list.",
+      "empty": "Nothing waiting to be dispatched.",
+      "shipmentNo": "Shipment",
+      "member": "Member no.",
+      "product": "Service",
+      "cartons": "Cartons",
+      "released": "Released",
+      "select": "Select {shipmentNo}",
+      "dispatch": "{count, plural, =0 {Mark as dispatched} other {Mark # as dispatched}}",
+      "irreversible": "Dispatch cannot be undone.",
+      "done": "Dispatched: {list}",
+      "failed": "Not dispatched (changed meanwhile): {list}"
+    }
+  },
+  "ops": {
+    "dashboard": {
+      "title": "Operations dashboard",
+      "intro": "What needs attention now. Refreshes every minute.",
+      "loadFailed": "Could not load the dashboard.",
+      "groups": {
+        "parcel": "Parcels",
+        "shipment": "Shipments"
+      },
+      "exceptions": "Open exceptions",
+      "kind": "Exception",
+      "reference": "Reference",
+      "note": "Note",
+      "since": "Since"
+    },
+    "search": {
+      "title": "Search",
+      "intro": "Member number, courier tracking number, parcel number, shipment number or name.",
+      "label": "Search",
+      "placeholder": "CE-123456-7, SF…, P2610-…, CE-S2610-…",
+      "submit": "Search",
+      "failed": "Search failed.",
+      "none": "Nothing found.",
+      "types": {
+        "CUSTOMER": "Customer",
+        "SHIPMENT": "Shipment",
+        "PARCEL": "Parcel",
+        "PRE_NOTICE": "Notice"
+      }
+    },
+    "shipment": {
+      "loadFailed": "Could not load the shipment.",
+      "transitions": "Status",
+      "noTransitions": "No status change is possible now.",
+      "moveTo": "Move to: {status}",
+      "rollbackTo": "Roll back to: {status}",
+      "rollbackBody": "Rolling back is recorded in the audit log and the customer is told about the correction.",
+      "reasonBody": "This change needs a reason; it is recorded in the audit log.",
+      "confirm": "Confirm",
+      "moved": "Status is now: {status}.",
+      "conflict": "The shipment changed meanwhile. Reload and try again.",
+      "failed": "Could not change the status.",
+      "finalPrice": "Final price",
+      "requestAdjustment": "Request a price adjustment",
+      "adjustmentRequested": "Adjustment requested. An admin needs to approve it; the customer then confirms again.",
+      "receivable": "Payment",
+      "balance": "To pay",
+      "timeline": "History",
+      "customer": "Customer",
+      "tracking": "NZ tracking link",
+      "addTracking": "Add tracking link",
+      "editTracking": "Change tracking link",
+      "trackingInvalid": "The tracking link must start with https://",
+      "save": "Save",
+      "notes": "Internal notes",
+      "newNote": "Add an internal note (not shown to the customer)",
+      "addNote": "Add note"
+    },
+    "adjust": {
+      "line": "Line",
+      "current": "Current",
+      "new": "New amount",
+      "newFor": "New amount for {line}",
+      "reason": "Reason",
+      "note": "Totals and GST are re-priced by the system after approval.",
+      "submit": "Send for approval",
+      "badAmount": "Enter amounts like 12.00.",
+      "nothingChanged": "Change at least one amount.",
+      "needReason": "Give a reason (at least 3 characters).",
+      "failed": "Could not send the request."
+    },
+    "assign": {
+      "title": "Assign unclaimed parcels",
+      "intro": "Match a parcel to a customer after checking the tracking number with them.",
+      "open": "Assign",
+      "memberNo": "Member number",
+      "reason": "How it was matched",
+      "invalid": "Enter a member number like CE-123456-7 and how it was matched.",
+      "noMember": "No customer has that member number.",
+      "failed": "Could not assign the parcel.",
+      "cancel": "Cancel",
+      "confirm": "Assign",
+      "done": "{parcelNo} assigned to {memberNo}.",
+      "assigned": "Assigned"
+    },
+    "adjustments": {
+      "title": "Price adjustments",
+      "intro": "Requests to change a final price. Admins approve or reject.",
+      "loadFailed": "Could not load requests.",
+      "shipment": "Shipment",
+      "changes": "Changes",
+      "reason": "Reason",
+      "requested": "Requested",
+      "status": "Status",
+      "approve": "Approve",
+      "reject": "Reject",
+      "rejectTitle": "Reject the adjustment for {shipmentNo}"
+    },
+    "leads": {
+      "title": "Lead funnel",
+      "intro": "Where customers come from and how far they get.",
+      "loadFailed": "Could not load the funnel.",
+      "period": "{from} to {to}",
+      "source": "Source",
+      "stages": {
+        "LANDING": "Visited",
+        "SIGNED_UP": "Signed up",
+        "QUOTED": "Quoted",
+        "PRE_NOTICED": "Sent notice",
+        "SHIPPED": "Shipped"
+      }
+    },
+    "deliveries": {
+      "title": "Notification log",
+      "intro": "Messages sent to customers and staff. Failed ones can be sent again.",
+      "loadFailed": "Could not load the log.",
+      "filter": "Filter by status",
+      "all": "All",
+      "event": "Event",
+      "reference": "Reference",
+      "channel": "Channel",
+      "recipient": "Recipient",
+      "status": "Status",
+      "attempts": "Attempts",
+      "at": "Created",
+      "resend": "Send again",
+      "channels": {
+        "in_app": "In app",
+        "email": "Email",
+        "whatsapp": "WhatsApp"
+      }
+    },
+    "customer": {
+      "loadFailed": "Could not load the customer.",
+      "email": "Email",
+      "phone": "Phone",
+      "since": "Customer since",
+      "source": "First source",
+      "identities": "Sign-in methods",
+      "addresses": "Addresses",
+      "shipments": "Shipments",
+      "preNotices": "Shipment notices",
+      "mergeTitle": "Merge into another account",
+      "mergeBody": "Use when one person has two accounts. History and sign-in methods move to the other account.",
+      "mergeTarget": "Keep this member number",
+      "merge": "Merge",
+      "mergeConfirmTitle": "Merge {from} into {to}",
+      "mergeConfirmBody": "This cannot be undone from the console. It is recorded in the audit log.",
+      "merged": "Merged into {memberNo}.",
+      "mergedInto": "This account was merged into {memberNo}.",
+      "mergeFailed": "Could not merge the accounts."
+    }
+  },
+  "finance": {
+    "receivables": {
+      "title": "Receivables",
+      "intro": "What customers owe, per shipment.",
+      "filter": "Filter by status",
+      "all": "All",
+      "loadFailed": "Could not load receivables.",
+      "receivableNo": "Receivable",
+      "customer": "Customer",
+      "shipment": "Shipment",
+      "total": "Total incl. GST",
+      "balance": "Balance",
+      "status": "Status",
+      "issued": "Issued"
+    },
+    "receivable": {
+      "loadFailed": "Could not load the receivable.",
+      "back": "All receivables",
+      "billTo": "Bill to",
+      "line": "Line",
+      "exTax": "Excl. GST",
+      "taxCode": "Tax code",
+      "taxRate": "Rate",
+      "tax": "GST",
+      "subtotal": "Subtotal",
+      "gst": "GST",
+      "total": "Total",
+      "paid": "Paid",
+      "balance": "Balance",
+      "taxProvisional": "Tax codes are provisional until the accountant's table is signed (DECISION(F1)).",
+      "allocations": "Payments allocated",
+      "noAllocations": "No payment yet.",
+      "invoices": "Invoices",
+      "issueInvoice": "Issue tax invoice",
+      "kinds": {
+        "tax_invoice": "Tax invoice",
+        "credit_note": "Credit note"
+      },
+      "void": "void",
+      "replaces": "replaces {invoiceNo}",
+      "reissue": "Void and reissue",
+      "reissueTitle": "Void {invoiceNo} and issue a new one",
+      "reissueBody": "The original stays on record as void; the new invoice gets a new number.",
+      "creditNote": "Credit note",
+      "creditTitle": "Credit note against {invoiceNo}",
+      "creditBody": "A credit note is issued; the invoice is not changed.",
+      "overrideTitle": "Release before full payment",
+      "overrideBody": "Needs an admin's approval. Explain why the shipment can leave now.",
+      "requestOverride": "Ask for approval",
+      "overrideRequested": "Approval requested.",
+      "failed": "That did not work. Reload and try again."
+    },
+    "payments": {
+      "title": "Payments",
+      "intro": "Record money received, allocate it to receivables, reverse mistakes, record refunds.",
+      "loadFailed": "Could not load payments.",
+      "recordTitle": "Record a payment",
+      "amount": "Amount",
+      "currency": "Currency",
+      "method": "Method",
+      "methods": {
+        "bank_transfer": "Bank transfer",
+        "card": "Card",
+        "other": "Other"
+      },
+      "reference": "Reference",
+      "received": "Received on",
+      "evidence": "Evidence",
+      "record": "Record payment",
+      "invalid": "Enter the amount (like 55.80), the reference and the date received.",
+      "uploadFailed": "The evidence file could not be uploaded.",
+      "failed": "Could not record the payment.",
+      "paymentNo": "Payment",
+      "unallocated": "Unallocated",
+      "allocatedTo": "Allocated / refunded",
+      "status": "Status",
+      "refunded": "Refunded",
+      "allocate": "Allocate",
+      "allocateTitle": "Allocate {paymentNo}",
+      "available": "Available:",
+      "due": "due",
+      "allocateFor": "Amount for {receivableNo}",
+      "allocateNote": "The system checks that the amounts fit the payment and each balance.",
+      "allocateInvalid": "Enter at least one amount like 55.80.",
+      "allocateRejected": "Refused: check the amounts against the payment and the balances.",
+      "cancel": "Cancel",
+      "reverse": "Reverse",
+      "reverseTitle": "Reverse {paymentNo}",
+      "reverseBody": "For a payment recorded by mistake. A reversal entry is added; nothing is deleted.",
+      "refund": "Refund",
+      "refundTitle": "Record a refund from {paymentNo}",
+      "paidAt": "Paid back on",
+      "refundReason": "Reason",
+      "refundInvalid": "Enter the amount, the date and a reason.",
+      "refundRejected": "Refused: the refund is larger than what can be refunded.",
+      "recordRefund": "Record refund"
+    },
+    "overrides": {
+      "title": "Release approvals",
+      "intro": "Shipments asked to leave before they are fully paid.",
+      "loadFailed": "Could not load requests.",
+      "empty": "No requests.",
+      "shipment": "Shipment",
+      "receivable": "Receivable",
+      "balance": "Unpaid",
+      "reason": "Reason",
+      "requested": "Requested",
+      "status": "Status",
+      "approve": "Approve",
+      "reject": "Reject",
+      "rejectTitle": "Reject the release of {shipmentNo}"
+    },
+    "reconciliation": {
+      "title": "Reconciliation",
+      "intro": "Online payments matched across the gateway, the platform and Xero (stage 3).",
+      "date": "Day",
+      "loadFailed": "Could not load the reconciliation.",
+      "xeroLast": "Last Xero sync:",
+      "xeroPending": "{count} waiting to sync",
+      "xeroFailed": "{count} failed",
+      "gateway": "Gateway",
+      "platform": "Platform",
+      "xero": "Xero",
+      "amount": "Amount",
+      "result": "Result",
+      "statuses": {
+        "MATCHED": "Matched",
+        "MISSING_PLATFORM": "Not recorded on the platform",
+        "MISSING_XERO": "Not in Xero",
+        "AMOUNT_MISMATCH": "Amounts differ"
+      }
+    }
+  },
+  "admin": {
+    "roles": {
+      "admin": "Admin",
+      "warehouse": "Warehouse",
+      "nz_ops": "Operations",
+      "finance": "Finance"
+    },
+    "staff": {
+      "title": "Staff",
+      "intro": "Staff accounts and what each person can open. Changes are recorded in the audit log.",
+      "loadFailed": "Could not load staff.",
+      "name": "Name",
+      "email": "Email",
+      "roles": "Roles",
+      "mfa": "Two-step",
+      "lastSignIn": "Last sign-in",
+      "status": "Status",
+      "roleFor": "{role} for {name}",
+      "mfaOn": "On",
+      "mfaPending": "Not set up yet",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
+      "inviteTitle": "Invite a staff member",
+      "invite": "Send invitation",
+      "inviteNote": "They set a password and two-step verification at first sign-in.",
+      "inviteInvalid": "Enter a name, a valid email and at least one role.",
+      "inviteFailed": "Could not send the invitation.",
+      "invited": "Invitation sent to {email}."
+    },
+    "audit": {
+      "title": "Audit log",
+      "intro": "Every price change, rollback, payment correction, refund and account merge, with its reason.",
+      "entity": "Entity type",
+      "entityPlaceholder": "e.g. shipment, payment, parcel",
+      "filter": "Filter",
+      "loadFailed": "Could not load the audit log.",
+      "at": "When",
+      "actor": "Who",
+      "action": "Action",
+      "entityCol": "Record",
+      "before": "Before",
+      "after": "After",
+      "reason": "Reason"
+    },
+    "fcl": {
+      "title": "FCL rates",
+      "intro": "Port-to-port container rates (USD). Import a sheet, check it, then publish (stage 3).",
+      "loadFailed": "Could not load rate sheets.",
+      "expired": "The published rates expired on {date}. FCL quotes go to manual review until a new sheet is published.",
+      "version": "Version",
+      "status": "Status",
+      "valid": "Valid",
+      "source": "File",
+      "imported": "Imported",
+      "view": "View",
+      "ratesOf": "Rates in v{version}",
+      "origin": "From",
+      "destination": "To",
+      "publish": "Publish",
+      "publishTitle": "Publish FCL rates v{version}",
+      "publishBody": "Quotes use these rates from {from}. Published sheets cannot be changed.",
+      "importTitle": "Import a rate sheet",
+      "file": "Rate sheet (.xlsx or .csv)",
+      "validFrom": "Valid from",
+      "validTo": "Valid to",
+      "import": "Import as draft",
+      "importInvalid": "Choose the file and both dates.",
+      "importFailed": "The sheet could not be imported."
+    },
+    "reports": {
+      "title": "Reports",
+      "intro": "Revenue and volume per month, as recorded by the system (stage 3).",
+      "from": "From",
+      "to": "To",
+      "loadFailed": "Could not load the report.",
+      "revenue": "Revenue",
+      "month": "Month",
+      "exGst": "Excl. GST",
+      "currencyNote": "NZD and USD are reported separately and never converted.",
+      "volume": "Volume",
+      "shipments": "Shipments",
+      "chargeableKg": "Chargeable kg",
+      "byProduct": "Shipments by service"
+    }
   }
 }

@@ -311,6 +311,1083 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/staff/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The signed-in staff member (aal2) and roles; the console shows only these modules. */
+        get: operations["getStaffMe"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/shipments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The customer's pre-notices and shipments with their 7-step progress (newest activity first). */
+        get: operations["listShipments"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pre-notices/{preNoticeId}/handling": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Parcels received for a pre-notice and the handling options the backend allows (A2, D1, D2). Fees come from config (C4). */
+        get: operations["getPreNoticeHandling"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pre-notices/{preNoticeId}/handling-choice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Choose single / consolidate / consolidate + unpack. Rejected with 409 when the backend no longer allows the option. */
+        post: operations["chooseHandling"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/shipments/{shipmentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One shipment of the signed-in customer: progress, parcels, prices, payment, timeline. */
+        get: operations["getShipment"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/shipments/{shipmentId}/confirm-final": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Accept the final price. Issues the receivable; 409 when the snapshot changed or expired. */
+        post: operations["confirmFinalPrice"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/shipments/{shipmentId}/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Stage 3: open a payment gateway session (PaymentProvider.createCheckout) for the open receivable. */
+        post: operations["startOnlinePayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payments/{paymentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stage 3: result page polling. The gateway callback decides the outcome; the redirect itself proves nothing. */
+        get: operations["getOnlinePayment"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/me/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** In-app notifications, newest first. */
+        get: operations["listNotifications"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/me/notifications/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Mark notifications as read. */
+        post: operations["markNotificationsRead"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/me/notification-prefs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Delivery preferences (transactional channels and marketing consent). */
+        get: operations["getNotificationPrefs"];
+        /** Save preferences; turning marketing on records the consent time. */
+        put: operations["updateNotificationPrefs"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/me/billing-entities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Who invoices are made out to (stage 2). */
+        get: operations["listBillingEntities"];
+        put?: never;
+        /** Add a billing entity. */
+        post: operations["createBillingEntity"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/me/addresses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Delivery address book; the backend sets the region from the postcode. */
+        get: operations["listAddresses"];
+        put?: never;
+        /** Add a delivery address. */
+        post: operations["createAddress"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/parcels/scan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Look up a scanned code (courier tracking number or member number); writes nothing. Repeated scans of a received parcel return DUPLICATE. */
+        post: operations["scanParcel"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/files/upload-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** A signed Storage URL for one direct upload (PUT the file body to it). */
+        post: operations["createUploadUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/parcels": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Receive one carton (idempotent). Needs at least one uploaded photo and full measurements; returns the internal parcel number for the label. No pre-notice and no member number → status unclaimed. */
+        post: operations["receiveParcel"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/parcels/{parcelId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One parcel, warehouse view. */
+        get: operations["getWhParcel"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/parcels/{parcelId}/photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Attach an uploaded photo to a received parcel. */
+        post: operations["addParcelPhoto"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/parcels/{parcelId}/measurements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Correct weight or size. Keeps the before and after values and the reason; a parcel is never deleted. */
+        patch: operations["correctMeasurements"];
+        trace?: never;
+    };
+    "/wh/parcels/{parcelId}/hold": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Put a parcel on hold (damage, prohibited goods). Ops decides what happens next. */
+        post: operations["holdParcel"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/unclaimed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Parcels that matched no pre-notice and no member number, oldest first. */
+        get: operations["listUnclaimedParcels"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/consolidations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Consolidation jobs, oldest request first (filter by status). */
+        get: operations["listConsolidations"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/consolidations/{consolidationId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One consolidation job with its parcels and charge codes. */
+        get: operations["getConsolidation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/consolidations/{consolidationId}/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start the job (requested → in_progress). */
+        post: operations["startConsolidation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/consolidations/{consolidationId}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record the output cartons (each ≤ maxPackageKg, checked by the backend) and the charge quantities. The backend prices them (C4) and creates the final-price snapshot. */
+        post: operations["completeConsolidation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wh/dispatch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Released shipments waiting to leave the warehouse. */
+        get: operations["listDispatchQueue"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Counts per status and the open exceptions. */
+        get: operations["getOpsDashboard"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search by member number, tracking number, parcel number, shipment number or name. */
+        get: operations["searchOps"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/shipments/{shipmentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One shipment, operations view (customer contact, allowed transitions, notes). */
+        get: operations["getOpsShipment"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/shipments/{shipmentId}/transition": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Move a shipment through the state machine (design 03). Rollbacks need a reason and are audited; 409 on a stale version. Warehouse may only move released → dispatched. */
+        post: operations["transitionShipment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/shipments/{shipmentId}/notes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Internal note (never shown to the customer). */
+        post: operations["addShipmentNote"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/shipments/{shipmentId}/tracking": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set the NZ courier tracking link the customer sees. */
+        put: operations["setTrackingUrl"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/price-adjustments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Price adjustment requests (filter by status). */
+        get: operations["listPriceAdjustments"];
+        put?: never;
+        /** Ask to change priced lines of a final price (new amounts typed by staff; the backend re-prices totals). Needs admin approval. */
+        post: operations["requestPriceAdjustment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/price-adjustments/{adjustmentId}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve (admin). Creates a new final-price snapshot; the customer is asked to confirm again. */
+        post: operations["approvePriceAdjustment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/price-adjustments/{adjustmentId}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reject (admin), with a reason. */
+        post: operations["rejectPriceAdjustment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/parcels/{parcelId}/assign": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Assign an unclaimed parcel to a customer (and optionally a pre-notice); the customer is notified. */
+        post: operations["assignParcel"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/leads/funnel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Visitors per source and funnel stage over a period. */
+        get: operations["getLeadFunnel"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/notification-deliveries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Outgoing notifications; failed ones can be resent. */
+        get: operations["listNotificationDeliveries"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/notification-deliveries/{deliveryId}/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Queue a failed notification again (same event, idempotent). */
+        post: operations["resendNotification"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/customers/{customerId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Customer profile for operations (full contact details). */
+        get: operations["getOpsCustomer"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ops/customers/{customerId}/merge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Merge this account into another (both have shipments). Ops only, audited; identities and history move to the target. */
+        post: operations["mergeCustomer"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/receivables": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Receivables, newest first (filter by status). */
+        get: operations["listReceivables"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/receivables/{receivableId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One receivable with lines (tax codes), allocations and invoices. */
+        get: operations["getReceivable"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/receivables/{receivableId}/invoice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Issue the tax invoice PDF (number INV-YYYY-NNNNNN, fixed template, GST per line from the snapshot). */
+        post: operations["issueInvoice"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/invoices/{invoiceId}/void-and-reissue": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Void an invoice and issue a replacement (the original is kept, marked void). */
+        post: operations["voidAndReissueInvoice"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/invoices/{invoiceId}/credit-note": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Issue a credit note (CN-YYYY-NNNNNN) against an invoice. */
+        post: operations["issueCreditNote"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Recorded payments, newest first. */
+        get: operations["listPayments"];
+        put?: never;
+        /** Record money received (amount exactly as on the bank statement). */
+        post: operations["recordPayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/payments/{paymentId}/reverse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reverse a wrongly recorded payment: a reversal entry is written, the original row is kept as reversed. */
+        post: operations["reversePayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/allocations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Allocate a payment to one or more receivables; the backend checks the amounts and updates each receivable's status. */
+        post: operations["allocatePayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/refunds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record money actually paid back (separate from a reversal). */
+        post: operations["recordRefund"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/release-overrides": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Requests to release a shipment before full payment. */
+        get: operations["listReleaseOverrides"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/shipments/{shipmentId}/release-override": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ask to release a shipment that is not fully paid (finance asks, admin approves). */
+        post: operations["requestReleaseOverride"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/release-overrides/{overrideId}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve (admin); the shipment becomes released. */
+        post: operations["approveReleaseOverride"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/release-overrides/{overrideId}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reject (admin), with a reason. */
+        post: operations["rejectReleaseOverride"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/finance/reconciliation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stage 3: daily three-way match of gateway settlements, platform payments and Xero. */
+        get: operations["getReconciliation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/staff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Staff accounts and roles. */
+        get: operations["listStaff"];
+        put?: never;
+        /** Invite a staff member by email; TOTP is enrolled at first sign-in. Audited. */
+        post: operations["inviteStaff"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/staff/{staffId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change roles or deactivate. Audited. */
+        patch: operations["updateStaff"];
+        trace?: never;
+    };
+    "/admin/audit-logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Audit log (insert-only), newest first; filter by entity type or action. */
+        get: operations["listAuditLogs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/fcl-rate-sheets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stage 3: FCL port rate sheets by version; expired sheets stop quoting (G3). */
+        get: operations["listFclRateSheets"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/fcl-rate-sheets/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Stage 3: import a rate sheet file as a draft version. */
+        post: operations["importFclRateSheet"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/fcl-rate-sheets/{sheetId}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Stage 3: publish a draft sheet (audited). */
+        post: operations["publishFclRateSheet"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/reports/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stage 3: revenue and volume per month. Profit needs the cost allocation rules (DECISION(X-6)). */
+        get: operations["getReportSummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/events/stream": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Server-sent events (text/event-stream). Each `data:` line is a LiveEvent; `id:` is used for Last-Event-ID resume (replayed from shipment_events). Heartbeat comment every 25 s. Customers get their own shipments and parcels; staff get their role channel. */
+        get: operations["streamEvents"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -593,6 +1670,884 @@ export interface components {
         RatePublish: {
             reason: string;
         };
+        I18nText: {
+            en: string;
+            zh: string;
+        };
+        Measurements: {
+            weightKg: components["schemas"]["DecimalString"];
+            lengthCm: components["schemas"]["DecimalString"];
+            widthCm: components["schemas"]["DecimalString"];
+            heightCm: components["schemas"]["DecimalString"];
+        };
+        Photo: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            kind: "label" | "overview" | "damage";
+            url: string;
+        };
+        /** @enum {string} */
+        ParcelStatus: "expected" | "received" | "unclaimed" | "held" | "returned" | "awaiting_choice" | "packed" | "dispatched";
+        /** @enum {string} */
+        ShipmentStatus: "awaiting_final_confirmation" | "awaiting_payment" | "released" | "dispatched" | "arrived_nz" | "customs_clearing" | "customs_held" | "out_for_delivery" | "delivery_failed" | "delivered" | "cancelled";
+        /** @enum {string} */
+        ReceivableStatus: "issued" | "partially_paid" | "paid" | "overpaid" | "refunded" | "void";
+        /** @enum {string} */
+        JourneyException: "PARCEL_UNCLAIMED" | "PARCEL_HELD" | "CUSTOMS_HELD" | "DELIVERY_FAILED" | "PARTIALLY_PAID";
+        /** @enum {string} */
+        CustomerAction: "CHOOSE_HANDLING" | "CONFIRM_FINAL_PRICE" | "PAY";
+        /** @enum {string} */
+        HandlingMode: "SINGLE" | "CONSOLIDATE" | "CONSOLIDATE_UNPACK";
+        TimelineEvent: {
+            /** Format: date-time */
+            at: string;
+            type: string;
+            label: components["schemas"]["I18nText"];
+            detail: components["schemas"]["I18nText"] | null;
+        };
+        PricedSnapshot: {
+            /** Format: uuid */
+            quoteId: string;
+            lines: components["schemas"]["QuoteLine"][];
+            totals: components["schemas"]["Total"][];
+            /** Format: date-time */
+            expiresAt: string | null;
+        };
+        /** @enum {string} */
+        StaffRole: "admin" | "warehouse" | "nz_ops" | "finance";
+        StaffMe: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            email: string;
+            roles: components["schemas"]["StaffRole"][];
+        };
+        JourneyCard: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            kind: "PRE_NOTICE" | "SHIPMENT";
+            reference: string;
+            product: components["schemas"]["Product"];
+            destination: components["schemas"]["Destination"];
+            step: number;
+            exception: components["schemas"]["JourneyException"] | null;
+            action: components["schemas"]["CustomerAction"] | null;
+            parcelsReceived: number;
+            parcelsExpected: number | null;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        CustomerParcel: {
+            /** Format: uuid */
+            id: string;
+            parcelNo: string;
+            carrier: string | null;
+            trackingNo: string | null;
+            pieceNo: number | null;
+            status: components["schemas"]["ParcelStatus"];
+            /** Format: date-time */
+            receivedAt: string;
+            measurements: components["schemas"]["Measurements"];
+            /** @enum {string} */
+            condition: "OK" | "DAMAGED";
+            photos: components["schemas"]["Photo"][];
+        };
+        HandlingOption: {
+            mode: components["schemas"]["HandlingMode"];
+            allowed: boolean;
+            reason: components["schemas"]["I18nText"] | null;
+            charges: components["schemas"]["QuoteLine"][];
+        };
+        PreNoticeHandling: {
+            /** Format: uuid */
+            preNoticeId: string;
+            version: number;
+            parcels: components["schemas"]["CustomerParcel"][];
+            options: components["schemas"]["HandlingOption"][];
+            choice: components["schemas"]["HandlingMode"] | null;
+        };
+        HandlingChoice: {
+            mode: components["schemas"]["HandlingMode"];
+            expectedVersion: number;
+        };
+        BankTransfer: {
+            accountName: string;
+            accountNumber: string;
+            reference: string;
+            isPlaceholder: boolean;
+        };
+        CustomerInvoice: {
+            invoiceNo: string;
+            /** @enum {string} */
+            kind: "tax_invoice" | "credit_note";
+            /** Format: date-time */
+            issuedAt: string;
+            pdfUrl: string;
+        };
+        ReceivableSummary: {
+            receivableNo: string;
+            status: components["schemas"]["ReceivableStatus"];
+            currency: components["schemas"]["Currency"];
+            totalInclGst: components["schemas"]["Money"];
+            paid: components["schemas"]["Money"];
+            balance: components["schemas"]["Money"];
+            bankTransfer: components["schemas"]["BankTransfer"];
+            invoices: components["schemas"]["CustomerInvoice"][];
+        };
+        OutboundPackageSummary: {
+            packageNo: string;
+            measurements: components["schemas"]["Measurements"];
+        };
+        ShipmentDetail: {
+            /** Format: uuid */
+            id: string;
+            shipmentNo: string;
+            version: number;
+            status: components["schemas"]["ShipmentStatus"];
+            step: number;
+            exception: components["schemas"]["JourneyException"] | null;
+            product: components["schemas"]["Product"];
+            destination: components["schemas"]["Destination"];
+            packages: components["schemas"]["OutboundPackageSummary"][];
+            parcels: components["schemas"]["CustomerParcel"][];
+            estimate: components["schemas"]["PricedSnapshot"] | null;
+            final: components["schemas"]["PricedSnapshot"] | null;
+            receivable: components["schemas"]["ReceivableSummary"] | null;
+            onlinePaymentAvailable: boolean;
+            trackingUrl: string | null;
+            actions: components["schemas"]["CustomerAction"][];
+            timeline: components["schemas"]["TimelineEvent"][];
+        };
+        ConfirmFinal: {
+            expectedVersion: number;
+        };
+        PaymentSession: {
+            /** Format: uuid */
+            paymentId: string;
+            redirectUrl: string;
+        };
+        OnlinePayment: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            status: "PROCESSING" | "SUCCEEDED" | "FAILED";
+            /** Format: uuid */
+            shipmentId: string;
+            shipmentNo: string;
+            amount: components["schemas"]["Money"];
+            currency: components["schemas"]["Currency"];
+        };
+        Notification: {
+            /** Format: uuid */
+            id: string;
+            type: string;
+            title: components["schemas"]["I18nText"];
+            body: components["schemas"]["I18nText"];
+            link: string | null;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            readAt: string | null;
+        };
+        NotificationList: {
+            items: components["schemas"]["Notification"][];
+            unreadCount: number;
+        };
+        NotificationsRead: {
+            ids: string[];
+        };
+        NotificationPrefs: {
+            email: boolean;
+            whatsapp: boolean;
+            marketing: boolean;
+            /** Format: date-time */
+            marketingConsentAt: string | null;
+        };
+        NotificationPrefsUpdate: {
+            email: boolean;
+            whatsapp: boolean;
+            marketing: boolean;
+        };
+        PostalAddress: {
+            line1: string;
+            line2: string | null;
+            city: string;
+            postcode: string;
+        };
+        BillingEntity: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            type: "individual" | "company";
+            legalName: string;
+            gstNumber: string | null;
+            address: components["schemas"]["PostalAddress"];
+            isDefault: boolean;
+        };
+        BillingEntityCreate: {
+            /** @enum {string} */
+            type: "individual" | "company";
+            legalName: string;
+            gstNumber?: string | null;
+            address: components["schemas"]["PostalAddress"];
+        };
+        DeliveryAddress: {
+            /** Format: uuid */
+            id: string;
+            label: string;
+            address: components["schemas"]["PostalAddress"];
+            region: components["schemas"]["Region"];
+            isDefault: boolean;
+        };
+        DeliveryAddressCreate: {
+            label: string;
+            address: components["schemas"]["PostalAddress"];
+        };
+        MeasurementChange: {
+            /** Format: date-time */
+            at: string;
+            by: string;
+            before: components["schemas"]["Measurements"];
+            after: components["schemas"]["Measurements"];
+            reason: string;
+        };
+        WhPreNoticeRef: {
+            /** Format: uuid */
+            id: string;
+            reference: string;
+            memberNo: string;
+            product: components["schemas"]["Product"];
+            destinationRegion: components["schemas"]["Region"];
+            expectedParcels: number | null;
+            receivedParcels: number;
+            trackingNos: string[];
+        };
+        WhParcel: {
+            /** Format: uuid */
+            id: string;
+            parcelNo: string;
+            version: number;
+            status: components["schemas"]["ParcelStatus"];
+            memberNo: string | null;
+            preNotice: components["schemas"]["WhPreNoticeRef"] | null;
+            carrier: string | null;
+            trackingNo: string | null;
+            pieceNo: number | null;
+            /** Format: date-time */
+            receivedAt: string;
+            receivedBy: string;
+            measurements: components["schemas"]["Measurements"];
+            /** @enum {string} */
+            condition: "OK" | "DAMAGED";
+            damageNote: string | null;
+            flags: ("consolidatable" | "over_25kg" | "oversize")[];
+            photos: components["schemas"]["Photo"][];
+            holdReason: string | null;
+            measurementHistory: components["schemas"]["MeasurementChange"][];
+        };
+        ScanRequest: {
+            code: string;
+        };
+        ScanResult: {
+            code: string;
+            /** @enum {string} */
+            match: "PRE_NOTICE" | "MEMBER" | "DUPLICATE" | "NONE";
+            preNotice: components["schemas"]["WhPreNoticeRef"] | null;
+            memberNo: string | null;
+            existingParcel: components["schemas"]["WhParcel"] | null;
+            parsed: {
+                carrier: string | null;
+                trackingNo: string | null;
+            };
+        };
+        UploadUrlRequest: {
+            /** @enum {string} */
+            purpose: "parcel_photo" | "payment_evidence" | "fcl_rate_sheet";
+            contentType: string;
+            sizeBytes: number;
+        };
+        UploadUrl: {
+            /** Format: uuid */
+            fileId: string;
+            uploadUrl: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        ReceiveParcel: {
+            scanCode: string;
+            /** Format: uuid */
+            preNoticeId: string | null;
+            memberNo: string | null;
+            carrier: string | null;
+            trackingNo: string | null;
+            pieceNo: number | null;
+            measurements: components["schemas"]["Measurements"];
+            /** @enum {string} */
+            condition: "OK" | "DAMAGED";
+            damageNote: string | null;
+            photoFileIds: string[];
+        };
+        ParcelPhotoAdd: {
+            /** Format: uuid */
+            fileId: string;
+            /** @enum {string} */
+            kind: "label" | "overview" | "damage";
+        };
+        MeasurementCorrection: {
+            measurements: components["schemas"]["Measurements"];
+            reason: string;
+            expectedVersion: number;
+        };
+        ParcelHold: {
+            /** @enum {string} */
+            kind: "DAMAGED" | "PROHIBITED" | "OTHER";
+            reason: string;
+            expectedVersion: number;
+        };
+        /** @enum {string} */
+        ConsolidationStatus: "requested" | "in_progress" | "completed" | "cancelled";
+        WhConsolidationSummary: {
+            /** Format: uuid */
+            id: string;
+            reference: string;
+            memberNo: string;
+            product: components["schemas"]["Product"];
+            mode: components["schemas"]["HandlingMode"];
+            status: components["schemas"]["ConsolidationStatus"];
+            parcelCount: number;
+            /** Format: date-time */
+            requestedAt: string;
+        };
+        ChargeCode: {
+            code: string;
+            label: components["schemas"]["I18nText"];
+            /** @enum {string} */
+            unit: "per_package" | "per_parcel" | "per_shipment";
+        };
+        ConsolidationOutput: {
+            packageNo: string;
+            measurements: components["schemas"]["Measurements"];
+            sourceParcelNos: string[];
+        };
+        ConsolidationCharge: {
+            code: string;
+            qty: number;
+        };
+        WhConsolidation: {
+            /** Format: uuid */
+            id: string;
+            reference: string;
+            version: number;
+            memberNo: string;
+            product: components["schemas"]["Product"];
+            mode: components["schemas"]["HandlingMode"];
+            status: components["schemas"]["ConsolidationStatus"];
+            /** Format: date-time */
+            requestedAt: string;
+            parcels: components["schemas"]["WhParcel"][];
+            outputs: components["schemas"]["ConsolidationOutput"][];
+            charges: components["schemas"]["ConsolidationCharge"][];
+            chargeCodes: components["schemas"]["ChargeCode"][];
+            maxPackageKg: components["schemas"]["DecimalString"];
+        };
+        CompleteConsolidation: {
+            expectedVersion: number;
+            packages: {
+                measurements: components["schemas"]["Measurements"];
+                sourceParcelIds: string[];
+            }[];
+            charges: components["schemas"]["ConsolidationCharge"][];
+        };
+        WhShipment: {
+            /** Format: uuid */
+            id: string;
+            shipmentNo: string;
+            version: number;
+            memberNo: string;
+            product: components["schemas"]["Product"];
+            destinationRegion: components["schemas"]["Region"];
+            packageNos: string[];
+            /** Format: date-time */
+            releasedAt: string;
+        };
+        DashboardCount: {
+            /** @enum {string} */
+            group: "shipment" | "parcel";
+            status: string;
+            count: number;
+        };
+        DashboardException: {
+            kind: string;
+            reference: string;
+            href: string;
+            /** Format: date-time */
+            since: string;
+            note: components["schemas"]["I18nText"];
+        };
+        OpsDashboard: {
+            counts: components["schemas"]["DashboardCount"][];
+            exceptions: components["schemas"]["DashboardException"][];
+        };
+        SearchResult: {
+            /** @enum {string} */
+            type: "CUSTOMER" | "SHIPMENT" | "PARCEL" | "PRE_NOTICE";
+            /** Format: uuid */
+            id: string;
+            reference: string;
+            title: string;
+            subtitle: string;
+            href: string;
+        };
+        Transition: {
+            to: components["schemas"]["ShipmentStatus"];
+            /** @enum {string} */
+            kind: "FORWARD" | "ROLLBACK";
+            reasonRequired: boolean;
+        };
+        OpsNote: {
+            /** Format: uuid */
+            id: string;
+            /** Format: date-time */
+            at: string;
+            by: string;
+            text: string;
+        };
+        CustomerContact: {
+            /** Format: uuid */
+            id: string;
+            memberNo: string;
+            name: string;
+            email: string | null;
+            phone: string | null;
+        };
+        OpsShipment: {
+            /** Format: uuid */
+            id: string;
+            shipmentNo: string;
+            version: number;
+            status: components["schemas"]["ShipmentStatus"];
+            step: number;
+            exception: components["schemas"]["JourneyException"] | null;
+            product: components["schemas"]["Product"];
+            destination: components["schemas"]["Destination"];
+            customer: components["schemas"]["CustomerContact"];
+            packages: components["schemas"]["OutboundPackageSummary"][];
+            final: components["schemas"]["PricedSnapshot"] | null;
+            receivable: components["schemas"]["ReceivableSummary"] | null;
+            allowedTransitions: components["schemas"]["Transition"][];
+            trackingUrl: string | null;
+            notes: components["schemas"]["OpsNote"][];
+            timeline: components["schemas"]["TimelineEvent"][];
+        };
+        TransitionRequest: {
+            to: components["schemas"]["ShipmentStatus"];
+            expectedVersion: number;
+            reason: string | null;
+        };
+        TransitionResult: {
+            /** Format: uuid */
+            id: string;
+            shipmentNo: string;
+            version: number;
+            status: components["schemas"]["ShipmentStatus"];
+        };
+        NoteCreate: {
+            text: string;
+        };
+        TrackingUpdate: {
+            trackingUrl: string;
+        };
+        AdjustmentLine: {
+            code: string;
+            label: components["schemas"]["I18nText"];
+            before: components["schemas"]["Money"];
+            after: components["schemas"]["Money"];
+        };
+        PriceAdjustment: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            shipmentId: string;
+            shipmentNo: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "rejected";
+            requestedBy: string;
+            /** Format: date-time */
+            requestedAt: string;
+            reason: string;
+            lines: components["schemas"]["AdjustmentLine"][];
+            decidedBy: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decisionNote: string | null;
+        };
+        PriceAdjustmentCreate: {
+            /** Format: uuid */
+            shipmentId: string;
+            reason: string;
+            lines: {
+                code: string;
+                after: components["schemas"]["Money"];
+            }[];
+        };
+        Decision: {
+            note: string | null;
+        };
+        Rejection: {
+            reason: string;
+        };
+        ParcelAssign: {
+            memberNo: string;
+            /** Format: uuid */
+            preNoticeId: string | null;
+            reason: string;
+        };
+        LeadFunnelRow: {
+            source: string;
+            counts: number[];
+        };
+        LeadFunnel: {
+            /** Format: date */
+            from: string;
+            /** Format: date */
+            to: string;
+            stages: ("LANDING" | "SIGNED_UP" | "QUOTED" | "PRE_NOTICED" | "SHIPPED")[];
+            rows: components["schemas"]["LeadFunnelRow"][];
+        };
+        NotificationDelivery: {
+            /** Format: uuid */
+            id: string;
+            event: string;
+            /** @enum {string} */
+            channel: "in_app" | "email" | "whatsapp";
+            recipient: string;
+            reference: string;
+            /** @enum {string} */
+            status: "queued" | "sent" | "failed";
+            attempts: number;
+            lastError: string | null;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        OpsCustomer: {
+            /** Format: uuid */
+            id: string;
+            memberNo: string;
+            displayName: string | null;
+            email: string | null;
+            phone: string | null;
+            /** Format: date-time */
+            createdAt: string;
+            source: string | null;
+            identities: components["schemas"]["Identity"][];
+            addresses: components["schemas"]["DeliveryAddress"][];
+            shipments: {
+                /** Format: uuid */
+                id: string;
+                shipmentNo: string;
+                status: components["schemas"]["ShipmentStatus"];
+            }[];
+            preNotices: {
+                /** Format: uuid */
+                id: string;
+                reference: string;
+                /** Format: date-time */
+                createdAt: string;
+            }[];
+            mergedInto: string | null;
+        };
+        CustomerMerge: {
+            intoMemberNo: string;
+            reason: string;
+        };
+        FinCustomer: {
+            /** Format: uuid */
+            id: string;
+            memberNo: string;
+            name: string;
+        };
+        FinReceivableSummary: {
+            /** Format: uuid */
+            id: string;
+            receivableNo: string;
+            status: components["schemas"]["ReceivableStatus"];
+            customer: components["schemas"]["FinCustomer"];
+            shipmentNo: string;
+            currency: components["schemas"]["Currency"];
+            totalInclGst: components["schemas"]["Money"];
+            balance: components["schemas"]["Money"];
+            /** Format: date-time */
+            issuedAt: string;
+        };
+        ReceivableLine: {
+            code: string;
+            description: components["schemas"]["I18nText"];
+            amountExTax: components["schemas"]["Money"];
+            taxCode: components["schemas"]["TaxCode"];
+            taxRate: string;
+            taxAmount: components["schemas"]["Money"];
+        };
+        FinInvoice: {
+            /** Format: uuid */
+            id: string;
+            invoiceNo: string;
+            /** @enum {string} */
+            kind: "tax_invoice" | "credit_note";
+            /** @enum {string} */
+            status: "issued" | "void";
+            /** Format: date-time */
+            issuedAt: string;
+            pdfUrl: string;
+            replacesInvoiceNo: string | null;
+        };
+        Allocation: {
+            /** Format: uuid */
+            paymentId: string;
+            paymentNo: string;
+            amount: components["schemas"]["Money"];
+            /** Format: date-time */
+            at: string;
+        };
+        ReleaseOverride: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            shipmentId: string;
+            shipmentNo: string;
+            receivableNo: string;
+            balance: components["schemas"]["Money"];
+            currency: components["schemas"]["Currency"];
+            /** @enum {string} */
+            status: "pending" | "approved" | "rejected";
+            reason: string;
+            requestedBy: string;
+            /** Format: date-time */
+            requestedAt: string;
+            decidedBy: string | null;
+            decisionNote: string | null;
+        };
+        FinReceivable: {
+            /** Format: uuid */
+            id: string;
+            receivableNo: string;
+            version: number;
+            status: components["schemas"]["ReceivableStatus"];
+            customer: components["schemas"]["FinCustomer"];
+            /** Format: uuid */
+            shipmentId: string;
+            shipmentNo: string;
+            shipmentStatus: components["schemas"]["ShipmentStatus"];
+            billingEntity: {
+                /** @enum {string} */
+                type: "individual" | "company";
+                legalName: string;
+                gstNumber: string | null;
+                address: components["schemas"]["PostalAddress"];
+            };
+            currency: components["schemas"]["Currency"];
+            lines: components["schemas"]["ReceivableLine"][];
+            totals: {
+                exTax: components["schemas"]["Money"];
+                tax: components["schemas"]["Money"];
+                inclTax: components["schemas"]["Money"];
+            };
+            paid: components["schemas"]["Money"];
+            balance: components["schemas"]["Money"];
+            allocations: components["schemas"]["Allocation"][];
+            invoices: components["schemas"]["FinInvoice"][];
+            releaseOverride: components["schemas"]["ReleaseOverride"] | null;
+        };
+        Refund: {
+            /** Format: uuid */
+            id: string;
+            amount: components["schemas"]["Money"];
+            reason: string;
+            /** Format: date */
+            paidAt: string;
+            recordedBy: string;
+        };
+        Payment: {
+            /** Format: uuid */
+            id: string;
+            paymentNo: string;
+            /** @enum {string} */
+            status: "recorded" | "reversed";
+            /** @enum {string} */
+            method: "bank_transfer" | "card" | "other";
+            amount: components["schemas"]["Money"];
+            currency: components["schemas"]["Currency"];
+            reference: string;
+            /** Format: date */
+            receivedAt: string;
+            recordedBy: string;
+            evidenceUrl: string | null;
+            allocated: components["schemas"]["Money"];
+            unallocated: components["schemas"]["Money"];
+            allocations: {
+                /** Format: uuid */
+                receivableId: string;
+                receivableNo: string;
+                amount: components["schemas"]["Money"];
+            }[];
+            refunds: components["schemas"]["Refund"][];
+            reversalReason: string | null;
+        };
+        PaymentCreate: {
+            amount: components["schemas"]["Money"];
+            currency: components["schemas"]["Currency"];
+            /** @enum {string} */
+            method: "bank_transfer" | "card" | "other";
+            reference: string;
+            /** Format: date */
+            receivedAt: string;
+            /** Format: uuid */
+            evidenceFileId: string | null;
+        };
+        AllocationCreate: {
+            /** Format: uuid */
+            paymentId: string;
+            allocations: {
+                /** Format: uuid */
+                receivableId: string;
+                amount: components["schemas"]["Money"];
+            }[];
+        };
+        RefundCreate: {
+            /** Format: uuid */
+            paymentId: string;
+            amount: components["schemas"]["Money"];
+            reason: string;
+            /** Format: date */
+            paidAt: string;
+            /** Format: uuid */
+            evidenceFileId: string | null;
+        };
+        ReconciliationRow: {
+            gatewayRef: string | null;
+            paymentNo: string | null;
+            xeroId: string | null;
+            amount: components["schemas"]["Money"];
+            currency: components["schemas"]["Currency"];
+            /** @enum {string} */
+            status: "MATCHED" | "MISSING_PLATFORM" | "MISSING_XERO" | "AMOUNT_MISMATCH";
+        };
+        Reconciliation: {
+            /** Format: date */
+            date: string;
+            rows: components["schemas"]["ReconciliationRow"][];
+            xeroSync: {
+                /** Format: date-time */
+                lastRunAt: string | null;
+                pending: number;
+                failed: number;
+            };
+        };
+        StaffUser: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            email: string;
+            roles: components["schemas"]["StaffRole"][];
+            /** @enum {string} */
+            status: "active" | "inactive";
+            mfaEnrolled: boolean;
+            /** Format: date-time */
+            lastSignInAt: string | null;
+        };
+        StaffInvite: {
+            name: string;
+            /** Format: email */
+            email: string;
+            roles: components["schemas"]["StaffRole"][];
+        };
+        StaffUpdate: {
+            roles?: components["schemas"]["StaffRole"][];
+            /** @enum {string} */
+            status?: "active" | "inactive";
+        };
+        AuditEntry: {
+            /** Format: uuid */
+            id: string;
+            /** Format: date-time */
+            at: string;
+            actor: string;
+            action: string;
+            entity: string;
+            entityRef: string;
+            reason: string | null;
+            before: Record<string, never> | null;
+            after: Record<string, never> | null;
+        };
+        AuditPage: {
+            items: components["schemas"]["AuditEntry"][];
+            nextCursor: string | null;
+        };
+        FclRate: {
+            origin: string;
+            destination: string;
+            size20: components["schemas"]["Money"];
+            size40: components["schemas"]["Money"];
+        };
+        FclRateSheet: {
+            /** Format: uuid */
+            id: string;
+            version: number;
+            /** @enum {string} */
+            status: "draft" | "published" | "retired";
+            /** Format: date */
+            validFrom: string;
+            /** Format: date */
+            validTo: string;
+            expired: boolean;
+            /** Format: date-time */
+            importedAt: string;
+            importedBy: string;
+            sourceFile: string;
+            currency: components["schemas"]["Currency"];
+            rates: components["schemas"]["FclRate"][];
+        };
+        FclImport: {
+            /** Format: uuid */
+            fileId: string;
+            /** Format: date */
+            validFrom: string;
+            /** Format: date */
+            validTo: string;
+        };
+        ReportSummary: {
+            /** Format: date */
+            from: string;
+            /** Format: date */
+            to: string;
+            revenue: {
+                month: string;
+                currency: components["schemas"]["Currency"];
+                amountExGst: components["schemas"]["Money"];
+            }[];
+            volume: {
+                month: string;
+                shipments: number;
+                chargeableKg: components["schemas"]["DecimalString"];
+            }[];
+            byProduct: {
+                product: components["schemas"]["Product"];
+                shipments: number;
+            }[];
+            profitAvailable: boolean;
+            profitNote: components["schemas"]["I18nText"];
+        };
+        LiveEvent: {
+            id: string;
+            type: string;
+            /** @enum {string} */
+            entity: "shipment" | "parcel" | "pre_notice" | "receivable" | "notification";
+            /** Format: uuid */
+            entityId: string;
+            /** Format: date-time */
+            at: string;
+        };
     };
     responses: {
         /** @description RFC 7807 problem */
@@ -619,6 +2574,18 @@ export interface components {
         IdempotencyKey: string;
         PreNoticeId: string;
         VersionId: string;
+        ShipmentId: string;
+        PaymentId: string;
+        ParcelId: string;
+        ConsolidationId: string;
+        AdjustmentId: string;
+        DeliveryId: string;
+        CustomerId: string;
+        ReceivableId: string;
+        InvoiceId: string;
+        OverrideId: string;
+        StaffId: string;
+        SheetId: string;
     };
     requestBodies: never;
     headers: never;
@@ -1099,6 +3066,1807 @@ export interface operations {
             };
             403: components["responses"]["Problem"];
             409: components["responses"]["Problem"];
+        };
+    };
+    getStaffMe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffMe"];
+                };
+            };
+            401: components["responses"]["Problem"];
+            403: components["responses"]["Problem"];
+        };
+    };
+    listShipments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JourneyCard"][];
+                };
+            };
+            401: components["responses"]["Problem"];
+        };
+    };
+    getPreNoticeHandling: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                preNoticeId: components["parameters"]["PreNoticeId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PreNoticeHandling"];
+                };
+            };
+            404: components["responses"]["Problem"];
+        };
+    };
+    chooseHandling: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                preNoticeId: components["parameters"]["PreNoticeId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HandlingChoice"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PreNoticeHandling"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    getShipment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                shipmentId: components["parameters"]["ShipmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ShipmentDetail"];
+                };
+            };
+            404: components["responses"]["Problem"];
+        };
+    };
+    confirmFinalPrice: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                shipmentId: components["parameters"]["ShipmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfirmFinal"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ShipmentDetail"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    startOnlinePayment: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                shipmentId: components["parameters"]["ShipmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentSession"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    getOnlinePayment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                paymentId: components["parameters"]["PaymentId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OnlinePayment"];
+                };
+            };
+            404: components["responses"]["Problem"];
+        };
+    };
+    listNotifications: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationList"];
+                };
+            };
+            401: components["responses"]["Problem"];
+        };
+    };
+    markNotificationsRead: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NotificationsRead"];
+            };
+        };
+        responses: {
+            /** @description Done */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    getNotificationPrefs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationPrefs"];
+                };
+            };
+            401: components["responses"]["Problem"];
+        };
+    };
+    updateNotificationPrefs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NotificationPrefsUpdate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationPrefs"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    listBillingEntities: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingEntity"][];
+                };
+            };
+            401: components["responses"]["Problem"];
+        };
+    };
+    createBillingEntity: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BillingEntityCreate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillingEntity"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    listAddresses: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryAddress"][];
+                };
+            };
+            401: components["responses"]["Problem"];
+        };
+    };
+    createAddress: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeliveryAddressCreate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryAddress"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    scanParcel: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScanRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScanResult"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            403: components["responses"]["Problem"];
+        };
+    };
+    createUploadUrl: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UploadUrlRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadUrl"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    receiveParcel: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReceiveParcel"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhParcel"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    getWhParcel: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                parcelId: components["parameters"]["ParcelId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhParcel"];
+                };
+            };
+            404: components["responses"]["Problem"];
+        };
+    };
+    addParcelPhoto: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                parcelId: components["parameters"]["ParcelId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ParcelPhotoAdd"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhParcel"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    correctMeasurements: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                parcelId: components["parameters"]["ParcelId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MeasurementCorrection"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhParcel"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    holdParcel: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                parcelId: components["parameters"]["ParcelId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ParcelHold"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhParcel"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    listUnclaimedParcels: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhParcel"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    listConsolidations: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["ConsolidationStatus"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhConsolidationSummary"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    getConsolidation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                consolidationId: components["parameters"]["ConsolidationId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhConsolidation"];
+                };
+            };
+            404: components["responses"]["Problem"];
+        };
+    };
+    startConsolidation: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                consolidationId: components["parameters"]["ConsolidationId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfirmFinal"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhConsolidation"];
+                };
+            };
+            409: components["responses"]["Problem"];
+        };
+    };
+    completeConsolidation: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                consolidationId: components["parameters"]["ConsolidationId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CompleteConsolidation"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhConsolidation"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    listDispatchQueue: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhShipment"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    getOpsDashboard: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OpsDashboard"];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    searchOps: {
+        parameters: {
+            query?: {
+                q?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchResult"][];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    getOpsShipment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                shipmentId: components["parameters"]["ShipmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OpsShipment"];
+                };
+            };
+            404: components["responses"]["Problem"];
+        };
+    };
+    transitionShipment: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                shipmentId: components["parameters"]["ShipmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransitionRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransitionResult"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            403: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    addShipmentNote: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                shipmentId: components["parameters"]["ShipmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NoteCreate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OpsNote"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    setTrackingUrl: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                shipmentId: components["parameters"]["ShipmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TrackingUpdate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrackingUpdate"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    listPriceAdjustments: {
+        parameters: {
+            query?: {
+                status?: "pending" | "approved" | "rejected";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PriceAdjustment"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    requestPriceAdjustment: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PriceAdjustmentCreate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PriceAdjustment"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    approvePriceAdjustment: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                adjustmentId: components["parameters"]["AdjustmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Decision"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PriceAdjustment"];
+                };
+            };
+            403: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    rejectPriceAdjustment: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                adjustmentId: components["parameters"]["AdjustmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Rejection"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PriceAdjustment"];
+                };
+            };
+            403: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    assignParcel: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                parcelId: components["parameters"]["ParcelId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ParcelAssign"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhParcel"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            404: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    getLeadFunnel: {
+        parameters: {
+            query?: {
+                from?: string;
+                to?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LeadFunnel"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    listNotificationDeliveries: {
+        parameters: {
+            query?: {
+                status?: "queued" | "sent" | "failed";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationDelivery"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    resendNotification: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                deliveryId: components["parameters"]["DeliveryId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationDelivery"];
+                };
+            };
+            409: components["responses"]["Problem"];
+        };
+    };
+    getOpsCustomer: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                customerId: components["parameters"]["CustomerId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OpsCustomer"];
+                };
+            };
+            404: components["responses"]["Problem"];
+        };
+    };
+    mergeCustomer: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                customerId: components["parameters"]["CustomerId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CustomerMerge"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OpsCustomer"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    listReceivables: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["ReceivableStatus"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FinReceivableSummary"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    getReceivable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                receivableId: components["parameters"]["ReceivableId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FinReceivable"];
+                };
+            };
+            404: components["responses"]["Problem"];
+        };
+    };
+    issueInvoice: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                receivableId: components["parameters"]["ReceivableId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FinReceivable"];
+                };
+            };
+            409: components["responses"]["Problem"];
+        };
+    };
+    voidAndReissueInvoice: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                invoiceId: components["parameters"]["InvoiceId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Rejection"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FinReceivable"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    issueCreditNote: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                invoiceId: components["parameters"]["InvoiceId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Rejection"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FinReceivable"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    listPayments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Payment"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    recordPayment: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentCreate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Payment"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    reversePayment: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                paymentId: components["parameters"]["PaymentId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Rejection"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Payment"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    allocatePayment: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AllocationCreate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Payment"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    recordRefund: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RefundCreate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Payment"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    listReleaseOverrides: {
+        parameters: {
+            query?: {
+                status?: "pending" | "approved" | "rejected";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReleaseOverride"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    requestReleaseOverride: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                shipmentId: components["parameters"]["ShipmentId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Rejection"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReleaseOverride"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    approveReleaseOverride: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                overrideId: components["parameters"]["OverrideId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Decision"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReleaseOverride"];
+                };
+            };
+            403: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    rejectReleaseOverride: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                overrideId: components["parameters"]["OverrideId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Rejection"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReleaseOverride"];
+                };
+            };
+            403: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    getReconciliation: {
+        parameters: {
+            query?: {
+                date?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reconciliation"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    listStaff: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffUser"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    inviteStaff: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StaffInvite"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffUser"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    updateStaff: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                staffId: components["parameters"]["StaffId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StaffUpdate"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffUser"];
+                };
+            };
+            400: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    listAuditLogs: {
+        parameters: {
+            query?: {
+                entity?: string;
+                action?: string;
+                cursor?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditPage"];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    listFclRateSheets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FclRateSheet"][];
+                };
+            };
+            403: components["responses"]["Problem"];
+        };
+    };
+    importFclRateSheet: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FclImport"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FclRateSheet"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    publishFclRateSheet: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2). */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                sheetId: components["parameters"]["SheetId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RatePublish"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FclRateSheet"];
+                };
+            };
+            403: components["responses"]["Problem"];
+            409: components["responses"]["Problem"];
+        };
+    };
+    getReportSummary: {
+        parameters: {
+            query?: {
+                from?: string;
+                to?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReportSummary"];
+                };
+            };
+            400: components["responses"]["Problem"];
+        };
+    };
+    streamEvents: {
+        parameters: {
+            query?: never;
+            header?: {
+                "Last-Event-ID"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Event stream */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example id: 8812
+                     *     data: {"id":"8812","type":"parcel.received","entity":"parcel","entityId":"0193a5f0-6666-7000-8000-000000000125","at":"2026-10-27T05:20:00Z"}
+                     */
+                    "text/event-stream": string;
+                };
+            };
+            401: components["responses"]["Problem"];
         };
     };
 }

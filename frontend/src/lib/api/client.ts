@@ -33,3 +33,14 @@ export const $api = createQueryClient(fetchClient);
 export function newIdempotencyKey(): string {
   return crypto.randomUUID();
 }
+
+/** A fresh `Idempotency-Key` header for one command (warehouse, ops and finance writes must carry one). */
+export function idem(): { "Idempotency-Key": string } {
+  return { "Idempotency-Key": newIdempotencyKey() };
+}
+
+/** HTTP status of a failed API call (openapi-react-query rejects with the problem body or response). */
+export function errorStatus(error: unknown): number | undefined {
+  const status = (error as { status?: unknown } | null)?.status;
+  return typeof status === "number" ? status : undefined;
+}
