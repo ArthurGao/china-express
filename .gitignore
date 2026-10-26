@@ -13,3 +13,6 @@ coverage/
 
 # A global excludesfile hides CLAUDE.md on this machine; agent guides are tracked here.
 !**/CLAUDE.md
+
+# Playwright MCP screenshots and logs
+.playwright-mcp/

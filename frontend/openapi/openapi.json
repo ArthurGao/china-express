@@ -1,0 +1,2884 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ChinaExpress API",
+    "version": "0.1.0",
+    "description": "Stage 1 contract (quote, login, pre-notice, rate admin). Contract-first: hand-maintained until the backend exists, then the backend's `pnpm openapi` must regenerate this file unchanged (ADR 0003). Every amount in an example is what the backend pricing engine returns for that input; the frontend never computes it.",
+    "license": {
+      "name": "Proprietary",
+      "identifier": "LicenseRef-Proprietary"
+    }
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "me",
+      "description": "The signed-in customer and their sign-in methods"
+    },
+    {
+      "name": "destinations",
+      "description": "Regions, cities and postcode lookup for quoting"
+    },
+    {
+      "name": "quotes",
+      "description": "Estimates; prices come only from the backend pricing engine"
+    },
+    {
+      "name": "leads",
+      "description": "Source tracking for sales links"
+    },
+    {
+      "name": "pre-notices",
+      "description": "Customer notices that parcels are on the way to Guangzhou"
+    },
+    {
+      "name": "admin-rates",
+      "description": "Rate card drafts, simulation and publishing (admin, MFA)"
+    }
+  ],
+  "paths": {
+    "/me": {
+      "get": {
+        "tags": [
+          "me"
+        ],
+        "operationId": "getMe",
+        "summary": "Current customer; created with a member number on first call",
+        "responses": {
+          "200": {
+            "description": "The signed-in customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "customerId": "0193a5b2-7c41-7e10-9d2e-4f1a2b3c4d5e",
+                      "memberNo": "CE-123456-7",
+                      "displayName": "Alex Chen",
+                      "email": "alex@example.co.nz",
+                      "locale": "en",
+                      "identities": [
+                        {
+                          "provider": "email",
+                          "label": "alex@example.co.nz",
+                          "verifiedAt": "2026-10-26T09:12:00Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/me/identities/link": {
+      "post": {
+        "tags": [
+          "me"
+        ],
+        "operationId": "linkIdentity",
+        "summary": "Record a sign-in method linked while signed in (never auto-merges another customer)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IdentityLinkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated identity list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "customerId": "0193a5b2-7c41-7e10-9d2e-4f1a2b3c4d5e",
+                      "memberNo": "CE-123456-7",
+                      "displayName": "Alex Chen",
+                      "email": "alex@example.co.nz",
+                      "locale": "en",
+                      "identities": [
+                        {
+                          "provider": "email",
+                          "label": "alex@example.co.nz",
+                          "verifiedAt": "2026-10-26T09:12:00Z"
+                        },
+                        {
+                          "provider": "google",
+                          "label": "alex@example.co.nz",
+                          "verifiedAt": "2026-10-26T09:20:00Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/destinations/cities": {
+      "get": {
+        "tags": [
+          "destinations"
+        ],
+        "operationId": "listCities",
+        "summary": "Cities a customer can pick for a region",
+        "parameters": [
+          {
+            "name": "region",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Region"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cities in the region",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/City"
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "value": [
+                      {
+                        "id": "akl",
+                        "name": "Auckland",
+                        "region": "AKL"
+                      },
+                      {
+                        "id": "kerikeri",
+                        "name": "Kerikeri",
+                        "region": "NI_OTHER"
+                      },
+                      {
+                        "id": "hamilton",
+                        "name": "Hamilton",
+                        "region": "NI_OTHER"
+                      },
+                      {
+                        "id": "christchurch",
+                        "name": "Christchurch",
+                        "region": "SI"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/destinations/postcodes/{postcode}": {
+      "get": {
+        "tags": [
+          "destinations"
+        ],
+        "operationId": "lookupPostcode",
+        "summary": "Resolve a postcode when the town is not in the city list",
+        "parameters": [
+          {
+            "name": "postcode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Region and delivery zone for the postcode",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostcodeLookup"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "postcode": "0230",
+                      "region": "NI_OTHER",
+                      "cityId": "kerikeri",
+                      "zoneName": "Kerikeri",
+                      "quoteOnRequest": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/quotes/estimate": {
+      "post": {
+        "tags": [
+          "quotes"
+        ],
+        "operationId": "createEstimate",
+        "summary": "Estimate all three products at once and store the snapshot (login required, DECISION(A4))",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstimateRequest"
+              },
+              "examples": {
+                "auckland7kg": {
+                  "value": {
+                    "destination": {
+                      "region": "AKL",
+                      "cityId": "akl"
+                    },
+                    "cartons": [
+                      {
+                        "lengthCm": "30",
+                        "widthCm": "20",
+                        "heightCm": "20",
+                        "weightKg": "7",
+                        "quantity": 1
+                      }
+                    ],
+                    "declaredValueNzd": "250.00"
+                  }
+                },
+                "kerikeriLcl": {
+                  "value": {
+                    "destination": {
+                      "region": "NI_OTHER",
+                      "cityId": "kerikeri"
+                    },
+                    "cartons": [
+                      {
+                        "lengthCm": "200",
+                        "widthCm": "166",
+                        "heightCm": "100",
+                        "weightKg": "1820",
+                        "quantity": 1
+                      }
+                    ],
+                    "declaredValueNzd": "1500.00"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Stored estimate snapshot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Estimate"
+                },
+                "examples": {
+                  "auckland7kg": {
+                    "summary": "7 kg to Auckland, value under 400 (design 04 worked example for SEA_PARCEL)",
+                    "value": {
+                      "quoteId": "0193a5c0-1111-7000-8000-000000000001",
+                      "input": {
+                        "destination": {
+                          "region": "AKL",
+                          "cityId": "akl"
+                        },
+                        "cartons": [
+                          {
+                            "lengthCm": "30",
+                            "widthCm": "20",
+                            "heightCm": "20",
+                            "weightKg": "7",
+                            "quantity": 1
+                          }
+                        ],
+                        "declaredValueNzd": "250.00"
+                      },
+                      "createdAt": "2026-10-26T09:30:00Z",
+                      "expiresAt": "2026-11-09T09:30:00Z",
+                      "engineVersion": "1.0.0",
+                      "rateVersionIds": [
+                        "0193a500-0000-7000-8000-00000000a001",
+                        "0193a500-0000-7000-8000-00000000a002"
+                      ],
+                      "options": [
+                        {
+                          "product": "SEA_PARCEL",
+                          "status": "OK",
+                          "reviewReasons": [],
+                          "tags": [
+                            "CHEAPEST"
+                          ],
+                          "lines": [
+                            {
+                              "code": "FREIGHT",
+                              "label": {
+                                "en": "Sea freight",
+                                "zh": "海运费"
+                              },
+                              "amount": "14.00",
+                              "currency": "NZD",
+                              "taxCode": "ZERO"
+                            },
+                            {
+                              "code": "CLEARANCE",
+                              "label": {
+                                "en": "Customs clearance",
+                                "zh": "清关费"
+                              },
+                              "amount": "12.00",
+                              "currency": "NZD",
+                              "taxCode": "GST15"
+                            }
+                          ],
+                          "totals": [
+                            {
+                              "currency": "NZD",
+                              "amountExGst": "26.00",
+                              "gstApplies": true
+                            }
+                          ]
+                        },
+                        {
+                          "product": "SEA_LCL",
+                          "status": "OK",
+                          "reviewReasons": [],
+                          "tags": [],
+                          "lines": [
+                            {
+                              "code": "FREIGHT",
+                              "label": {
+                                "en": "Sea freight",
+                                "zh": "海运费"
+                              },
+                              "amount": "200.00",
+                              "currency": "NZD",
+                              "taxCode": "ZERO"
+                            },
+                            {
+                              "code": "CLEARANCE",
+                              "label": {
+                                "en": "Customs clearance",
+                                "zh": "清关费"
+                              },
+                              "amount": "115.00",
+                              "currency": "NZD",
+                              "taxCode": "GST15"
+                            },
+                            {
+                              "code": "DELIVERY",
+                              "label": {
+                                "en": "Delivery (minimum charge)",
+                                "zh": "派送费（最低收费）"
+                              },
+                              "amount": "61.65",
+                              "currency": "NZD",
+                              "taxCode": "GST15"
+                            }
+                          ],
+                          "totals": [
+                            {
+                              "currency": "NZD",
+                              "amountExGst": "376.65",
+                              "gstApplies": true
+                            }
+                          ]
+                        },
+                        {
+                          "product": "AIR",
+                          "status": "REQUIRES_REVIEW",
+                          "reviewReasons": [
+                            "AIR_RULES_UNSIGNED"
+                          ],
+                          "tags": [],
+                          "lines": [],
+                          "totals": []
+                        }
+                      ]
+                    }
+                  },
+                  "kerikeriLcl": {
+                    "summary": "3.32 m³ / 1,820 kg to Kerikeri, value 1,000+ (design 04 worked example for SEA_LCL)",
+                    "value": {
+                      "quoteId": "0193a5c0-1111-7000-8000-000000000002",
+                      "input": {
+                        "destination": {
+                          "region": "NI_OTHER",
+                          "cityId": "kerikeri"
+                        },
+                        "cartons": [
+                          {
+                            "lengthCm": "200",
+                            "widthCm": "166",
+                            "heightCm": "100",
+                            "weightKg": "1820",
+                            "quantity": 1
+                          }
+                        ],
+                        "declaredValueNzd": "1500.00"
+                      },
+                      "createdAt": "2026-10-26T09:31:00Z",
+                      "expiresAt": "2026-11-09T09:31:00Z",
+                      "engineVersion": "1.0.0",
+                      "rateVersionIds": [
+                        "0193a500-0000-7000-8000-00000000a002"
+                      ],
+                      "options": [
+                        {
+                          "product": "SEA_PARCEL",
+                          "status": "UNAVAILABLE",
+                          "reviewReasons": [
+                            "OVER_SEA_PARCEL_LIMIT"
+                          ],
+                          "tags": [],
+                          "lines": [],
+                          "totals": []
+                        },
+                        {
+                          "product": "SEA_LCL",
+                          "status": "OK",
+                          "reviewReasons": [],
+                          "tags": [
+                            "CHEAPEST"
+                          ],
+                          "lines": [
+                            {
+                              "code": "FREIGHT",
+                              "label": {
+                                "en": "Sea freight",
+                                "zh": "海运费"
+                              },
+                              "amount": "664.00",
+                              "currency": "NZD",
+                              "taxCode": "ZERO"
+                            },
+                            {
+                              "code": "CLEARANCE",
+                              "label": {
+                                "en": "Customs clearance",
+                                "zh": "清关费"
+                              },
+                              "amount": "212.75",
+                              "currency": "NZD",
+                              "taxCode": "GST15"
+                            },
+                            {
+                              "code": "DELIVERY",
+                              "label": {
+                                "en": "Delivery",
+                                "zh": "派送费"
+                              },
+                              "amount": "1578.90",
+                              "currency": "NZD",
+                              "taxCode": "GST15"
+                            }
+                          ],
+                          "totals": [
+                            {
+                              "currency": "NZD",
+                              "amountExGst": "2455.65",
+                              "gstApplies": true
+                            }
+                          ]
+                        },
+                        {
+                          "product": "AIR",
+                          "status": "REQUIRES_REVIEW",
+                          "reviewReasons": [
+                            "AIR_RULES_UNSIGNED"
+                          ],
+                          "tags": [],
+                          "lines": [],
+                          "totals": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/fcl/ports": {
+      "get": {
+        "tags": [
+          "quotes"
+        ],
+        "operationId": "listFclPorts",
+        "summary": "Ports and the FCL rate sheet in force",
+        "responses": {
+          "200": {
+            "description": "Port lists and rate sheet validity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FclPorts"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "origins": [
+                        {
+                          "code": "CNSHA",
+                          "name": "Shanghai",
+                          "group": "COMMON"
+                        },
+                        {
+                          "code": "CNNGB",
+                          "name": "Ningbo",
+                          "group": "COMMON"
+                        },
+                        {
+                          "code": "CNCKG",
+                          "name": "Chongqing",
+                          "group": "OTHER"
+                        }
+                      ],
+                      "destinations": [
+                        {
+                          "code": "NZAKL",
+                          "name": "Auckland"
+                        },
+                        {
+                          "code": "NZTRG",
+                          "name": "Tauranga"
+                        },
+                        {
+                          "code": "NZLYT",
+                          "name": "Lyttelton"
+                        },
+                        {
+                          "code": "NZWLG",
+                          "name": "Wellington"
+                        },
+                        {
+                          "code": "NZNPE",
+                          "name": "Napier"
+                        }
+                      ],
+                      "rateSheet": {
+                        "version": "2026-10-01",
+                        "validFrom": "2026-10-01",
+                        "validTo": "2026-10-14",
+                        "expired": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/quotes/fcl": {
+      "post": {
+        "tags": [
+          "quotes"
+        ],
+        "operationId": "createFclEstimate",
+        "summary": "FCL estimate: USD ocean freight (A) and optional NZD local charges (B), never converted",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FclEstimateRequest"
+              },
+              "examples": {
+                "shanghaiAuckland40": {
+                  "value": {
+                    "size": "40",
+                    "originPort": "CNSHA",
+                    "destPort": "NZAKL",
+                    "includeLocalCharges": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Stored FCL estimate snapshot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FclEstimate"
+                },
+                "examples": {
+                  "shanghaiAuckland40": {
+                    "summary": "40' Shanghai → Auckland with local charges (design 04 worked example)",
+                    "value": {
+                      "quoteId": "0193a5c0-2222-7000-8000-000000000001",
+                      "status": "OK",
+                      "reviewReasons": [],
+                      "createdAt": "2026-10-10T02:00:00Z",
+                      "expiresAt": "2026-10-13T02:00:00Z",
+                      "rateSheetVersion": "2026-10-01",
+                      "lines": [
+                        {
+                          "group": "OCEAN",
+                          "code": "FCL_FREIGHT",
+                          "label": {
+                            "en": "Ocean freight",
+                            "zh": "海运费"
+                          },
+                          "amount": "6000.00",
+                          "currency": "USD",
+                          "taxCode": "ZERO"
+                        },
+                        {
+                          "group": "OCEAN",
+                          "code": "FCL_FAF",
+                          "label": {
+                            "en": "Fuel adjustment (FAF)",
+                            "zh": "燃油调整费"
+                          },
+                          "amount": "718.00",
+                          "currency": "USD",
+                          "taxCode": "ZERO"
+                        },
+                        {
+                          "group": "OCEAN",
+                          "code": "FCL_EFS",
+                          "label": {
+                            "en": "Emergency fuel (EFS)",
+                            "zh": "紧急燃油附加费"
+                          },
+                          "amount": "100.00",
+                          "currency": "USD",
+                          "taxCode": "ZERO"
+                        },
+                        {
+                          "group": "PORT",
+                          "code": "FCL_LINE_FEE",
+                          "label": {
+                            "en": "Shipping line fee",
+                            "zh": "船公司费用"
+                          },
+                          "amount": "120.00",
+                          "currency": "NZD",
+                          "taxCode": "GST15"
+                        },
+                        {
+                          "group": "PORT",
+                          "code": "FCL_THD",
+                          "label": {
+                            "en": "Terminal handling (THD)",
+                            "zh": "码头操作费"
+                          },
+                          "amount": "891.00",
+                          "currency": "NZD",
+                          "taxCode": "GST15"
+                        },
+                        {
+                          "group": "PORT",
+                          "code": "FCL_PORT_SECURITY",
+                          "label": {
+                            "en": "Port security",
+                            "zh": "港口安保费"
+                          },
+                          "amount": "73.00",
+                          "currency": "NZD",
+                          "taxCode": "GST15"
+                        },
+                        {
+                          "group": "PORT",
+                          "code": "FCL_DOC",
+                          "label": {
+                            "en": "Documentation",
+                            "zh": "文件费"
+                          },
+                          "amount": "90.00",
+                          "currency": "NZD",
+                          "taxCode": "GST15"
+                        },
+                        {
+                          "group": "PORT",
+                          "code": "FCL_TAC",
+                          "label": {
+                            "en": "Port additional charge (TAC)",
+                            "zh": "港口附加费"
+                          },
+                          "amount": "144.50",
+                          "currency": "NZD",
+                          "taxCode": "GST15"
+                        },
+                        {
+                          "group": "DELIVERY",
+                          "code": "FCL_DELIVERY_GROUP",
+                          "label": {
+                            "en": "Customs, trucking & delivery",
+                            "zh": "清关、拖车和派送"
+                          },
+                          "amount": "1669.64",
+                          "currency": "NZD",
+                          "taxCode": "GST15"
+                        }
+                      ],
+                      "totals": [
+                        {
+                          "currency": "USD",
+                          "amountExGst": "6818.00",
+                          "gstApplies": false
+                        },
+                        {
+                          "currency": "NZD",
+                          "amountExGst": "2988.14",
+                          "gstApplies": true
+                        }
+                      ]
+                    }
+                  },
+                  "rateSheetExpired": {
+                    "summary": "Rate sheet past valid_to: no figures, route to manual (DECISION(G3))",
+                    "value": {
+                      "quoteId": "0193a5c0-2222-7000-8000-000000000002",
+                      "status": "REQUIRES_REVIEW",
+                      "reviewReasons": [
+                        "FCL_RATE_EXPIRED"
+                      ],
+                      "createdAt": "2026-10-26T09:40:00Z",
+                      "expiresAt": "2026-10-29T09:40:00Z",
+                      "rateSheetVersion": "2026-10-01",
+                      "lines": [],
+                      "totals": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/quotes/{quoteId}": {
+      "get": {
+        "tags": [
+          "quotes"
+        ],
+        "operationId": "getQuote",
+        "summary": "A stored estimate (owner or staff)",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The estimate snapshot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Estimate"
+                },
+                "examples": {
+                  "default": {
+                    "summary": "The stored auckland7kg estimate",
+                    "value": {
+                      "quoteId": "0193a5c0-1111-7000-8000-000000000001",
+                      "input": {
+                        "destination": {
+                          "region": "AKL",
+                          "cityId": "akl"
+                        },
+                        "cartons": [
+                          {
+                            "lengthCm": "30",
+                            "widthCm": "20",
+                            "heightCm": "20",
+                            "weightKg": "7",
+                            "quantity": 1
+                          }
+                        ],
+                        "declaredValueNzd": "250.00"
+                      },
+                      "createdAt": "2026-10-26T09:30:00Z",
+                      "expiresAt": "2026-11-09T09:30:00Z",
+                      "engineVersion": "1.0.0",
+                      "rateVersionIds": [
+                        "0193a500-0000-7000-8000-00000000a001",
+                        "0193a500-0000-7000-8000-00000000a002"
+                      ],
+                      "options": [
+                        {
+                          "product": "SEA_PARCEL",
+                          "status": "OK",
+                          "reviewReasons": [],
+                          "tags": [
+                            "CHEAPEST"
+                          ],
+                          "lines": [
+                            {
+                              "code": "FREIGHT",
+                              "label": {
+                                "en": "Sea freight",
+                                "zh": "海运费"
+                              },
+                              "amount": "14.00",
+                              "currency": "NZD",
+                              "taxCode": "ZERO"
+                            },
+                            {
+                              "code": "CLEARANCE",
+                              "label": {
+                                "en": "Customs clearance",
+                                "zh": "清关费"
+                              },
+                              "amount": "12.00",
+                              "currency": "NZD",
+                              "taxCode": "GST15"
+                            }
+                          ],
+                          "totals": [
+                            {
+                              "currency": "NZD",
+                              "amountExGst": "26.00",
+                              "gstApplies": true
+                            }
+                          ]
+                        },
+                        {
+                          "product": "SEA_LCL",
+                          "status": "OK",
+                          "reviewReasons": [],
+                          "tags": [],
+                          "lines": [
+                            {
+                              "code": "FREIGHT",
+                              "label": {
+                                "en": "Sea freight",
+                                "zh": "海运费"
+                              },
+                              "amount": "200.00",
+                              "currency": "NZD",
+                              "taxCode": "ZERO"
+                            },
+                            {
+                              "code": "CLEARANCE",
+                              "label": {
+                                "en": "Customs clearance",
+                                "zh": "清关费"
+                              },
+                              "amount": "115.00",
+                              "currency": "NZD",
+                              "taxCode": "GST15"
+                            },
+                            {
+                              "code": "DELIVERY",
+                              "label": {
+                                "en": "Delivery (minimum charge)",
+                                "zh": "派送费（最低收费）"
+                              },
+                              "amount": "61.65",
+                              "currency": "NZD",
+                              "taxCode": "GST15"
+                            }
+                          ],
+                          "totals": [
+                            {
+                              "currency": "NZD",
+                              "amountExGst": "376.65",
+                              "gstApplies": true
+                            }
+                          ]
+                        },
+                        {
+                          "product": "AIR",
+                          "status": "REQUIRES_REVIEW",
+                          "reviewReasons": [
+                            "AIR_RULES_UNSIGNED"
+                          ],
+                          "tags": [],
+                          "lines": [],
+                          "totals": []
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/leads/touch": {
+      "post": {
+        "tags": [
+          "leads"
+        ],
+        "operationId": "touchLead",
+        "summary": "Record a visitor's source parameters and funnel stage (anonymous allowed, rate-limited)",
+        "security": [
+          {},
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadTouch"
+              },
+              "examples": {
+                "landing": {
+                  "value": {
+                    "visitorId": "8f0c2d4e-6a1b-4c3d-9e8f-0a1b2c3d4e5f",
+                    "stage": "LANDING",
+                    "source": {
+                      "src": "fb-marketplace",
+                      "utmSource": "facebook",
+                      "utmCampaign": "oct-furniture",
+                      "ref": "sales-amy"
+                    },
+                    "path": "/"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Recorded"
+          },
+          "400": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/pre-notices": {
+      "get": {
+        "tags": [
+          "pre-notices"
+        ],
+        "operationId": "listPreNotices",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The customer's pre-notices, newest first",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "items"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PreNotice"
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "summary": "The customer's pre-notices, newest first"
+      },
+      "post": {
+        "tags": [
+          "pre-notices"
+        ],
+        "operationId": "createPreNotice",
+        "summary": "Tell the warehouse parcels are coming. Requires the prohibited-goods acknowledgement.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreNoticeCreate"
+              },
+              "examples": {
+                "default": {
+                  "value": {
+                    "estimateQuoteId": "0193a5c0-1111-7000-8000-000000000001",
+                    "product": "SEA_PARCEL",
+                    "destination": {
+                      "region": "AKL",
+                      "cityId": "akl"
+                    },
+                    "prohibitedGoodsAck": true,
+                    "trackingNumbers": []
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreNotice"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "0193a5d0-3333-7000-8000-000000000001",
+                      "status": "SUBMITTED",
+                      "product": "SEA_PARCEL",
+                      "destination": {
+                        "region": "AKL",
+                        "cityId": "akl"
+                      },
+                      "estimateQuoteId": "0193a5c0-1111-7000-8000-000000000001",
+                      "createdAt": "2026-10-26T09:35:00Z",
+                      "trackings": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/pre-notices/{preNoticeId}": {
+      "get": {
+        "tags": [
+          "pre-notices"
+        ],
+        "operationId": "getPreNotice",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PreNoticeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The pre-notice",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreNotice"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "0193a5d0-3333-7000-8000-000000000001",
+                      "status": "SUBMITTED",
+                      "product": "SEA_PARCEL",
+                      "destination": {
+                        "region": "AKL",
+                        "cityId": "akl"
+                      },
+                      "estimateQuoteId": "0193a5c0-1111-7000-8000-000000000001",
+                      "createdAt": "2026-10-26T09:35:00Z",
+                      "trackings": [
+                        {
+                          "carrier": "SF",
+                          "trackingNo": "SF1234567890123"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          }
+        },
+        "summary": "One pre-notice of the signed-in customer"
+      }
+    },
+    "/pre-notices/{preNoticeId}/trackings": {
+      "patch": {
+        "tags": [
+          "pre-notices"
+        ],
+        "operationId": "addPreNoticeTrackings",
+        "summary": "Add courier tracking numbers later",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PreNoticeId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "add"
+                ],
+                "properties": {
+                  "add": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 50,
+                    "items": {
+                      "$ref": "#/components/schemas/Tracking"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated pre-notice",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreNotice"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "0193a5d0-3333-7000-8000-000000000001",
+                      "status": "SUBMITTED",
+                      "product": "SEA_PARCEL",
+                      "destination": {
+                        "region": "AKL",
+                        "cityId": "akl"
+                      },
+                      "estimateQuoteId": "0193a5c0-1111-7000-8000-000000000001",
+                      "createdAt": "2026-10-26T09:35:00Z",
+                      "trackings": [
+                        {
+                          "carrier": "SF",
+                          "trackingNo": "SF1234567890123"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/warehouse-address": {
+      "get": {
+        "tags": [
+          "pre-notices"
+        ],
+        "operationId": "getWarehouseAddress",
+        "summary": "Guangzhou receiving address with this customer's shipping mark, ready to copy for the supplier",
+        "responses": {
+          "200": {
+            "description": "Address text",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WarehouseAddress"
+                },
+                "examples": {
+                  "default": {
+                    "summary": "Placeholder until the owner supplies the real address (DECISION: warehouse address)",
+                    "value": {
+                      "memberNo": "CE-123456-7",
+                      "isPlaceholder": true,
+                      "copyText": "收货人：China Express 仓库（CE-123456-7）\n电话：待业主提供\n地址：广东省广州市（地址待业主提供）\n唛头：每个纸箱请写 CE-123456-7"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/admin/rate-cards": {
+      "get": {
+        "tags": [
+          "admin-rates"
+        ],
+        "operationId": "listRateCards",
+        "summary": "Rate cards and their versions (admin, aal2)",
+        "responses": {
+          "200": {
+            "description": "Rate cards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RateCard"
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "value": [
+                      {
+                        "id": "0193a500-0000-7000-8000-0000000000c1",
+                        "product": "SEA_PARCEL",
+                        "name": "Sea parcel",
+                        "versions": [
+                          {
+                            "id": "0193a500-0000-7000-8000-00000000a001",
+                            "version": 1,
+                            "status": "published",
+                            "effectiveFrom": "2026-10-01",
+                            "effectiveTo": null,
+                            "publishedAt": "2026-09-30T22:00:00Z",
+                            "publishedBy": "Owner"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "0193a500-0000-7000-8000-0000000000c2",
+                        "product": "SEA_LCL",
+                        "name": "Sea LCL",
+                        "versions": [
+                          {
+                            "id": "0193a500-0000-7000-8000-00000000a002",
+                            "version": 1,
+                            "status": "published",
+                            "effectiveFrom": "2026-10-01",
+                            "effectiveTo": null,
+                            "publishedAt": "2026-09-30T22:00:00Z",
+                            "publishedBy": "Owner"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/admin/rate-versions/{versionId}": {
+      "get": {
+        "tags": [
+          "admin-rates"
+        ],
+        "operationId": "getRateVersion",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/VersionId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A version with its payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateVersionDetail"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "0193a500-0000-7000-8000-00000000a001",
+                      "rateCardId": "0193a500-0000-7000-8000-0000000000c1",
+                      "product": "SEA_PARCEL",
+                      "version": 1,
+                      "status": "published",
+                      "effectiveFrom": "2026-10-01",
+                      "effectiveTo": null,
+                      "publishedAt": "2026-09-30T22:00:00Z",
+                      "publishedBy": "Owner",
+                      "payload": {
+                        "product": "SEA_PARCEL",
+                        "volumetricKgPerM3": 200,
+                        "roundUpKg": "0.5",
+                        "regions": {
+                          "AKL": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "2"
+                              }
+                            ]
+                          },
+                          "NI_OTHER": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "6"
+                              },
+                              {
+                                "fromKg": "20",
+                                "perKg": "4"
+                              }
+                            ]
+                          },
+                          "SI": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "7"
+                              },
+                              {
+                                "fromKg": "20",
+                                "perKg": "5"
+                              }
+                            ]
+                          }
+                        },
+                        "tierMode": "WHOLE_WITH_FLOOR",
+                        "clearance": {
+                          "LT_400": "12",
+                          "B400_1000": "69.50",
+                          "GTE_1000": "127"
+                        },
+                        "limits": {
+                          "maxKg": "100",
+                          "maxM3": "1"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "summary": "A rate version with its payload (admin, aal2)"
+      }
+    },
+    "/admin/rate-cards/{rateCardId}/drafts": {
+      "post": {
+        "tags": [
+          "admin-rates"
+        ],
+        "operationId": "createRateDraft",
+        "parameters": [
+          {
+            "name": "rateCardId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RateDraftCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Draft created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateVersionDetail"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "0193a500-0000-7000-8000-00000000a003",
+                      "rateCardId": "0193a500-0000-7000-8000-0000000000c1",
+                      "product": "SEA_PARCEL",
+                      "version": 2,
+                      "status": "draft",
+                      "effectiveFrom": "2026-11-01",
+                      "effectiveTo": null,
+                      "publishedAt": null,
+                      "publishedBy": null,
+                      "payload": {
+                        "product": "SEA_PARCEL",
+                        "volumetricKgPerM3": 200,
+                        "roundUpKg": "0.5",
+                        "regions": {
+                          "AKL": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "2.20"
+                              }
+                            ]
+                          },
+                          "NI_OTHER": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "6"
+                              },
+                              {
+                                "fromKg": "20",
+                                "perKg": "4"
+                              }
+                            ]
+                          },
+                          "SI": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "7"
+                              },
+                              {
+                                "fromKg": "20",
+                                "perKg": "5"
+                              }
+                            ]
+                          }
+                        },
+                        "tierMode": "WHOLE_WITH_FLOOR",
+                        "clearance": {
+                          "LT_400": "12",
+                          "B400_1000": "69.50",
+                          "GTE_1000": "127"
+                        },
+                        "limits": {
+                          "maxKg": "100",
+                          "maxM3": "1"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Problem"
+          }
+        },
+        "summary": "Create a draft version from an existing one (admin, aal2)"
+      }
+    },
+    "/admin/rate-versions/{versionId}/simulate": {
+      "post": {
+        "tags": [
+          "admin-rates"
+        ],
+        "operationId": "simulateRateVersion",
+        "summary": "Re-price the last 100 real quotes with this draft and show the difference",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/VersionId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Simulation result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateSimulation"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "versionId": "0193a500-0000-7000-8000-00000000a003",
+                      "sampleSize": 2,
+                      "summary": {
+                        "increased": 1,
+                        "decreased": 0,
+                        "unchanged": 1
+                      },
+                      "rows": [
+                        {
+                          "quoteId": "0193a5c0-1111-7000-8000-000000000001",
+                          "createdAt": "2026-10-26T09:30:00Z",
+                          "product": "SEA_PARCEL",
+                          "region": "AKL",
+                          "currency": "NZD",
+                          "oldTotal": "26.00",
+                          "newTotal": "27.40",
+                          "delta": "1.40"
+                        },
+                        {
+                          "quoteId": "0193a5c0-1111-7000-8000-000000000003",
+                          "createdAt": "2026-10-25T21:02:00Z",
+                          "product": "SEA_PARCEL",
+                          "region": "SI",
+                          "currency": "NZD",
+                          "oldTotal": "82.00",
+                          "newTotal": "82.00",
+                          "delta": "0.00"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/admin/rate-versions/{versionId}/publish": {
+      "post": {
+        "tags": [
+          "admin-rates"
+        ],
+        "operationId": "publishRateVersion",
+        "summary": "Publish a draft (admin, aal2, audited). Published payloads are immutable.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/VersionId"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RatePublish"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Published version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateVersionDetail"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "0193a500-0000-7000-8000-00000000a003",
+                      "rateCardId": "0193a500-0000-7000-8000-0000000000c1",
+                      "product": "SEA_PARCEL",
+                      "version": 2,
+                      "status": "published",
+                      "effectiveFrom": "2026-11-01",
+                      "effectiveTo": null,
+                      "publishedAt": "2026-10-26T10:00:00Z",
+                      "publishedBy": "Owner",
+                      "payload": {
+                        "product": "SEA_PARCEL",
+                        "volumetricKgPerM3": 200,
+                        "roundUpKg": "0.5",
+                        "regions": {
+                          "AKL": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "2.20"
+                              }
+                            ]
+                          },
+                          "NI_OTHER": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "6"
+                              },
+                              {
+                                "fromKg": "20",
+                                "perKg": "4"
+                              }
+                            ]
+                          },
+                          "SI": {
+                            "tiers": [
+                              {
+                                "fromKg": "0",
+                                "perKg": "7"
+                              },
+                              {
+                                "fromKg": "20",
+                                "perKg": "5"
+                              }
+                            ]
+                          }
+                        },
+                        "tierMode": "WHOLE_WITH_FLOOR",
+                        "clearance": {
+                          "LT_400": "12",
+                          "B400_1000": "69.50",
+                          "GTE_1000": "127"
+                        },
+                        "limits": {
+                          "maxKg": "100",
+                          "maxM3": "1"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "409": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Supabase access token (JWT)"
+      }
+    },
+    "parameters": {
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": false,
+        "description": "UUID; safe retries. Required on warehouse, ops, finance and webhook writes (stage 2).",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "PreNoticeId": {
+        "name": "preNoticeId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "VersionId": {
+        "name": "versionId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "responses": {
+      "Problem": {
+        "description": "RFC 7807 problem",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid token",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Money": {
+        "type": "string",
+        "pattern": "^-?\\d+\\.\\d{2}$",
+        "description": "Decimal amount as a string with two decimals. Never parsed into a JS number for arithmetic."
+      },
+      "DecimalString": {
+        "type": "string",
+        "pattern": "^\\d+(\\.\\d{1,3})?$",
+        "description": "Non-negative decimal entered by the customer (cm, kg, m³)."
+      },
+      "Currency": {
+        "type": "string",
+        "enum": [
+          "NZD",
+          "USD"
+        ]
+      },
+      "TaxCode": {
+        "type": "string",
+        "enum": [
+          "GST15",
+          "ZERO",
+          "NONE"
+        ],
+        "description": "Provisional until DECISION(F1)."
+      },
+      "Region": {
+        "type": "string",
+        "enum": [
+          "AKL",
+          "NI_OTHER",
+          "SI"
+        ]
+      },
+      "Product": {
+        "type": "string",
+        "enum": [
+          "SEA_PARCEL",
+          "SEA_LCL",
+          "AIR"
+        ]
+      },
+      "Problem": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "code"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "description": "Business error code, e.g. PROHIBITED_GOODS_ACK_REQUIRED"
+          }
+        }
+      },
+      "Identity": {
+        "type": "object",
+        "required": [
+          "provider",
+          "label",
+          "verifiedAt"
+        ],
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "email",
+              "google",
+              "whatsapp",
+              "phone",
+              "facebook"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "description": "Masked or display form, e.g. the email address"
+          },
+          "verifiedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Me": {
+        "type": "object",
+        "required": [
+          "customerId",
+          "memberNo",
+          "locale",
+          "identities"
+        ],
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "memberNo": {
+            "type": "string",
+            "pattern": "^CE-\\d{6}-\\d$",
+            "description": "Also the shipping mark printed on every carton"
+          },
+          "displayName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "email": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "zh-CN"
+            ]
+          },
+          "identities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Identity"
+            }
+          }
+        }
+      },
+      "IdentityLinkRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider"
+        ],
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "email",
+              "google",
+              "whatsapp"
+            ]
+          }
+        }
+      },
+      "City": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "region"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          }
+        }
+      },
+      "PostcodeLookup": {
+        "type": "object",
+        "required": [
+          "postcode",
+          "region",
+          "zoneName",
+          "quoteOnRequest"
+        ],
+        "properties": {
+          "postcode": {
+            "type": "string"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "cityId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "zoneName": {
+            "type": "string"
+          },
+          "quoteOnRequest": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Destination": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "region"
+        ],
+        "properties": {
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "cityId": {
+            "type": "string"
+          },
+          "postcode": {
+            "type": "string",
+            "pattern": "^\\d{4}$"
+          }
+        }
+      },
+      "Carton": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "lengthCm",
+          "widthCm",
+          "heightCm",
+          "weightKg",
+          "quantity"
+        ],
+        "properties": {
+          "lengthCm": {
+            "$ref": "#/components/schemas/DecimalString"
+          },
+          "widthCm": {
+            "$ref": "#/components/schemas/DecimalString"
+          },
+          "heightCm": {
+            "$ref": "#/components/schemas/DecimalString"
+          },
+          "weightKg": {
+            "$ref": "#/components/schemas/DecimalString"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 999
+          }
+        }
+      },
+      "EstimateRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "destination",
+          "cartons",
+          "declaredValueNzd"
+        ],
+        "properties": {
+          "destination": {
+            "$ref": "#/components/schemas/Destination"
+          },
+          "cartons": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/Carton"
+            }
+          },
+          "declaredValueNzd": {
+            "$ref": "#/components/schemas/Money"
+          }
+        }
+      },
+      "QuoteLine": {
+        "type": "object",
+        "required": [
+          "code",
+          "label",
+          "amount",
+          "currency",
+          "taxCode"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "label": {
+            "type": "object",
+            "required": [
+              "en",
+              "zh"
+            ],
+            "properties": {
+              "en": {
+                "type": "string"
+              },
+              "zh": {
+                "type": "string"
+              }
+            }
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "taxCode": {
+            "$ref": "#/components/schemas/TaxCode"
+          }
+        }
+      },
+      "Total": {
+        "type": "object",
+        "required": [
+          "currency",
+          "amountExGst",
+          "gstApplies"
+        ],
+        "properties": {
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "amountExGst": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "gstApplies": {
+            "type": "boolean",
+            "description": "Show '+GST'; the GST amount itself is computed only on invoices"
+          }
+        }
+      },
+      "QuoteStatus": {
+        "type": "string",
+        "enum": [
+          "OK",
+          "REQUIRES_REVIEW",
+          "UNAVAILABLE"
+        ],
+        "description": "UNAVAILABLE = the product cannot carry this cargo (e.g. over the sea-parcel limit); REQUIRES_REVIEW = manual quote needed"
+      },
+      "ProductQuote": {
+        "type": "object",
+        "required": [
+          "product",
+          "status",
+          "reviewReasons",
+          "tags",
+          "lines",
+          "totals"
+        ],
+        "properties": {
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          },
+          "status": {
+            "$ref": "#/components/schemas/QuoteStatus"
+          },
+          "reviewReasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "AIR_RULES_UNSIGNED",
+                "QUOTE_ON_REQUEST_ZONE",
+                "OVERSIZE",
+                "OVER_SEA_PARCEL_LIMIT",
+                "FCL_RATE_EXPIRED",
+                "FCL_TRANSSHIPMENT_WELLINGTON",
+                "NAPIER_TAC_UNKNOWN"
+              ]
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CHEAPEST",
+                "FASTEST"
+              ]
+            }
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuoteLine"
+            }
+          },
+          "totals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Total"
+            }
+          }
+        }
+      },
+      "Estimate": {
+        "type": "object",
+        "required": [
+          "quoteId",
+          "input",
+          "createdAt",
+          "expiresAt",
+          "engineVersion",
+          "rateVersionIds",
+          "options"
+        ],
+        "properties": {
+          "quoteId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "input": {
+            "$ref": "#/components/schemas/EstimateRequest",
+            "description": "The request this snapshot priced (immutable)"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "engineVersion": {
+            "type": "string"
+          },
+          "rateVersionIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "options": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "$ref": "#/components/schemas/ProductQuote"
+            }
+          }
+        }
+      },
+      "FclPort": {
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "group": {
+            "type": "string",
+            "enum": [
+              "COMMON",
+              "OTHER"
+            ]
+          }
+        }
+      },
+      "FclPorts": {
+        "type": "object",
+        "required": [
+          "origins",
+          "destinations",
+          "rateSheet"
+        ],
+        "properties": {
+          "origins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FclPort"
+            }
+          },
+          "destinations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FclPort"
+            }
+          },
+          "rateSheet": {
+            "type": "object",
+            "required": [
+              "version",
+              "validFrom",
+              "validTo",
+              "expired"
+            ],
+            "properties": {
+              "version": {
+                "type": "string"
+              },
+              "validFrom": {
+                "type": "string",
+                "format": "date"
+              },
+              "validTo": {
+                "type": "string",
+                "format": "date"
+              },
+              "expired": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "FclEstimateRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "size",
+          "originPort",
+          "destPort",
+          "includeLocalCharges"
+        ],
+        "properties": {
+          "size": {
+            "type": "string",
+            "enum": [
+              "20",
+              "40"
+            ]
+          },
+          "originPort": {
+            "type": "string"
+          },
+          "destPort": {
+            "type": "string"
+          },
+          "includeLocalCharges": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FclLine": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/QuoteLine"
+          },
+          {
+            "type": "object",
+            "required": [
+              "group"
+            ],
+            "properties": {
+              "group": {
+                "type": "string",
+                "enum": [
+                  "OCEAN",
+                  "PORT",
+                  "DELIVERY"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "FclEstimate": {
+        "type": "object",
+        "required": [
+          "quoteId",
+          "status",
+          "reviewReasons",
+          "createdAt",
+          "expiresAt",
+          "rateSheetVersion",
+          "lines",
+          "totals"
+        ],
+        "properties": {
+          "quoteId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "REQUIRES_REVIEW"
+            ]
+          },
+          "reviewReasons": {
+            "$ref": "#/components/schemas/ProductQuote/properties/reviewReasons"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "3 days after creation"
+          },
+          "rateSheetVersion": {
+            "type": "string"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FclLine"
+            }
+          },
+          "totals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Total"
+            }
+          }
+        }
+      },
+      "LeadTouch": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "visitorId",
+          "stage",
+          "source",
+          "path"
+        ],
+        "properties": {
+          "visitorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "LANDING",
+              "QUOTE_OPENED",
+              "QUOTE_CALCULATED",
+              "SIGNED_UP",
+              "PRE_NOTICE_SENT"
+            ]
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "src": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "utmSource": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "utmMedium": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "utmCampaign": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "c": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "ref": {
+                "type": "string",
+                "maxLength": 100
+              }
+            }
+          },
+          "path": {
+            "type": "string",
+            "maxLength": 300
+          }
+        }
+      },
+      "Tracking": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "trackingNo"
+        ],
+        "properties": {
+          "carrier": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 50
+          },
+          "trackingNo": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 50
+          }
+        }
+      },
+      "PreNoticeCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "product",
+          "destination",
+          "prohibitedGoodsAck",
+          "trackingNumbers"
+        ],
+        "properties": {
+          "estimateQuoteId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/Destination"
+          },
+          "expectedParcels": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 999
+          },
+          "prohibitedGoodsAck": {
+            "type": "boolean",
+            "const": true
+          },
+          "trackingNumbers": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/Tracking"
+            }
+          }
+        }
+      },
+      "PreNotice": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "product",
+          "destination",
+          "createdAt",
+          "trackings"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "CANCELLED"
+            ]
+          },
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/Destination"
+          },
+          "estimateQuoteId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "expectedParcels": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "trackings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tracking"
+            }
+          }
+        }
+      },
+      "WarehouseAddress": {
+        "type": "object",
+        "required": [
+          "memberNo",
+          "copyText",
+          "isPlaceholder"
+        ],
+        "properties": {
+          "memberNo": {
+            "type": "string"
+          },
+          "copyText": {
+            "type": "string",
+            "description": "Exact Chinese text the customer forwards to the supplier"
+          },
+          "isPlaceholder": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RateVersionSummary": {
+        "type": "object",
+        "required": [
+          "id",
+          "version",
+          "status",
+          "effectiveFrom",
+          "effectiveTo",
+          "publishedAt",
+          "publishedBy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "published",
+              "retired"
+            ]
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "effectiveTo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "publishedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "publishedBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "RateCard": {
+        "type": "object",
+        "required": [
+          "id",
+          "product",
+          "name",
+          "versions"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "product": {
+            "type": "string",
+            "enum": [
+              "SEA_PARCEL",
+              "SEA_LCL",
+              "AIR",
+              "FCL"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RateVersionSummary"
+            }
+          }
+        }
+      },
+      "RateVersionDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RateVersionSummary"
+          },
+          {
+            "type": "object",
+            "required": [
+              "rateCardId",
+              "product",
+              "payload"
+            ],
+            "properties": {
+              "rateCardId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "product": {
+                "type": "string",
+                "enum": [
+                  "SEA_PARCEL",
+                  "SEA_LCL",
+                  "AIR",
+                  "FCL"
+                ]
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "Rate card payload, structure per product (design 04)"
+              }
+            }
+          }
+        ]
+      },
+      "RateDraftCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "basedOnVersionId",
+          "effectiveFrom",
+          "payload"
+        ],
+        "properties": {
+          "basedOnVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "RateSimulation": {
+        "type": "object",
+        "required": [
+          "versionId",
+          "sampleSize",
+          "summary",
+          "rows"
+        ],
+        "properties": {
+          "versionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sampleSize": {
+            "type": "integer"
+          },
+          "summary": {
+            "type": "object",
+            "required": [
+              "increased",
+              "decreased",
+              "unchanged"
+            ],
+            "properties": {
+              "increased": {
+                "type": "integer"
+              },
+              "decreased": {
+                "type": "integer"
+              },
+              "unchanged": {
+                "type": "integer"
+              }
+            }
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "quoteId",
+                "createdAt",
+                "product",
+                "region",
+                "currency",
+                "oldTotal",
+                "newTotal",
+                "delta"
+              ],
+              "properties": {
+                "quoteId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "product": {
+                  "type": "string"
+                },
+                "region": {
+                  "$ref": "#/components/schemas/Region"
+                },
+                "currency": {
+                  "$ref": "#/components/schemas/Currency"
+                },
+                "oldTotal": {
+                  "$ref": "#/components/schemas/Money"
+                },
+                "newTotal": {
+                  "$ref": "#/components/schemas/Money"
+                },
+                "delta": {
+                  "$ref": "#/components/schemas/Money"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RatePublish": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reason"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 500
+          }
+        }
+      }
+    }
+  }
+}

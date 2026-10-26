@@ -1,0 +1,411 @@
+{
+  "common": {
+    "brand": "China Express",
+    "error": "Something went wrong. Please try again.",
+    "plusGst": "+GST",
+    "memberLabel": "Member"
+  },
+  "customerNav": {
+    "quote": "Get a quote",
+    "account": "My account",
+    "signOut": "Sign out",
+    "signIn": "Sign in"
+  },
+  "landing": {
+    "title": "Ship from China to New Zealand, door to door.",
+    "intro": "Sign in to get your instant quote.",
+    "cta": "Get started",
+    "steps": {
+      "title": "How it works",
+      "one": "Get an estimate for sea parcel, sea LCL and air, side by side.",
+      "two": "Send your goods to our Guangzhou warehouse with your member number on every carton.",
+      "three": "We weigh, measure and can combine your parcels. You confirm the final price before anything ships."
+    }
+  },
+  "staffNav": {
+    "rates": "Rates",
+    "signOut": "Sign out",
+    "language": "Language"
+  },
+  "auth": {
+    "title": "Sign in",
+    "intro": "Sign in to get your instant quote. We will email you a 6-digit code.",
+    "email": {
+      "label": "Email",
+      "send": "Email me a code"
+    },
+    "code": {
+      "label": "6-digit code",
+      "sentTo": "We sent a code to {email}.",
+      "verify": "Sign in",
+      "changeEmail": "Use a different email"
+    },
+    "or": "or continue with",
+    "google": "Continue with Google",
+    "errors": {
+      "email": "Enter a valid email address.",
+      "send": "We could not send the code. Please try again.",
+      "code": "That code is not right or has expired.",
+      "codeFormat": "Enter the 6 digits from the email.",
+      "google": "Google sign-in is not available right now."
+    },
+    "inApp": {
+      "title": "Open this page in your browser",
+      "body": "You are inside {app}. Sign-in works best in Safari or Chrome: tap ··· and choose “Open in browser”, or copy the link.",
+      "copy": "Copy link",
+      "copied": "Link copied",
+      "apps": {
+        "facebook": "Facebook",
+        "messenger": "Messenger",
+        "instagram": "Instagram",
+        "whatsapp": "WhatsApp"
+      }
+    }
+  },
+  "staffAuth": {
+    "title": "Staff sign in",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "code": "Authenticator code",
+    "verify": "Verify",
+    "enroll": {
+      "intro": "Two-step verification is required. Scan this QR code with an authenticator app, then enter the 6-digit code.",
+      "qrAlt": "QR code for the authenticator app",
+      "manual": "Or enter this key manually:"
+    },
+    "errors": {
+      "credentials": "Email or password is incorrect.",
+      "code": "That code is not right.",
+      "codeFormat": "Enter the 6-digit code.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "quote": {
+    "title": "Get your instant quote",
+    "intro": "No shipping method is preselected: compare all three, then choose.",
+    "where": {
+      "title": "Where is it going?",
+      "region": "Region",
+      "city": "Nearest city",
+      "cityHint": "Choose the nearest city to your address.",
+      "choose": "Choose…",
+      "postcodeLink": "Not sure? Check by postcode",
+      "postcode": "Postcode",
+      "check": "Check",
+      "postcodeFound": "{zone}, delivery zone found.",
+      "postcodeNotFound": "We could not find that postcode.",
+      "quoteOnRequest": "Delivery to this area is priced on request. We will confirm the price with you."
+    },
+    "regions": {
+      "AKL": "Auckland",
+      "NI_OTHER": "Rest of North Island",
+      "SI": "South Island"
+    },
+    "cargo": {
+      "title": "Your cargo",
+      "intro": "Enter each carton’s size and weight.",
+      "length": "Length cm",
+      "width": "Width cm",
+      "height": "Height cm",
+      "weight": "Weight kg",
+      "qty": "Qty",
+      "item": "Item {n}",
+      "add": "+ Add another item",
+      "remove": "Remove item {n}"
+    },
+    "value": {
+      "label": "Total value of all items together",
+      "hint": "Please enter the value in NZ$. If you paid in RMB, convert it at today’s exchange rate."
+    },
+    "submit": "Get my quote",
+    "errors": {
+      "positive": "Enter a number greater than 0.",
+      "qty": "Whole number, 1 or more.",
+      "money": "Enter an amount like 250 or 250.00.",
+      "region": "Choose a region.",
+      "city": "Choose the nearest city.",
+      "submit": "We could not get a quote right now. Please try again."
+    },
+    "results": {
+      "title": "Your options",
+      "choose": "Choose this option",
+      "chosen": "Selected",
+      "next": "What to do next",
+      "pickOne": "Choose an option to continue.",
+      "total": "Estimate",
+      "level": {
+        "auto": "Automatic estimate",
+        "review": "Needs a manual quote",
+        "unavailable": "Not available"
+      },
+      "reasons": {
+        "AIR_RULES_UNSIGNED": "Air freight is quoted by our team for now. Message us for a price.",
+        "QUOTE_ON_REQUEST_ZONE": "Delivery to this area is priced on request.",
+        "OVERSIZE": "A carton is over 1.5 m on one side, so it needs a manual quote.",
+        "OVER_SEA_PARCEL_LIMIT": "Sea parcel takes up to 100 kg and 1 m³. Choose Sea LCL instead.",
+        "FCL_RATE_EXPIRED": "Our container rates are being updated. Message us for a price.",
+        "FCL_TRANSSHIPMENT_WELLINGTON": "We do not quote Wellington from this port. Message us for options.",
+        "NAPIER_TAC_UNKNOWN": "Napier port charges for these dates are being confirmed. Message us for a price."
+      },
+      "tags": {
+        "CHEAPEST": "Cheapest",
+        "FASTEST": "Fastest"
+      }
+    },
+    "products": {
+      "SEA_PARCEL": "Sea parcel",
+      "SEA_LCL": "Sea LCL",
+      "AIR": "Air freight"
+    },
+    "productNotes": {
+      "SEA_PARCEL": "Small sea cargo, charged by kg. Up to 100 kg and 1 m³.",
+      "SEA_LCL": "Larger or bulky sea cargo, charged by volume. Delivered anywhere in NZ.",
+      "AIR": "Urgent cargo by air, charged by kg."
+    },
+    "gst": {
+      "title": "GST (15%)",
+      "local": "NZ GST on our local fees: delivery and clearance fees carry 15% GST. International freight is GST-free.",
+      "customs": "Customs GST: for goods with a CIF value of NZ$1,000 or more, NZ Customs collects import GST and duty directly from you. This is not included in the estimate."
+    },
+    "excluded": {
+      "title": "What is not included",
+      "intro": "These may add to the cost if they apply:",
+      "items": {
+        "residential": "Residential delivery",
+        "inspection": "Customs or MPI inspection",
+        "quarantine": "Quarantine or treatment",
+        "storage": "Storage",
+        "dangerous": "Dangerous goods",
+        "insurance": "Insurance",
+        "oversize": "Oversize or heavy cargo"
+      }
+    },
+    "disclaimer": "Estimate only. Delivery and clearance fees are plus 15% NZ GST. Your final price is confirmed at warehouse check-in, based on the actual weight and volume we measure in Guangzhou.",
+    "fcl": {
+      "title": "Shipping a full container?",
+      "cta": "Get an FCL quote →"
+    }
+  },
+  "fcl": {
+    "title": "Full container (FCL)",
+    "back": "← Back to quote",
+    "intro": "Estimate a 20 ft or 40 ft container from a China port to a New Zealand port.",
+    "size": "Container size",
+    "sizes": {
+      "20": "20 ft",
+      "40": "40 ft"
+    },
+    "origin": "FOB origin (China port)",
+    "dest": "Destination (NZ port)",
+    "choose": "Choose…",
+    "commonPorts": "Common ports",
+    "otherPorts": "Other ports",
+    "getA": "Show ocean freight",
+    "addB": "Add NZ local charges & door delivery →",
+    "partA": "A · Ocean freight (USD)",
+    "partANote": "Port to port: ocean freight, fuel adjustment (FAF) and emergency fuel (EFS). Excludes NZ local charges.",
+    "partB": "B · NZ local charges (NZD)",
+    "partBNote": "In NZD, not converted. +GST on delivery and clearance.",
+    "groups": {
+      "PORT": "Port & shipping line charges",
+      "DELIVERY": "Customs, trucking & delivery"
+    },
+    "subtotal": "Total",
+    "summary": "Estimated total",
+    "summaryNote": "The two currencies are shown separately and not converted.",
+    "validity": "Estimate only · valid for 3 days, until {date}.",
+    "rateSheetExpired": "Our container rate sheet expired on {date}. Estimates go to our team for a manual quote.",
+    "conditions": {
+      "title": "Default assumptions",
+      "items": {
+        "distance": "Delivery within about 20 km of the NZ port city, by direct container truck. Longer distances cost more.",
+        "site": "The delivery site must be approved to receive full containers.",
+        "tariff": "Clearance covers up to 5 tariff lines. Each extra line is charged.",
+        "weight": "Container weight up to 21 tonnes. Devanning is not included."
+      }
+    },
+    "excluded": "Not included: NZ import GST and duty, inspections, storage, demurrage and detention, waiting time, dangerous goods, overweight and other exceptional charges.",
+    "disclaimer": "This estimate is for budgeting only. It is not an offer, booking or contract, and China Express is not liable for decisions based on it. Prices are confirmed only in a written quote.",
+    "whatsapp": "Get a firm quote on WhatsApp",
+    "whatsappText": "Hi China Express, please confirm an FCL quote: {size} from {origin} to {dest}. Estimate ref {ref}.",
+    "errors": {
+      "required": "Choose a size and both ports.",
+      "submit": "We could not get an estimate right now. Please try again."
+    }
+  },
+  "preNotice": {
+    "new": {
+      "title": "Send a shipment notice",
+      "intro": "Tell us your goods are on the way to our Guangzhou warehouse. This is a notice, not a payment.",
+      "chosen": "Your chosen option",
+      "estimate": "Estimate",
+      "expected": "How many parcels are you expecting? (optional)",
+      "trackingLabel": "Courier tracking numbers (optional)",
+      "trackingHint": "One per line. You can add them later.",
+      "submit": "Send shipment notice",
+      "noQuote": "Start with a quote first.",
+      "toQuote": "Get a quote"
+    },
+    "prohibited": {
+      "title": "Goods we cannot ship",
+      "intro": "Do not send these to our warehouse:",
+      "items": {
+        "dangerous": "Dangerous goods: flammable, explosive or compressed items, and loose lithium batteries",
+        "weapons": "Weapons, replicas and ammunition",
+        "drugs": "Drugs and controlled substances",
+        "counterfeit": "Counterfeit or pirated goods",
+        "biosecurity": "Fresh food, plants, seeds, soil and animal products (NZ biosecurity)",
+        "valuables": "Cash, precious metals and jewellery"
+      },
+      "ack": "I confirm my shipment contains none of the prohibited or restricted goods listed above.",
+      "ackRequired": "Please confirm before sending the notice."
+    },
+    "done": {
+      "title": "We have received your shipment notice.",
+      "noPayment": "No payment is due yet.",
+      "stepsTitle": "What happens next",
+      "steps": {
+        "one": "Send your goods to our Guangzhou warehouse, with your member number on every carton.",
+        "two": "We check in and measure each parcel, and let you know.",
+        "three": "If you have several parcels, you can choose to combine them before the final price.",
+        "four": "You review and pay the final price. Then we ship and you can track it."
+      },
+      "customs": "If your goods are worth NZ$1,000 or more, NZ Customs needs a Customs Client Code before clearance. We will ask for it later.",
+      "newQuote": "Start a new quote"
+    },
+    "address": {
+      "title": "Our Guangzhou warehouse",
+      "important": "Important:",
+      "markRule": "Suppliers must write your shipping mark on every carton. Unmarked parcels cannot be matched to you.",
+      "copy": "Copy address for my supplier",
+      "copied": "Address copied",
+      "placeholder": "The full warehouse address is being finalised. You can copy it here once it is ready."
+    },
+    "tracking": {
+      "title": "Courier tracking number (optional)",
+      "intro": "If your supplier has already shipped, add the domestic courier tracking numbers, one per line.",
+      "save": "Save tracking numbers",
+      "saved": "Saved.",
+      "none": "No tracking numbers yet.",
+      "invalid": "Each tracking number needs 4 to 50 characters."
+    },
+    "label": {
+      "title": "Shipping mark",
+      "intro": "Print this and stick it on each carton, or ask your supplier to write it clearly.",
+      "print": "Print label"
+    },
+    "errors": {
+      "submit": "We could not send the notice. Please try again.",
+      "load": "We could not load this notice."
+    }
+  },
+  "rates": {
+    "title": "Rates",
+    "intro": "Change rates in a draft, simulate the difference, then publish. Published versions cannot be edited and take effect on their effective date.",
+    "cards": "Rate cards",
+    "product": "Product",
+    "version": "Version",
+    "status": "Status",
+    "effective": "Effective",
+    "statuses": {
+      "draft": "Draft",
+      "published": "Published",
+      "retired": "Retired"
+    },
+    "open": "View",
+    "selectVersion": "Select a version to see its details.",
+    "detail": {
+      "title": "{product} · version {version}",
+      "readOnly": "Published versions are read-only. Create a draft from it to make changes."
+    },
+    "draft": {
+      "new": "New draft from this version",
+      "effectiveFrom": "Effective from",
+      "create": "Create draft",
+      "cancel": "Cancel",
+      "created": "Draft version {version} created.",
+      "jsonLabel": "Rate data (JSON)",
+      "jsonInvalid": "That is not valid JSON.",
+      "dateInvalid": "Choose an effective date."
+    },
+    "editor": {
+      "regions": "Rate per kg by region",
+      "fromKg": "From kg",
+      "perKg": "Per kg (NZD)",
+      "clearance": "Clearance by declared value",
+      "bands": {
+        "LT_400": "Under 400",
+        "B400_1000": "400–1,000",
+        "GTE_1000": "1,000 and over"
+      },
+      "tierMode": "Tier rule",
+      "tierModes": {
+        "WHOLE": "Whole weight by tier",
+        "INCREMENTAL": "Incremental",
+        "WHOLE_WITH_FLOOR": "Whole weight with price floor (default)"
+      },
+      "regionNames": {
+        "AKL": "Auckland",
+        "NI_OTHER": "Rest of North Island",
+        "SI": "South Island"
+      },
+      "invalidNumber": "Enter a number such as 2 or 69.50."
+    },
+    "simulate": {
+      "run": "Simulate",
+      "title": "Simulation: last {n} real quotes",
+      "summary": "Up {up} · Down {down} · Unchanged {same}",
+      "quote": "Quote",
+      "date": "Date",
+      "region": "Region",
+      "old": "Old",
+      "new": "New",
+      "delta": "Difference"
+    },
+    "publish": {
+      "open": "Publish",
+      "title": "Publish version {version}",
+      "body": "Once published it cannot be changed, and every channel quotes the new prices from {date}. Your name and the before and after values are recorded.",
+      "reason": "Reason for publishing",
+      "reasonInvalid": "Give a reason (at least 3 characters).",
+      "confirm": "Publish",
+      "cancel": "Cancel",
+      "done": "Version {version} published, effective {date}.",
+      "failed": "Publishing failed. Please try again."
+    },
+    "errors": {
+      "load": "Could not load rate cards.",
+      "forbidden": "Your account cannot manage rates."
+    },
+    "productNames": {
+      "SEA_PARCEL": "Sea parcel",
+      "SEA_LCL": "Sea LCL",
+      "AIR": "Air freight",
+      "FCL": "FCL"
+    }
+  },
+  "account": {
+    "title": "My account",
+    "member": "Your member number",
+    "markTitle": "How to write your shipping mark",
+    "markBody": "Ask your supplier to write this number clearly on every carton, exactly as shown. It is how our warehouse knows the parcel is yours.",
+    "methods": "Sign-in methods",
+    "methodsIntro": "You can add another way to sign in while you are signed in. We never merge accounts automatically.",
+    "providers": {
+      "email": "Email code",
+      "google": "Google",
+      "whatsapp": "WhatsApp",
+      "phone": "Phone",
+      "facebook": "Facebook"
+    },
+    "linkGoogle": "Link my Google account",
+    "addEmail": "Add email sign-in",
+    "emailLabel": "Email address",
+    "emailSent": "Check {email} and confirm to finish adding it.",
+    "linked": "{provider} is now linked.",
+    "linkFailed": "We could not link that sign-in method. If it already belongs to another account, sign in with it instead.",
+    "recoveryTitle": "Lost access?",
+    "recoveryBody": "Changed or lost your phone? Sign in with your email code, then update it here. If you cannot sign in any other way, contact us with your member number and a recent shipment, and our team will verify you."
+  }
+}

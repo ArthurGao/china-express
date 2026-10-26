@@ -1,0 +1,188 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * Visual direction: logistics-industrial (swiss-grid owns layout and palette; see docs/design/07-frontend.md).
+ * Steel is the single accent. Red is reserved for errors and over-limit states.
+ * Dark mode follows prefers-color-scheme; there is no manual toggle.
+ */
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-heading: var(--font-sans);
+  --font-stencil: "Big Shoulders Stencil Display", "IBM Plex Sans", sans-serif;
+  --color-surface: var(--surface);
+  --color-rule: var(--rule);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #eef1ef; /* paper */
+  --surface: #f8faf9;
+  --foreground: #14263a; /* ink */
+  --rule: #c9d1d0;
+  --card: #f8faf9;
+  --card-foreground: #14263a;
+  --popover: #f8faf9;
+  --popover-foreground: #14263a;
+  --primary: #2f5d7c; /* steel: the one accent */
+  --primary-foreground: #ffffff;
+  --secondary: #e2e7e5;
+  --secondary-foreground: #14263a;
+  --muted: #e2e7e5;
+  --muted-foreground: #4a5a69; /* ink-2 */
+  --accent: #dde7ee;
+  --accent-foreground: #14263a;
+  --destructive: #b4231a;
+  --success: #3f7452;
+  --warning: #855604; /* ≥ 4.5:1 on paper, surface and the accent tint */
+  --border: #c9d1d0;
+  --input: #c9d1d0;
+  --ring: #2f5d7c;
+  --chart-1: #2f5d7c;
+  --chart-2: #3f7452;
+  --chart-3: #b97808;
+  --chart-4: #4a5a69;
+  --chart-5: #14263a;
+  --radius: 0.25rem;
+  --sidebar: #e2e7e5;
+  --sidebar-foreground: #14263a;
+  --sidebar-primary: #2f5d7c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #dde7ee;
+  --sidebar-accent-foreground: #14263a;
+  --sidebar-border: #c9d1d0;
+  --sidebar-ring: #2f5d7c;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f1a24;
+    --surface: #152431;
+    --foreground: #e6ecef;
+    --rule: #2b3c4a;
+    --card: #152431;
+    --card-foreground: #e6ecef;
+    --popover: #152431;
+    --popover-foreground: #e6ecef;
+    --primary: #7fb0d1;
+    --primary-foreground: #0f1a24;
+    --secondary: #1d3040;
+    --secondary-foreground: #e6ecef;
+    --muted: #1d3040;
+    --muted-foreground: #a3b1bc;
+    --accent: #203a4f;
+    --accent-foreground: #e6ecef;
+    --destructive: #f0796e;
+    --success: #7fc497;
+    --warning: #e8b04a;
+    --border: #2b3c4a;
+    --input: #2b3c4a;
+    --ring: #7fb0d1;
+    --chart-1: #7fb0d1;
+    --chart-2: #7fc497;
+    --chart-3: #e8b04a;
+    --chart-4: #a3b1bc;
+    --chart-5: #e6ecef;
+    --sidebar: #152431;
+    --sidebar-foreground: #e6ecef;
+    --sidebar-primary: #7fb0d1;
+    --sidebar-primary-foreground: #0f1a24;
+    --sidebar-accent: #203a4f;
+    --sidebar-accent-foreground: #e6ecef;
+    --sidebar-border: #2b3c4a;
+    --sidebar-ring: #7fb0d1;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    @apply font-sans;
+    font-feature-settings: "tnum" 0;
+  }
+}
+
+@layer utilities {
+  /* Member number, shipping mark and big stage numbers only. */
+  .font-stencil {
+    font-family: var(--font-stencil);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  /* The shipping-mark label prints on its own page, large enough to read on a carton. */
+  body:has(.print-label) * {
+    visibility: hidden;
+  }
+  .print-label,
+  .print-label * {
+    visibility: visible;
+  }
+  .print-label {
+    position: fixed;
+    inset: 0;
+    border: none !important;
+  }
+}

@@ -1,0 +1,411 @@
+{
+  "common": {
+    "brand": "China Express",
+    "error": "出错了，请重试。",
+    "plusGst": "+GST",
+    "memberLabel": "会员号"
+  },
+  "customerNav": {
+    "quote": "获取报价",
+    "account": "我的账户",
+    "signOut": "退出登录",
+    "signIn": "登录"
+  },
+  "landing": {
+    "title": "从中国到新西兰，门到门运输。",
+    "intro": "登录后即可获取报价。",
+    "cta": "开始",
+    "steps": {
+      "title": "流程",
+      "one": "同时查看海运小包、海运拼箱和空运的预估价。",
+      "two": "把货寄到广州仓库，每个纸箱写上会员号。",
+      "three": "我们称重、测量，可以合并包裹。发运前由你确认最终价。"
+    }
+  },
+  "staffNav": {
+    "rates": "价格管理",
+    "signOut": "退出登录",
+    "language": "语言"
+  },
+  "auth": {
+    "title": "登录",
+    "intro": "登录后即可获取报价。我们会把 6 位验证码发到你的邮箱。",
+    "email": {
+      "label": "邮箱",
+      "send": "发送验证码"
+    },
+    "code": {
+      "label": "6 位验证码",
+      "sentTo": "验证码已发送到 {email}。",
+      "verify": "登录",
+      "changeEmail": "换一个邮箱"
+    },
+    "or": "或使用",
+    "google": "使用 Google 登录",
+    "errors": {
+      "email": "请输入有效的邮箱地址。",
+      "send": "验证码发送失败，请重试。",
+      "code": "验证码不正确或已过期。",
+      "codeFormat": "请输入邮件里的 6 位数字。",
+      "google": "暂时无法使用 Google 登录。"
+    },
+    "inApp": {
+      "title": "请在浏览器中打开本页",
+      "body": "你正在 {app} 内置浏览器中。请点击 ··· 选择“在浏览器中打开”，或复制链接到 Safari / Chrome。",
+      "copy": "复制链接",
+      "copied": "已复制",
+      "apps": {
+        "facebook": "Facebook",
+        "messenger": "Messenger",
+        "instagram": "Instagram",
+        "whatsapp": "WhatsApp"
+      }
+    }
+  },
+  "staffAuth": {
+    "title": "员工登录",
+    "email": "邮箱",
+    "password": "密码",
+    "signIn": "登录",
+    "code": "验证器动态码",
+    "verify": "验证",
+    "enroll": {
+      "intro": "必须开启两步验证。请用验证器 App 扫描二维码，然后输入 6 位动态码。",
+      "qrAlt": "验证器 App 二维码",
+      "manual": "或手动输入密钥："
+    },
+    "errors": {
+      "credentials": "邮箱或密码不正确。",
+      "code": "动态码不正确。",
+      "codeFormat": "请输入 6 位动态码。",
+      "generic": "出错了，请重试。"
+    }
+  },
+  "quote": {
+    "title": "获取即时报价",
+    "intro": "不预选运输方式：三种方式并排比较后再选择。",
+    "where": {
+      "title": "运到哪里？",
+      "region": "大区",
+      "city": "最近的城市",
+      "cityHint": "选择离你地址最近的城市。",
+      "choose": "请选择…",
+      "postcodeLink": "不确定？按邮编查询",
+      "postcode": "邮编",
+      "check": "查询",
+      "postcodeFound": "已找到派送区域：{zone}。",
+      "postcodeNotFound": "找不到这个邮编。",
+      "quoteOnRequest": "该地区派送价格需询问，我们会和你确认价格。"
+    },
+    "regions": {
+      "AKL": "奥克兰",
+      "NI_OTHER": "北岛其他地区",
+      "SI": "南岛"
+    },
+    "cargo": {
+      "title": "你的货物",
+      "intro": "填写每个纸箱的尺寸和重量。",
+      "length": "长 cm",
+      "width": "宽 cm",
+      "height": "高 cm",
+      "weight": "重量 kg",
+      "qty": "数量",
+      "item": "第 {n} 件",
+      "add": "+ 再加一件",
+      "remove": "删除第 {n} 件"
+    },
+    "value": {
+      "label": "所有物品的总货值",
+      "hint": "请填写新西兰元金额。如果用人民币付款，请按当天汇率换算。"
+    },
+    "submit": "获取报价",
+    "errors": {
+      "positive": "请输入大于 0 的数字。",
+      "qty": "请输入 1 或以上的整数。",
+      "money": "请输入金额，例如 250 或 250.00。",
+      "region": "请选择大区。",
+      "city": "请选择最近的城市。",
+      "submit": "暂时无法报价，请重试。"
+    },
+    "results": {
+      "title": "可选方式",
+      "choose": "选择这个方式",
+      "chosen": "已选择",
+      "next": "下一步",
+      "pickOne": "请先选择一种方式。",
+      "total": "预估价",
+      "level": {
+        "auto": "自动报价",
+        "review": "需人工报价",
+        "unavailable": "不可用"
+      },
+      "reasons": {
+        "AIR_RULES_UNSIGNED": "空运目前由我们人工报价，请联系我们。",
+        "QUOTE_ON_REQUEST_ZONE": "该地区派送价格需询问。",
+        "OVERSIZE": "有纸箱单边超过 1.5 米，需要人工报价。",
+        "OVER_SEA_PARCEL_LIMIT": "海运小包最多 100 公斤、1 立方米，请选海运拼箱。",
+        "FCL_RATE_EXPIRED": "整柜运价正在更新，请联系我们报价。",
+        "FCL_TRANSSHIPMENT_WELLINGTON": "该起运港不报惠灵顿，请联系我们。",
+        "NAPIER_TAC_UNKNOWN": "纳皮尔港这段日期的港口附加费待确认，请联系我们报价。"
+      },
+      "tags": {
+        "CHEAPEST": "最便宜",
+        "FASTEST": "最快"
+      }
+    },
+    "products": {
+      "SEA_PARCEL": "海运小包",
+      "SEA_LCL": "海运拼箱",
+      "AIR": "空运"
+    },
+    "productNotes": {
+      "SEA_PARCEL": "海运小件普货，按公斤计费，最多 100 公斤、1 立方米。",
+      "SEA_LCL": "体积大或较大的海运货，按体积计费，新西兰全境派送。",
+      "AIR": "急货空运，按公斤计费。"
+    },
+    "gst": {
+      "title": "GST（15%）",
+      "local": "我们本地费用的新西兰 GST：派送费和清关费加 15% GST，国际运费不加 GST。",
+      "customs": "海关 GST：CIF 价值达到新元 1,000 的货物，由新西兰海关直接向你收取进口 GST 和关税，不包含在预估内。"
+    },
+    "excluded": {
+      "title": "不包含的费用",
+      "intro": "如发生以下情况，可能另外收费：",
+      "items": {
+        "residential": "住宅派送",
+        "inspection": "海关或 MPI 查验",
+        "quarantine": "检疫或处理",
+        "storage": "仓储",
+        "dangerous": "危险品",
+        "insurance": "保险",
+        "oversize": "超大件或超重货"
+      }
+    },
+    "disclaimer": "仅为预估。派送费和清关费另加 15% 新西兰 GST。最终价格在入库时按广州仓库实测的重量和体积确定。",
+    "fcl": {
+      "title": "要发整柜？",
+      "cta": "获取整柜报价 →"
+    }
+  },
+  "fcl": {
+    "title": "整柜（FCL）",
+    "back": "← 返回报价",
+    "intro": "预估从中国港口到新西兰港口的 20 尺或 40 尺整柜价格。",
+    "size": "柜型",
+    "sizes": {
+      "20": "20 尺",
+      "40": "40 尺"
+    },
+    "origin": "起运港（中国，FOB）",
+    "dest": "目的港（新西兰）",
+    "choose": "请选择…",
+    "commonPorts": "常用港口",
+    "otherPorts": "其他港口",
+    "getA": "查看海运费",
+    "addB": "加上新西兰本地费用和派送 →",
+    "partA": "A · 海运费（美元）",
+    "partANote": "港到港：海运费、燃油调整费（FAF）和紧急燃油附加费（EFS），不含新西兰本地费用。",
+    "partB": "B · 新西兰本地费用（新元）",
+    "partBNote": "以新元计，不换算。派送和清关另加 GST。",
+    "groups": {
+      "PORT": "港口和船公司费用",
+      "DELIVERY": "清关、拖车和派送"
+    },
+    "subtotal": "合计",
+    "summary": "预估合计",
+    "summaryNote": "两种货币分开显示，不换算。",
+    "validity": "仅为预估 · 有效期 3 天，至 {date}。",
+    "rateSheetExpired": "整柜运价表已于 {date} 过期，预估将转给团队人工报价。",
+    "conditions": {
+      "title": "默认条件",
+      "items": {
+        "distance": "派送在新西兰港口城市约 20 公里以内，整柜直送。距离更远另收费。",
+        "site": "收货场地须获批准可接收整柜。",
+        "tariff": "清关最多 5 个税号，超出的每个另收费。",
+        "weight": "整柜重量不超过 21 吨，不含拆柜。"
+      }
+    },
+    "excluded": "不包含：新西兰进口 GST 和关税、查验、仓储、滞港和滞箱费、等候时间、危险品、超重和其他特殊费用。",
+    "disclaimer": "本预估仅供预算参考，不构成报价、订舱或合同，China Express 不对基于本预估的决定负责。价格以书面报价为准。",
+    "whatsapp": "通过 WhatsApp 获取正式报价",
+    "whatsappText": "你好 China Express，请确认整柜报价：{size}，从 {origin} 到 {dest}。预估编号 {ref}。",
+    "errors": {
+      "required": "请选择柜型和两个港口。",
+      "submit": "暂时无法预估，请重试。"
+    }
+  },
+  "preNotice": {
+    "new": {
+      "title": "发送货物预报",
+      "intro": "告诉我们货物正在寄往广州仓库。这只是通知，不是付款。",
+      "chosen": "你选择的方式",
+      "estimate": "预估价",
+      "expected": "预计有几个包裹？（选填）",
+      "trackingLabel": "快递单号（选填）",
+      "trackingHint": "每行一个，也可以以后再补。",
+      "submit": "发送预报",
+      "noQuote": "请先获取报价。",
+      "toQuote": "获取报价"
+    },
+    "prohibited": {
+      "title": "不能运输的物品",
+      "intro": "请不要把以下物品寄到仓库：",
+      "items": {
+        "dangerous": "危险品：易燃、易爆、压缩气体物品，以及单独寄送的锂电池",
+        "weapons": "武器、仿真武器和弹药",
+        "drugs": "毒品和管制药物",
+        "counterfeit": "假冒或盗版商品",
+        "biosecurity": "生鲜食品、植物、种子、土壤和动物制品（新西兰生物安全）",
+        "valuables": "现金、贵金属和珠宝"
+      },
+      "ack": "我确认货物中没有上面列出的禁运或限运物品。",
+      "ackRequired": "发送预报前请先确认。"
+    },
+    "done": {
+      "title": "我们已收到你的货物预报。",
+      "noPayment": "现在不需要付款。",
+      "stepsTitle": "接下来",
+      "steps": {
+        "one": "把货寄到广州仓库，每个纸箱写上你的会员号。",
+        "two": "我们为每个包裹入库、测量，并通知你。",
+        "three": "如果有多个包裹，可以在最终价之前选择合并。",
+        "four": "你确认并支付最终价，然后我们发运，你可以随时跟踪。"
+      },
+      "customs": "货值达到新元 1,000 的货物，清关前需要新西兰海关客户编号（Customs Client Code），我们稍后会向你索取。",
+      "newQuote": "重新报价"
+    },
+    "address": {
+      "title": "广州仓库地址",
+      "important": "重要：",
+      "markRule": "供应商必须在每个纸箱上写你的唛头，没有唛头的包裹无法匹配到你。",
+      "copy": "复制地址发给供应商",
+      "copied": "地址已复制",
+      "placeholder": "完整仓库地址正在确认，确认后可在这里复制。"
+    },
+    "tracking": {
+      "title": "快递单号（选填）",
+      "intro": "如果供应商已经发货，请填写国内快递单号，每行一个。",
+      "save": "保存快递单号",
+      "saved": "已保存。",
+      "none": "还没有快递单号。",
+      "invalid": "每个快递单号需要 4 到 50 个字符。"
+    },
+    "label": {
+      "title": "唛头",
+      "intro": "打印后贴在每个纸箱上，或请供应商清楚地写上。",
+      "print": "打印唛头"
+    },
+    "errors": {
+      "submit": "预报发送失败，请重试。",
+      "load": "无法加载这份预报。"
+    }
+  },
+  "rates": {
+    "title": "价格管理",
+    "intro": "修改费率先建草稿，试算差额后再发布。发布后的版本不可修改，按生效日期启用。",
+    "cards": "费率表",
+    "product": "产品",
+    "version": "版本",
+    "status": "状态",
+    "effective": "生效",
+    "statuses": {
+      "draft": "草稿",
+      "published": "已发布",
+      "retired": "已停用"
+    },
+    "open": "查看",
+    "selectVersion": "选择一个版本查看详情。",
+    "detail": {
+      "title": "{product} · 第 {version} 版",
+      "readOnly": "已发布版本只读。修改请基于它新建草稿。"
+    },
+    "draft": {
+      "new": "基于此版本新建草稿",
+      "effectiveFrom": "生效日期",
+      "create": "创建草稿",
+      "cancel": "取消",
+      "created": "已创建第 {version} 版草稿。",
+      "jsonLabel": "费率数据（JSON）",
+      "jsonInvalid": "JSON 格式不正确。",
+      "dateInvalid": "请选择生效日期。"
+    },
+    "editor": {
+      "regions": "各区域每公斤费率",
+      "fromKg": "起始 kg",
+      "perKg": "每 kg (NZD)",
+      "clearance": "清关费（按申报货值）",
+      "bands": {
+        "LT_400": "400 以下",
+        "B400_1000": "400–1,000",
+        "GTE_1000": "1,000 及以上"
+      },
+      "tierMode": "分档方式",
+      "tierModes": {
+        "WHOLE": "整票按档",
+        "INCREMENTAL": "超额累进",
+        "WHOLE_WITH_FLOOR": "整票按档 + 价格下限（默认）"
+      },
+      "regionNames": {
+        "AKL": "奥克兰",
+        "NI_OTHER": "北岛其他",
+        "SI": "南岛"
+      },
+      "invalidNumber": "请输入数字，例如 2 或 69.50。"
+    },
+    "simulate": {
+      "run": "试算",
+      "title": "试算：最近 {n} 份真实报价",
+      "summary": "上涨 {up} · 下降 {down} · 不变 {same}",
+      "quote": "报价",
+      "date": "日期",
+      "region": "区域",
+      "old": "原价",
+      "new": "新价",
+      "delta": "差额"
+    },
+    "publish": {
+      "open": "发布",
+      "title": "发布第 {version} 版",
+      "body": "发布后不可修改，{date} 起所有渠道按新价报价。此操作会记录操作人和前后数值。",
+      "reason": "发布原因",
+      "reasonInvalid": "请填写原因（至少 3 个字）。",
+      "confirm": "确认发布",
+      "cancel": "取消",
+      "done": "已发布第 {version} 版，{date} 起生效。",
+      "failed": "发布失败，请重试。"
+    },
+    "errors": {
+      "load": "无法加载费率表。",
+      "forbidden": "你的账号没有价格管理权限。"
+    },
+    "productNames": {
+      "SEA_PARCEL": "海运小包",
+      "SEA_LCL": "海运拼箱",
+      "AIR": "空运",
+      "FCL": "整柜"
+    }
+  },
+  "account": {
+    "title": "我的账户",
+    "member": "你的会员号",
+    "markTitle": "唛头怎么写",
+    "markBody": "请供应商在每个纸箱上按原样清楚写上这个编号，仓库靠它识别是你的包裹。",
+    "methods": "登录方式",
+    "methodsIntro": "登录状态下可以添加其他登录方式。我们不会自动合并账户。",
+    "providers": {
+      "email": "邮箱验证码",
+      "google": "Google",
+      "whatsapp": "WhatsApp",
+      "phone": "手机",
+      "facebook": "Facebook"
+    },
+    "linkGoogle": "绑定 Google 账号",
+    "addEmail": "添加邮箱登录",
+    "emailLabel": "邮箱地址",
+    "emailSent": "请到 {email} 查收邮件并确认。",
+    "linked": "已绑定 {provider}。",
+    "linkFailed": "无法绑定这个登录方式。如果它已属于另一个账户，请直接用它登录。",
+    "recoveryTitle": "无法登录？",
+    "recoveryBody": "换了或丢了手机？先用邮箱验证码登录，再在这里更新。如果没有其他方式登录，请带上会员号和最近一票货的信息联系我们，团队核验后帮你恢复。"
+  }
+}

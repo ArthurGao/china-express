@@ -1,0 +1,33 @@
+name: frontend
+
+on:
+  push:
+    paths: ["frontend/**", ".github/workflows/frontend.yml"]
+  pull_request:
+    paths: ["frontend/**", ".github/workflows/frontend.yml"]
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: frontend/.nvmrc
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint:api
+      - name: Generated client matches the contract
+        run: pnpm gen:api && git diff --exit-code -- src/lib/api/generated
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+      - name: No MSW in the production build
+        run: pnpm check:bundle
