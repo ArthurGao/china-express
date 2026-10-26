@@ -57,7 +57,10 @@ export function sameSitePath(path: string | null | undefined): string | null {
   if (!path || !path.startsWith("/") || path.startsWith("//") || /[\u0000-\u001F\u007F\\]/.test(path)) return null;
   try {
     const url = new URL(path, PROBE_ORIGIN);
-    return url.origin === PROBE_ORIGIN ? url.pathname + url.search + url.hash : null;
+    if (url.origin !== PROBE_ORIGIN) return null;
+    // Check the normalised result too: resolving dot segments can turn "/.//evil.example" into "//evil.example".
+    const normalised = url.pathname + url.search + url.hash;
+    return normalised.startsWith("//") || normalised.startsWith("/\\") ? null : normalised;
   } catch {
     return null;
   }

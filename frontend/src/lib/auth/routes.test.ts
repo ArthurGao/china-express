@@ -50,6 +50,13 @@ describe("safeNext", () => {
     expect(safeNext("/%2F%2Fevil.example")).toBe("/%2F%2Fevil.example");
   });
 
+  it("rejects paths that only become protocol-relative after dot segments are resolved", () => {
+    expect(safeNext("/.//evil.example")).toBe("/quote");
+    expect(safeNext("/a/..//evil.example")).toBe("/quote");
+    expect(safeNext("/%2e//evil.example")).toBe("/quote");
+    expect(safeNext("/./account")).toBe("/account");
+  });
+
   it("keeps the query and hash of a safe path", () => {
     expect(safeNext("/quote?src=fb#results")).toBe("/quote?src=fb#results");
   });

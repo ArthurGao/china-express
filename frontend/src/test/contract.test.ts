@@ -39,3 +39,14 @@ describe("contract: warehouse least data (rule 8)", () => {
     expect(fields.filter((f) => PERSONAL.includes(f))).toEqual([]);
   });
 });
+
+describe("contract: URLs the browser follows (SafeUrl)", () => {
+  const pattern = new RegExp((schemas as unknown as Record<string, { pattern: string }>).SafeUrl.pattern);
+  it.each(["https://track.example/CE-S2610-0002", "/shipments/0193", "/demo/invoice.pdf", "/staff/ops/search?q=CE"])("allows %s", (url) => {
+    expect(pattern.test(url)).toBe(true);
+  });
+  it.each(["javascript:alert(1)", "http://track.example/x", "//evil.example", "/.//evil.example", "/a/../b", "/%2e/x", "/\\evil", "/a//b"])(
+    "refuses %s", (url) => {
+      expect(pattern.test(url)).toBe(false);
+    });
+});

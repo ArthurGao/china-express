@@ -14392,7 +14392,7 @@
       },
       "SafeUrl": {
         "type": "string",
-        "pattern": "^(https://|/(?![/\\\\]))",
+        "pattern": "^(https://\\S+|(?!.*//)(?!.*\\\\)/(?!(?:.*/)?(?:\\.|%2[eE]){1,2}(?:/|$))\\S*)$",
         "description": "Absolute https URL or a same-site path. The frontend also refuses anything else (safeHref)."
       }
     }
